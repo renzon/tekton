@@ -80,6 +80,8 @@ def create_app(name):
 
 MODEL_FORM = '''from gaeforms.ndb.form import ModelForm
 from %(app)s.model import %(model)s
+from gaebusiness.gaeutil import SaveCommand
+from gaegraph.business_base import UpdateNode
 
 
 class %(model)sForm(ModelForm):
@@ -87,6 +89,15 @@ class %(model)sForm(ModelForm):
     _include = [%(properties)s]'''
 
 PROPERTY = '%(model)s.%(property)s'
+
+SAVE_AND_UPDATE = '''
+
+class Save%(model)sCommand(SaveCommand):
+    _model_form_class = %(model)sForm
+
+
+class Update%(model)sCommand(UpdateNode):
+    _model_form_class = %(model)sForm'''
 
 
 def form_code_for(app, model):
@@ -97,7 +108,7 @@ def form_code_for(app, model):
     properties = ', '.join([PROPERTY % {'model': model, 'property': p} for p in properties])
 
     dct = {'app': app, 'model': model, 'properties': properties}
-    return MODEL_FORM % dct
+    return (MODEL_FORM % dct) + (SAVE_AND_UPDATE % dct)
 
 
 def _title(param):
