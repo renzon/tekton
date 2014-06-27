@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 from jinja2.exceptions import TemplateNotFound
+from config import tmpl
 from tekton import router
 from tekton.gae.middleware.response import ResponseBase
-import tmpl
 from tekton.gae.middleware import Middleware
 
 
