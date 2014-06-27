@@ -31,7 +31,7 @@ handlers:
   static_files: web/static/robots.txt
   upload: web/static/robots.txt
 
-- url: /favicon
+- url: /favicon\.ico
   static_files: web/static/img/favicon.ico
   upload: web/static/img/favicon.ico
 

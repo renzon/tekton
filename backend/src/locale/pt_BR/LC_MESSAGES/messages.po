@@ -1,0 +1,74 @@
+# Portuguese (Brazil) translations for PROJECT.
+# Copyright (C) 2014 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2014-06-26 00:13-0300\n"
+"PO-Revision-Date: 2014-06-26 00:13-0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: pt_BR <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 1.3\n"
+
+#: gaeforms/base.py:46
+#, python-format
+msgid "Must be one of: %(choices)s"
+msgstr "Deve ser um dos seguintes: %(choices)s"
+
+#: gaeforms/base.py:51
+msgid "Required field"
+msgstr "Campo obrigatório"
+
+#: gaeforms/base.py:119
+#, python-format
+msgid "Has %(len)s characters and it must have less than 500"
+msgstr "Possui %(len)s caracteres e deve ter menos de 500"
+
+#: gaeforms/base.py:126
+msgid "Invalid email"
+msgstr "E-mail inválido"
+
+#: gaeforms/base.py:147 gaeforms/base.py:178 gaeforms/base.py:223
+#, python-format
+msgid "Must be greater than %(lower)s"
+msgstr "Deve ser maior que %(lower)s"
+
+#: gaeforms/base.py:149 gaeforms/base.py:180 gaeforms/base.py:225
+#, python-format
+msgid "Must be less than %(upper)s"
+msgstr "Deve ser menor que %(upper)s"
+
+#: gaeforms/base.py:152
+msgid "Must be integer"
+msgstr "Deve ser inteiro"
+
+#: gaeforms/base.py:183 gaeforms/base.py:228
+msgid "Must be a number"
+msgstr "Deve ser um número"
+
+#: gaeforms/base.py:260
+#, python-format
+msgid "Invalid date. Must be on format %(format)s"
+msgstr "Data inválida. Deve ser em formato %(format)s"
+
+#: gaeforms/base.py:260 gaeforms/base.py:266
+msgid "MM/dd/YYYY"
+msgstr "dd/MM/YYYY"
+
+#: gaeforms/base.py:300
+#, python-format
+msgid "Invalid datetime. Must be on format %(format)s"
+msgstr "Data-hora inválida. Deve ser em formato %(format)s"
+
+#: gaeforms/base.py:300 gaeforms/base.py:305
+msgid "MM/dd/YYYY HH:mm:ss"
+msgstr "dd/MM/YYYY HH:mm:ss"
+

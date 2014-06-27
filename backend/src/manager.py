@@ -45,6 +45,7 @@ def _create_app(app_path):
 
 
 def _create_templates(name, web_path):
+    name += 's'
     templates_path = os.path.join(web_path, 'templates')
     _create_dir_if_not_existing(templates_path)
     templates_path = os.path.join(templates_path, name)
@@ -63,6 +64,7 @@ def index():
 
 
 def _create_app_handler(web_path, name):
+    name += 's'
     handler_path = os.path.join(web_path, name)
     _create_package(handler_path)
     home_handler_path = os.path.join(handler_path, 'home.py')
@@ -112,9 +114,10 @@ def form_code_for(app, model):
 
 
 def _title(param):
-    print ('-' * 10) + param + ('-' * 10)
+    n = 15
+    print ('- ' * n) + param + (' -' * n)
 
 
 if __name__ == '__main__':
-    _title('Model Form')
+    _title('command.py ')
     print form_code_for('user', 'N')
