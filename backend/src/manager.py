@@ -54,7 +54,7 @@ def _create_templates(name, web_path):
 
 HOME_HANDLER = '''# -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
-from tmpl_middleware import TemplateResponse
+from config.tmpl_middleware import TemplateResponse
 
 
 def index():

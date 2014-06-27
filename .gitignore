@@ -14,6 +14,7 @@ develop-eggs/
 dist/
 eggs/
 lib/
+backend/src/lib/
 lib64/
 parts/
 sdist/
