@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
+import importlib
 import os
 
 SRC_DIR = os.path.dirname(__file__)
@@ -77,5 +78,32 @@ def create_app(name):
     _create_templates(name, web_path)
 
 
+MODEL_FORM = '''from gaeforms.ndb.form import ModelForm
+from %(app)s.model import %(model)s
+
+
+class %(model)sForm(ModelForm):
+    _model_class = %(model)s
+    _include = [%(properties)s]'''
+
+PROPERTY = '%(model)s.%(property)s'
+
+
+def form_code_for(app, model):
+    model_module = importlib.import_module(app + '.model')
+    model_class = getattr(model_module, model)
+    properties = set(model_class._properties.keys())
+    properties = properties.difference(set('class,creation'.split(',')))
+    properties = ', '.join([PROPERTY % {'model': model, 'property': p} for p in properties])
+
+    dct = {'app': app, 'model': model, 'properties': properties}
+    return MODEL_FORM % dct
+
+
+def _title(param):
+    print ('-' * 10) + param + ('-' * 10)
+
+
 if __name__ == '__main__':
-    print create_app('user')
+    _title('Model Form')
+    print form_code_for('user', 'N')
