@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="shortcut icon" href="/static/img/favicon.ico" />
+    <title>Zenwarch</title>
+</head>
+<body>
+{% block body %}
+    <h1>Hello World</h1>
+    <form action="{{ form_url }}">
+        Type your name <input type="text" name="name"/>
+        <button type="submit">Send</button>
+    </form>
+{% endblock %}
+</body>
+</html>
