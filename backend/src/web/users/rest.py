@@ -6,28 +6,28 @@ from user import facade
 
 
 def index():
-    cmd = facade.list_n()
-    n_list = cmd()
-    n_short = [facade.short_n(n) for n in n_list]
-    return JsonResponse(n_short)
+    cmd = facade.list_user()
+    user_list = cmd()
+    user_short = [facade.short_user(n) for n in user_list]
+    return JsonResponse(user_short)
 
 
-def save(**n_properties):
-    cmd = facade.save_n(**n_properties)
+def save(**user_properties):
+    cmd = facade.save_user(**user_properties)
     try:
-        n = cmd()
+        user = cmd()
     except CommandExecutionException:
         return JsonResponse({'errors': cmd.errors})
-    return JsonResponse(facade.detail_n(n))
+    return JsonResponse(facade.detail_user(user))
 
 
-def update(n_id, **n_properties):
-    cmd = facade.update_n(n_id, **n_properties)
+def update(user_id, **user_properties):
+    cmd = facade.update_user(user_id, **user_properties)
     try:
-        n = cmd()
+        user = cmd()
     except CommandExecutionException:
         return JsonResponse({'errors': cmd.errors})
 
-    return JsonResponse(facade.detail_n(n))
+    return JsonResponse(facade.detail_user(user))
 
 

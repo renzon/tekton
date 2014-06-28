@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-    <h1>This is the automatic generated page for App "user"</h1>
-</body>
-</html>
+{% extends 'base/base.html' %}
+{% block body %}
+    <h1>This is a generic home for app {{ app }}</h1>
+    <hr/>
+    <a href="{{ user_form }}">Create New User</a>
+    <h2>List</h2>
+    <ol>
+    {% for u in users %}
+        <li>{{ u.id }} - {{ u.foo }}</li>
+    {% endfor %}
+    </ol>
+{% endblock %}

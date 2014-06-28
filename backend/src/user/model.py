@@ -4,8 +4,8 @@ from google.appengine.ext import ndb
 from gaegraph.model import Node
 
 
-class N(Node):
-    foo = ndb.StringProperty(required=True)
-    blah = ndb.IntegerProperty(required=True)
+class User(Node):
+    name = ndb.StringProperty(required=True)
+    age = ndb.IntegerProperty(required=True)
 
 
