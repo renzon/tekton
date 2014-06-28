@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
+from gaegraph.business_base import NodeSearch
 from user.commands import SaveUserCommand, UserFormDetail, UpdateUserCommand, UserFormShort, ListNCommand
 
 
@@ -21,7 +22,7 @@ def update_user(user_id, **user_properties):
     return UpdateUserCommand(user_id, **user_properties)
 
 
-def list_user():
+def list_users():
     """
     Command to list User entities ordered by their creation dates
     :return: a Command proceed the db operations when executed
@@ -29,19 +30,19 @@ def list_user():
     return ListNCommand()
 
 
-_user_detail = UserFormDetail()
+_user_detail_form = UserFormDetail()
 
 
-def detail_user(n):
+def detail_user(user):
     """
     Function to localize User's detail properties
-    :param n: model User
+    :param user: model User
     :return: dictionary with User's detail properties localized
     """
-    return _user_detail.populate_form(n)
+    return _user_detail_form.populate_form(user)
 
 
-_user_detail = UserFormShort()
+_user_short_form = UserFormShort()
 
 
 def short_user(n):
@@ -50,4 +51,13 @@ def short_user(n):
     :param n: model User
     :return: dictionary with User's detail properties localized
     """
-    return _user_detail.populate_form(n)
+    return _user_short_form.populate_form(n)
+
+
+def get_user(user_id):
+    """
+    Find user by her id
+    :param user_id: the user id
+    :return: Command
+    """
+    return NodeSearch(user_id)

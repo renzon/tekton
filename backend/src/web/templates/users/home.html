@@ -1,12 +1,39 @@
 {% extends 'base/base.html' %}
+{% block css %}
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 4px 4px 4px 4px;
+        }
+    </style>
+{% endblock %}
 {% block body %}
     <h1>This is a generic home for app {{ app }}</h1>
-    <hr/>
     <a href="{{ user_form }}">Create New User</a>
-    <h2>List</h2>
-    <ol>
-    {% for u in users %}
-        <li>{{ u.id }} - {{ u.foo }}</li>
-    {% endfor %}
-    </ol>
+    <hr/>
+    <h2>List of Users</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Creation</th>
+            <th>Name</th>
+            <th>Age</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            {% for user in users %}
+                <td>{{ user.id }}</td>
+                <td>{{ user.creation }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.age }}</td>
+                <td><a href="{{ user.edit_path }}">Edit</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

@@ -23,7 +23,7 @@ class UserFormDetail(ModelForm):
 
 class UserFormShort(UserFormDetail):
     _model_class = User
-    _include = [User.name]
+    _include = [User.age, User.name, User.creation]
 
 
 class SaveUserCommand(SaveCommand):

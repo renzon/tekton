@@ -1,0 +1,20 @@
+{% extends 'base/base.html' %}
+{% block css %}
+    <style>
+        .error {
+            color: red
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    {% set user=user or None %}
+    {% set errors=errors or None %}
+    <h1>User Form</h1>
+    <form action="{{ save_path }}" method="post">
+        Name: <input type="text" name="name" value="{{ user.name }}"/>
+        <span class="error">{{ errors.name }}</span><br />
+        Age: <input type="text" name="age" value="{{ user.age }}"/>
+        <span class="error">{{ errors.age }}</span><br/>
+        <button type="submit">Save</button>
+    </form>
+{% endblock %}
