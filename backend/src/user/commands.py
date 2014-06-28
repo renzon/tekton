@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
-from gaebusiness.gaeutil import SaveCommand
+from gaebusiness.gaeutil import SaveCommand, ModelSearchCommand
 from gaeforms.ndb.form import ModelForm
 from gaegraph.business_base import UpdateNode
 from user.model import N
@@ -21,8 +21,9 @@ class NFormDetail(ModelForm):
         return dct
 
 
-if __name__ == '__main__':
-    print NFormDetail().populate_model()
+class NFormShort(NFormDetail):
+    _model_class = N
+    _include = [N.foo]
 
 
 class SaveNCommand(SaveCommand):
@@ -31,3 +32,9 @@ class SaveNCommand(SaveCommand):
 
 class UpdateNCommand(UpdateNode):
     _model_form_class = NForm
+
+
+class ListNCommand(ModelSearchCommand):
+    def __init__(self, page_size=100, start_cursor=None, offset=0, use_cache=True, cache_begin=True, **kwargs):
+        super(ListNCommand, self).__init__(N.query_by_creation(), page_size, start_cursor, offset, use_cache,
+                                           cache_begin, **kwargs)

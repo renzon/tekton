@@ -8,3 +8,4 @@ class N(Node):
     foo = ndb.StringProperty(required=True)
     blah = ndb.IntegerProperty(required=True)
 
+

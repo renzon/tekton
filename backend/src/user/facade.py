@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 from gaebusiness.gaeutil import UpdateCommand
-from user.commands import SaveNCommand, NForm, NFormDetail, UpdateNCommand
+from user.commands import SaveNCommand, NForm, NFormDetail, UpdateNCommand, NFormShort, ListNCommand
 
 
 def save_n(**n_properties):
@@ -22,10 +22,33 @@ def update_n(n_id, **n_properties):
     return UpdateNCommand(n_id, **n_properties)
 
 
-def localize_n(n):
+def list_n():
     """
-    Function to localize N's properties
+    Command to list N entities ordered by their creation dates
+    :return: a Command proceed the db operations when executed
+    """
+    return ListNCommand()
+
+
+_n_detail = NFormDetail()
+
+
+def detail_n(n):
+    """
+    Function to localize N's detail properties
     :param n: model N
-    :return: dictionary with N properties localized
+    :return: dictionary with N's detail properties localized
     """
-    return NFormDetail().populate_form(n)
+    return _n_detail.populate_form(n)
+
+
+_n_detail = NFormShort()
+
+
+def short_n(n):
+    """
+    Function to localize N's detail properties
+    :param n: model N
+    :return: dictionary with N's detail properties localized
+    """
+    return _n_detail.populate_form(n)

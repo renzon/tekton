@@ -5,13 +5,20 @@ from tekton.gae.middleware.json_middleware import JsonResponse
 from user import facade
 
 
+def index():
+    cmd = facade.list_n()
+    n_list = cmd()
+    n_short = [facade.short_n(n) for n in n_list]
+    return JsonResponse(n_short)
+
+
 def save(**n_properties):
     cmd = facade.save_n(**n_properties)
     try:
         n = cmd()
     except CommandExecutionException:
         return JsonResponse({'errors': cmd.errors})
-    return JsonResponse(facade.localize_n(n))
+    return JsonResponse(facade.detail_n(n))
 
 
 def update(n_id, **n_properties):
@@ -21,6 +28,6 @@ def update(n_id, **n_properties):
     except CommandExecutionException:
         return JsonResponse({'errors': cmd.errors})
 
-    return JsonResponse(facade.localize_n(n))
+    return JsonResponse(facade.detail_n(n))
 
 
