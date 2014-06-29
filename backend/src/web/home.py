@@ -6,5 +6,5 @@ from tekton import router
 
 
 def index():
-    url = router.to_path(my_form)
-    return TemplateResponse({'form_url': url})
+    return TemplateResponse({'form_url': router.to_path(my_form)})
+

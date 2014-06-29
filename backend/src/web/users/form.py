@@ -4,6 +4,7 @@ from config.tmpl_middleware import TemplateResponse
 from gaebusiness.business import CommandExecutionException
 from tekton import router
 from user import facade
+from web import users
 
 
 def index():
@@ -11,7 +12,6 @@ def index():
 
 
 def save(_handler, user_id=None, **user_properties):
-    from web.users import home  # workaround to avoid circular reference
 
     if user_id:
         cmd = facade.update_user(user_id, **user_properties)
@@ -24,7 +24,7 @@ def save(_handler, user_id=None, **user_properties):
                    'user': cmd.form}
 
         return TemplateResponse(context, 'users/form.html')
-    _handler.redirect(router.to_path(home))
+    _handler.redirect(router.to_path(users))
 
 
 def edit(user_id):

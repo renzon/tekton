@@ -25,15 +25,17 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            {% for user in users %}
+
+        {% for user in users %}
+            <tr>
                 <td>{{ user.id }}</td>
                 <td>{{ user.creation }}</td>
                 <td>{{ user.name }}</td>
                 <td>{{ user.age }}</td>
                 <td><a href="{{ user.edit_path }}">Edit</a></td>
-                </tr>
-            {% endfor %}
+                <td><a href="{{ user.delete_path }}">Delete</a></td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
 {% endblock %}

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
-from gaegraph.business_base import NodeSearch
+from gaegraph.business_base import NodeSearch, DeleteNode
 from user.commands import SaveUserCommand, UserFormDetail, UpdateUserCommand, UserFormShort, ListNCommand
 
 
@@ -61,3 +61,12 @@ def get_user(user_id):
     :return: Command
     """
     return NodeSearch(user_id)
+
+
+def delete_user(user_id):
+    """
+    Construct a command to delete a User
+    :param user_id: user's id
+    :return: Command
+    """
+    return DeleteNode(user_id)

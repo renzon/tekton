@@ -21,6 +21,9 @@ def update(user_id, **user_properties):
     cmd = facade.update_user(user_id, **user_properties)
     return _save_or_update_json_response(cmd)
 
+def delete(user_id):
+    facade.delete_user(user_id)()
+
 
 def _save_or_update_json_response(cmd):
     try:
