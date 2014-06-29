@@ -4,7 +4,7 @@ from gaegraph.business_base import NodeSearch, DeleteNode
 from user.commands import SaveUserCommand, UserFormDetail, UpdateUserCommand, UserFormShort, ListNCommand
 
 
-def save_user(**user_properties):
+def save_user_cmd(**user_properties):
     """
     Command to save User entity
     :param user_properties: a dict of properties to save on model
@@ -13,7 +13,7 @@ def save_user(**user_properties):
     return SaveUserCommand(**user_properties)
 
 
-def update_user(user_id, **user_properties):
+def update_user_cmd(user_id, **user_properties):
     """
     Command to update User entity with id equals 'user_id'
     :param user_properties: a dict of properties to update model
@@ -22,7 +22,7 @@ def update_user(user_id, **user_properties):
     return UpdateUserCommand(user_id, **user_properties)
 
 
-def list_users():
+def list_users_cmd():
     """
     Command to list User entities ordered by their creation dates
     :return: a Command proceed the db operations when executed
@@ -30,31 +30,31 @@ def list_users():
     return ListNCommand()
 
 
-_user_detail_form = UserFormDetail()
+_detail_user_form = UserFormDetail()
 
 
-def detail_user(user):
+def detail_user_dct(user):
     """
     Function to localize User's detail properties
     :param user: model User
     :return: dictionary with User's detail properties localized
     """
-    return _user_detail_form.populate_form(user)
+    return _detail_user_form.populate_form(user)
 
 
-_user_short_form = UserFormShort()
+_short_user_form = UserFormShort()
 
 
-def short_user(n):
+def short_user_dct(n):
     """
     Function to localize User's detail properties
     :param n: model User
     :return: dictionary with User's detail properties localized
     """
-    return _user_short_form.populate_form(n)
+    return _short_user_form.populate_form(n)
 
 
-def get_user(user_id):
+def get_user_cmd(user_id):
     """
     Find user by her id
     :param user_id: the user id
@@ -63,7 +63,7 @@ def get_user(user_id):
     return NodeSearch(user_id)
 
 
-def delete_user(user_id):
+def delete_user_cmd(user_id):
     """
     Construct a command to delete a User
     :param user_id: user's id

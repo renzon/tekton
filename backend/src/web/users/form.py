@@ -14,9 +14,9 @@ def index():
 def save(_handler, user_id=None, **user_properties):
 
     if user_id:
-        cmd = facade.update_user(user_id, **user_properties)
+        cmd = facade.update_user_cmd(user_id, **user_properties)
     else:
-        cmd = facade.save_user(**user_properties)
+        cmd = facade.save_user_cmd(**user_properties)
     try:
         cmd()
     except CommandExecutionException:
@@ -28,7 +28,7 @@ def save(_handler, user_id=None, **user_properties):
 
 
 def edit(user_id):
-    user = facade.get_user(user_id)()
-    context = {'save_path': router.to_path(save, user_id), 'user': facade.detail_user(user)}
+    user = facade.get_user_cmd(user_id)()
+    context = {'save_path': router.to_path(save, user_id), 'user': facade.detail_user_dct(user)}
     return TemplateResponse(context, 'users/form.html')
 
