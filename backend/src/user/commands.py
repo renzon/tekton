@@ -34,7 +34,7 @@ class UpdateUserCommand(UpdateNode):
     _model_form_class = UserForm
 
 
-class ListNCommand(ModelSearchCommand):
+class ListUserCommand(ModelSearchCommand):
     def __init__(self, page_size=100, start_cursor=None, offset=0, use_cache=True, cache_begin=True, **kwargs):
-        super(ListNCommand, self).__init__(User.query_by_creation(), page_size, start_cursor, offset, use_cache,
+        super(ListUserCommand, self).__init__(User.query_by_creation(), page_size, start_cursor, offset, use_cache,
                                            cache_begin, **kwargs)

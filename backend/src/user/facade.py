@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 from gaegraph.business_base import NodeSearch, DeleteNode
-from user.commands import SaveUserCommand, UserFormDetail, UpdateUserCommand, UserFormShort, ListNCommand
+from user.commands import SaveUserCommand, UserFormDetail, UpdateUserCommand, UserFormShort, ListUserCommand
 
 
 def save_user_cmd(**user_properties):
@@ -27,7 +27,7 @@ def list_users_cmd():
     Command to list User entities ordered by their creation dates
     :return: a Command proceed the db operations when executed
     """
-    return ListNCommand()
+    return ListUserCommand()
 
 
 _detail_user_form = UserFormDetail()
