@@ -45,13 +45,13 @@ def detail_user_dct(user):
 _short_user_form = UserFormShort()
 
 
-def short_user_dct(n):
+def short_user_dct(user):
     """
     Function to localize User's detail properties
-    :param n: model User
-    :return: dictionary with User's detail properties localized
+    :param user: model User
+    :return: dictionary with User's short properties localized
     """
-    return _short_user_form.populate_form(n)
+    return _short_user_form.populate_form(user)
 
 
 def get_user_cmd(user_id):

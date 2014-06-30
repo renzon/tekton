@@ -9,8 +9,8 @@ from tekton.gae import middleware
 import webapp2
 from webapp2_extras import i18n
 
-i18n.default_config['default_locale'] = 'pt_BR'
-i18n.default_config['default_timezone'] = 'America/Sao_Paulo'
+i18n.default_config['default_locale'] = settings.DEFAULT_LOCALE
+i18n.default_config['default_timezone'] = settings.DEFAULT_TIMEZONE
 
 
 class BaseHandler(webapp2.RequestHandler):
