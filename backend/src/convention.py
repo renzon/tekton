@@ -21,7 +21,7 @@ class BaseHandler(webapp2.RequestHandler):
         self.make_convention()
 
     def make_convention(self):
-        middleware.execute(settings.MIDDLEWARES, self)
+        middleware.execute(settings.MIDDLEWARE_LIST, self)
 
 
 app = webapp2.WSGIApplication([("/.*", BaseHandler)], debug=False)
