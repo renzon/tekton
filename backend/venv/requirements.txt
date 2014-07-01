@@ -1,4 +1,4 @@
-tekton==3.0
+tekton==3.1
 gaebusiness==3.0
 gaecookie==0.5
 gaeforms==0.3
