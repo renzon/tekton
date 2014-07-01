@@ -43,9 +43,10 @@ handlers:
   static_files: web/\1static\2
   upload: web/.*static.*
 
+- url: /[^_].*
+  script: convention.app
+
 - url: /_ah/warmup
   script: web.warmup.app
 
-- url: /.*
-  script: convention.app
 

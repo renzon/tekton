@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+{% macro csrf_input() %}
+    <input type="hidden" value="{{ _csrf_code }}" name="_csrf_code"/>
+{% endmacro %}
 <html>
 <head lang="en">
     <meta charset="UTF-8">

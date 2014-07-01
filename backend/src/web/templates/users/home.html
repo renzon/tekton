@@ -33,8 +33,12 @@
                             <td>{{ user.creation }}</td>
                             <td>{{ user.name }}</td>
                             <td>{{ user.age }}</td>
-                            <td><a href="{{ user.delete_path }}" class="btn btn-danger btn-sm"><i
-                                    class="glyphicon glyphicon-trash"></i></a></td>
+                            <td><form action="{{ user.delete_path }}" method="post">
+                                {{ csrf_input() }}
+                                <button class="btn btn-danger btn-sm"><i
+                                        class="glyphicon glyphicon-trash"></i></button>
+                                </form>
+                            </td>
                         </tr>
                     {% endfor %}
                     </tbody>

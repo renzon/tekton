@@ -2,6 +2,7 @@
 from __future__ import absolute_import, unicode_literals
 from config.tmpl_middleware import TemplateResponse
 from tekton import router
+from gaecookie.decorator import no_csrf
 from user import facade
 from web.users import form
 
@@ -10,7 +11,7 @@ def delete(_handler, user_id):
     facade.delete_user_cmd(user_id)()
     _handler.redirect(router.to_path(index))
 
-
+@no_csrf
 def index():
     cmd = facade.list_users_cmd()
     users = cmd()

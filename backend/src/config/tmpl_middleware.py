@@ -39,6 +39,8 @@ class TemplateWriteMiddleware(Middleware):
         fcn = self.dependencies['_fcn']
         if isinstance(fcn_response, TemplateResponse):
             context = fcn_response.context or {}
+            if '_csrf_code' in self.dependencies:
+                context['_csrf_code'] = self.dependencies['_csrf_code']
             template_path = fcn_response.template_path
             if template_path is None:
                 template_path = router.to_path(fcn)

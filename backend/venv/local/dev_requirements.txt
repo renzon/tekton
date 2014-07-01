@@ -1,2 +1,1 @@
--r requirements.txt
-mock==1.0.1
+/home/renzo/PycharmProjects/tekton-fullstack/backend/venv/dev_requirements.txt

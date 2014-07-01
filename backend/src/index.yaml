@@ -14,3 +14,9 @@ indexes:
   properties:
   - name: class
   - name: creation
+
+- kind: Node
+  properties:
+  - name: class
+  - name: creation
+    direction: desc

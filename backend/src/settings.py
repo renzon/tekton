@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
+from gaecookie.middleware import CSRFMiddleware, CSRFInputToDependency
 from tekton.gae.middleware.json_middleware import JsonResponseMiddleware
 from config.tmpl_middleware import TemplateMiddleware, TemplateWriteMiddleware
 from tekton.gae.middleware.email_errors import EmailMiddleware
@@ -17,7 +18,9 @@ MIDDLEWARE_LIST = [TemplateMiddleware,
                    EmailMiddleware,
                    Webapp2Dependencies,
                    RequestParamsMiddleware,
+                   CSRFInputToDependency,
                    RouterMiddleware,
+                   CSRFMiddleware,
                    ExecutionMiddleware,
                    TemplateWriteMiddleware,
                    JsonResponseMiddleware,
