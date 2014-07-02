@@ -12,12 +12,20 @@ call :to_console "Checking up dependencies"
 pip install -r dev_requirements.txt --upgrade || goto :error 
 
 
-cd ..\src || goto :error 
+cd ..\plugins\appengine || goto :error
+
 IF NOT EXIST %cd%\lib (
-call :to_console "Creating symlink on src/lib so installed libs become visible to Google App Engine"
-MKLINK /D lib ..\venv\Lib\site-packages
+call :to_console "Creating symlink on plugins\appengine so installed libs become visible to Google App Engine"
+MKLINK /D lib ..\..\venv\Lib\site-packages
 )
-cd ..\venv || goto :error 
+
+IF NOT EXIST %cd%\apps (
+call :to_console "Creating symlink on plugins\appengine so apps become visible to Google App Engine"
+MKLINK /D apps ..\..\apps
+)
+
+
+cd ..\..\venv || goto :error
 call :to_console "virtualenv and dependencies installed"
 goto:EOF
 
