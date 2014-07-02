@@ -8,6 +8,7 @@ src_path = os.path.dirname(__file__)
 src_path = os.path.join(src_path, '..')
 src_path = os.path.normpath(src_path)
 sys.path.append(os.path.join(src_path, 'lib'))
+sys.path.append(os.path.join(src_path, 'apps'))
 from gaepermission import facade
 
 import webapp2

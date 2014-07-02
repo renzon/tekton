@@ -18,9 +18,14 @@ source bin/activate
 to_console "Checking up dependencies"
 pip install -r dev_requirements.txt --upgrade
 
-cd ../src
+cd ../plugins/appengine
 
 if [ ! -d lib ]; then
-    to_console "Creating symlink on src/lib so installed libs become visible to Google App Engine"
-    ln -s ../venv/lib/python2.7/site-packages lib
+    to_console "Creating symlink on plugins/appengine/lib so installed libs become visible to Google App Engine"
+    ln -s ../../venv/lib/python2.7/site-packages lib
+fi
+
+if [ ! -d apps ]; then
+    to_console "Creating symlink on plugins/appengine/apps so apps become visible to Google App Engine"
+    ln -s ../../apps apps
 fi

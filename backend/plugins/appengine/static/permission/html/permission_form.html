@@ -1,0 +1,14 @@
+<div class="row">
+    <div class="col-md-3">
+        <div class="input-group">
+            <input type="text" ng-model="emailPrefix" class="form-control"/>
+            <span class="input-group-btn">
+                <button type="button" ng-click="search(emailPrefix)" ng-hide="showButton" class="btn btn-success"><i
+                        class="glyphicon glyphicon-search"></i></button>
+                <span ng-show="showButton ">
+                    <img src="/static/img/ajax.gif"/>
+                </span>
+            </span>
+        </div>
+    </div>
+</div>
