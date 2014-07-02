@@ -1,0 +1,22 @@
+{% extends 'admin/base.html' %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Passworless App Form</h1>
+
+                <p>This data is used to proceed passswordless login. More information in <a
+                        href="https://pswdless.appspot.com/api#register-sites" target="passwordless">Passwordless</a>.
+                </p>
+
+                <form action="{{ save_app_path }}" method="post">
+                    {{ csrf_input() }}
+                    <input type="text" name="app_id" placeholder="Type the app's id" value="{{ app.app_id if app }}"/>
+                    <input type="text" name="token" placeholder="Type the app's token" value="{{ app.token if app }}"/>
+                    <button type="submit">Salvar</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

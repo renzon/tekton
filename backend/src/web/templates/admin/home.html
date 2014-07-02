@@ -1,0 +1,14 @@
+{% extends 'admin/base.html' %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <h1>Painel de Administração</h1>
+            <a href="{{ security_table_path }}">Tabela de Segurança</a><br/>
+
+            <h2>Admin Options</h2>
+            <a href="{{ permission_admin_path }}">Permission Admin</a><br/>
+            <a href="{{ facebook_admin_path }}">Facebook App Data</a><br/>
+            <a href="{{ passwordless_admin_path }}">Passwordless App Data</a><br/>
+        </div>
+    </div>
+{% endblock %}

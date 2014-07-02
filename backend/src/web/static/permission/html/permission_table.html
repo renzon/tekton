@@ -1,0 +1,30 @@
+<div class="well">
+    <h3>Results for emails starting with "{{ searchPrefix }}"</h3>
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Email</th>
+            <th>Name</th>
+            <th>Groups</th>
+        </tr>
+        </thead>
+        <tr ng-repeat="u in users" ng-hide="showTable">
+            <td>{{ u.id }}</td>
+            <td>{{ u.email }}</td>
+            <td>{{ u.name }}</td>
+            <td width="150px">
+            <grouptd groups="groups" user="u"></grouptd>
+            </td>
+        </tr>
+    </table>
+    <button class="btn btn-primary" ng-show="moreResultsFlag && !searchingNextPage"
+            ng-click="searchNextPage(nextPage,searchPrefix)">Next results for search "{{ searchPrefix }}" &raquo;</button>
+    <span ng-show="!moreResultsFlag && users.length>0">No more results for search "{{ searchPrefix }}" </span>
+    <div ng-show="showTable || searchingNextPage">
+        <img src="/static/img/ajax.gif"/>
+    </div>
+    <div ng-show="users.length==0">
+        No results for emails starting with "{{ searchPrefix }}"
+    </div>
+</div>

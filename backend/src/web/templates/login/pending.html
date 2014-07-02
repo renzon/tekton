@@ -1,0 +1,19 @@
+{% extends 'base/base.html' %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Informação de Segurança</h1>
+
+                <p>O email fornecido pelo {{ provider }} já está em uso em uma conta. Para sua segurança, enviaremos um
+                    email de login para
+                    {{ email }} para podermos permitir o acesso. Assim podemos confirmar que você realmente é o dono
+                    desse email.</p>
+
+                <p>Esse procedimento de segurança só será necessário uma vez. Nas próximas vezes em que logar utilizando
+                    essa conta o login ocorrerá normalmente.</p>
+
+                <p>Não esqueça de verificar sua caixa de spam, pois alguns provedores podem filtrá-lo.</p></div>
+        </div>
+    </div>
+{% endblock %}

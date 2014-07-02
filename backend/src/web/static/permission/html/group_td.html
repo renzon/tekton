@@ -1,0 +1,15 @@
+<div>
+    <div ng-repeat="g in groups">
+        <div class="checkbox" >
+            <label ng-hide="updatingGroups">
+
+                <input type="checkbox" value="{{ g }}" check-list="user.groups"
+                       ng-click="updateUserGroups(user)"/>{{ g }}
+            </label>
+            <span ng-show="updatingGroups">
+            <img src="/static/img/ajax.gif" /> {{ g }}
+        </span>
+        </div>
+
+    </div>
+</div>

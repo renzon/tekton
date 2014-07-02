@@ -1,0 +1,53 @@
+{% extends 'admin/base.html' %}
+{% block js %}
+    <script type="text/javascript" src="/static/angular/js/angular.min.js"></script>
+    <script type="text/javascript" src="/static/permission/js/permissions.js"></script>
+    <script type="text/javascript">
+        var mod = angular.module('rest', [])
+
+        mod.factory('RestApi', function ($http) {
+                    function patchDeferred(defer) {
+                        defer.always = function (callback) {
+                            defer.then(callback, callback);
+                        }
+                        return defer;
+                    }
+
+
+                    return {
+                        searchUsers: function (emailPrefix) {
+                            var defer = $http.post('{{ list_users_path }}', {'email_prefix': emailPrefix})
+                            return patchDeferred(defer);
+
+                        },
+                        searchNextPage: function (url) {
+                            var defer = $http.post(url)
+                            return patchDeferred(defer);
+
+                        },
+                        updateUserGroups: function (path, groups) {
+                            var defer = $http.post(path, groups)
+                            return patchDeferred(defer);
+                        }
+                    };
+                }
+        )
+    </script>
+{% endblock %}
+{% block body %}
+    <div class="container" ng-app="app" ng-controller="AppCtrl">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>User's Table</h1>
+                <permform search="searchUsers" show-button="searchingUsersFlag"></permform>
+                <br />
+                <permtable users="users" next-page="nextPage"
+                           show-table="searchingUsersFlag"
+                           more-results-flag="moreResultsFlag"
+                           search-prefix="searchPrefix"
+                           groups='{{ groups|json }}'></permtable>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

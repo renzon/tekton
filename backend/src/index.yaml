@@ -10,6 +10,12 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
+- kind: Arc
+  properties:
+  - name: class
+  - name: origin
+  - name: creation
+
 - kind: Node
   properties:
   - name: class
@@ -20,3 +26,8 @@ indexes:
   - name: class
   - name: creation
     direction: desc
+
+- kind: Node
+  properties:
+  - name: class
+  - name: email

@@ -1,0 +1,117 @@
+{% extends 'base/base.html' %}
+{% block css %}
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap-social.css"/>
+    <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css"/>
+{% endblock %}
+{% block js %}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <br/>
+
+        <h1 class="text-center">Opções de Login</h1>
+        <br/>
+        <br/>
+        <br/>
+
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <div class="well">
+                    <h2>Email</h2><br/>
+
+                    <form action="{{ login_passwordless_path }}" method="post">
+                        <div class="input-group">
+                            <input type="email" name="email" placeholder="Digite seu email" class="form-control"/>
+      <span class="input-group-btn">
+           <button class="btn btn-success" type="submit">Login</button>
+      </span>
+                        </div>
+                        {{ csrf_input() }}
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="well">
+                    <h2>Google</h2><br/>
+                    <a href="{{ login_google_path }}" class="btn btn-social btn-google-plus"><i
+                            class="fa icon-google-plus"></i>Login com Google</a>
+                </div>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="well">
+                    <h2>Facebook</h2><br/>
+                    <button class="btn btn-social btn-facebook" onclick="fb_login();">
+                        <i class="fa icon-facebook"></i>
+                        Login com Facebbok
+                    </button>
+                    <form id="fbform" action="{{ login_facebook_path }}" method="post">
+                        {{ csrf_input() }}
+                        <input id="tokeninput" type="hidden" name="token"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {# see https://developers.facebook.com/docs/facebook-login/login-flow-for-web/v2.0#}
+    <script>
+
+        var checkFacebookLogin = function () {
+            var fbform = $('#fbform');
+            var tokeninput = $('#tokeninput');
+            return function (token) {
+                tokeninput.val(token);
+                fbform.submit();
+            }
+
+        }();
+        // This is called with the results from from FB.getLoginStatus().
+        function statusChangeCallback(response) {
+            // The response object is returned with a status field that lets the
+            // app know the current login status of the person.
+            // Full docs on the response object can be found in the documentation
+            // for FB.getLoginStatus().
+            if (response.status === 'connected') {
+                // Logged into your app and Facebook.
+                checkFacebookLogin(response.authResponse.accessToken);
+            }
+        }
+
+        function fb_login() {
+            FB.login(statusChangeCallback, {
+                scope: 'public_profile,email'
+            });
+        }
+
+        // This function is called when someone finishes with the Login
+        // Button.  See the onlogin handler attached to it in the sample
+        // code below.
+        function checkLoginState() {
+            FB.getLoginStatus(function (response) {
+                statusChangeCallback(response);
+            });
+        }
+
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '{{faceapp.app_id if faceapp}}',
+                cookie: true,  // enable cookies to allow the server to access
+                // the session
+                xfbml: true,  // parse social plugins on this page
+                version: 'v2.0' // use version 2.0
+            });
+        };
+
+        // Load the SDK asynchronously
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+
+
+    </script>
+{% endblock %}
