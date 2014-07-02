@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 import logging
+import shutil
 import sys
 import os
 
@@ -59,7 +60,7 @@ def compile_po_files(compile_target, locale_target):
 if __name__ == "__main__":
     compile_target = os.path.join(".", "locale")
     target = os.path.join(proj_dir, "plugins", 'appengine')
-    compile_targets = target+' ' + os.path.join(proj_dir, "venv")
+    compile_targets = target + ' ' + os.path.join(proj_dir, "venv")
 
     # if len(sys.argv) == 1:
     babel_cfg = os.path.join(babel_dir, "babel.cfg")

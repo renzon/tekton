@@ -15,6 +15,7 @@ dist/
 eggs/
 lib/
 backend/plugins/appengine/lib/
+backend/plugins/appengine/locale
 backend/plugins/appengine/apps/
 backend/venv/bin/
 backend/venv/include/
