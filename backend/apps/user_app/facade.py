@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 from gaegraph.business_base import NodeSearch, DeleteNode
-from user.commands import SaveUserCommand, UserFormDetail, UpdateUserCommand, UserFormShort, ListUserCommand
+from user_app.commands import SaveUserCommand, UserFormDetail, UpdateUserCommand, UserFormShort, ListUserCommand
 
 
 def save_user_cmd(**user_properties):

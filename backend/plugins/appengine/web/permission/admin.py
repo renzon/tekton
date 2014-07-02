@@ -4,7 +4,7 @@ from config.tmpl_middleware import TemplateResponse
 from gaecookie.decorator import no_csrf
 from gaepermission import facade
 from gaepermission.decorator import permissions
-from permission.model import ALL_PERMISSIONS_LIST, ADMIN
+from permission_app.model import ALL_PERMISSIONS_LIST, ADMIN
 from tekton import router
 from tekton.gae.middleware.json_middleware import JsonResponse
 

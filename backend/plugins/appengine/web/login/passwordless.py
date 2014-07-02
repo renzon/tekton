@@ -3,7 +3,7 @@ from __future__ import absolute_import, unicode_literals
 from gaecookie.decorator import no_csrf
 from gaepermission import facade
 from gaepermission.decorator import login_not_required, permissions
-from permission.model import ADMIN
+from permission_app.model import ADMIN
 from tekton import router
 from config.tmpl_middleware import TemplateResponse
 from tekton.gae.middleware.redirect import RedirectResponse

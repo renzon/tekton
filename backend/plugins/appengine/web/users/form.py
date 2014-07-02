@@ -4,7 +4,7 @@ from config.tmpl_middleware import TemplateResponse
 from gaebusiness.business import CommandExecutionException
 from tekton import router
 from gaecookie.decorator import no_csrf
-from user import facade
+from user_app import facade
 from web import users
 
 @no_csrf

@@ -3,7 +3,7 @@ from __future__ import absolute_import, unicode_literals
 from gaebusiness.gaeutil import SaveCommand, ModelSearchCommand
 from gaeforms.ndb.form import ModelForm
 from gaegraph.business_base import UpdateNode
-from user.model import User
+from user_app.model import User
 
 
 class UserForm(ModelForm):

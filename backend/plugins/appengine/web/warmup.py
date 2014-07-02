@@ -16,13 +16,12 @@ import webapp2
 
 class BaseHandler(webapp2.RequestHandler):
     def get(self):
-        # This import all paths so its good pre initialize them here
+        # This import all paths so it's good pre-initialize them here
         init_time = time.time()
-        facade.web_path_security_info()
+        [p for p in facade.web_path_security_info()]
         end_time = time.time()
         delta_seconds = (end_time - init_time)
-        logging.info('Startup: %s miliseconds' % (delta_seconds*1000))
-
+        logging.info('Startup: %s miliseconds' % (delta_seconds * 1000))
 
 
 app = webapp2.WSGIApplication([('/.*', BaseHandler)], debug=False)

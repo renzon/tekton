@@ -2,7 +2,7 @@
 from __future__ import absolute_import, unicode_literals
 from gaebusiness.business import CommandExecutionException
 from tekton.gae.middleware.json_middleware import JsonResponse
-from user import facade
+from user_app import facade
 
 
 def index():

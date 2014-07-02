@@ -3,7 +3,7 @@ from __future__ import absolute_import, unicode_literals
 from config.tmpl_middleware import TemplateResponse
 from tekton import router
 from gaecookie.decorator import no_csrf
-from user import facade
+from user_app import facade
 from web.users import form
 
 
