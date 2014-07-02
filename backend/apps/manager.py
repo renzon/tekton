@@ -72,25 +72,25 @@ from gaegraph.business_base import NodeSearch, DeleteNode
 from %(app_path)s.commands import Save%(model)sCommand, %(model)sFormDetail, Update%(model)sCommand, %(model)sFormShort, List%(model)sCommand
 
 
-def save_%(model_lower)s_cmd(**%(model_lower)s_properties):
+def save_%(model_underscore)s_cmd(**%(model_underscore)s_properties):
     """
     Command to save %(model)s entity
-    :param %(model_lower)s_properties: a dict of properties to save on model
+    :param %(model_underscore)s_properties: a dict of properties to save on model
     :return: a Command that save %(model)s, validating and localizing properties received as strings
     """
-    return Save%(model)sCommand(**%(model_lower)s_properties)
+    return Save%(model)sCommand(**%(model_underscore)s_properties)
 
 
-def update_%(model_lower)s_cmd(%(model_lower)s_id, **%(model_lower)s_properties):
+def update_%(model_underscore)s_cmd(%(model_underscore)s_id, **%(model_underscore)s_properties):
     """
-    Command to update %(model)s entity with id equals '%(model_lower)s_id'
-    :param %(model_lower)s_properties: a dict of properties to update model
+    Command to update %(model)s entity with id equals '%(model_underscore)s_id'
+    :param %(model_underscore)s_properties: a dict of properties to update model
     :return: a Command that update %(model)s, validating and localizing properties received as strings
     """
-    return Update%(model)sCommand(%(model_lower)s_id, **%(model_lower)s_properties)
+    return Update%(model)sCommand(%(model_underscore)s_id, **%(model_underscore)s_properties)
 
 
-def list_%(model_lower)ss_cmd():
+def list_%(model_underscore)ss_cmd():
     """
     Command to list %(model)s entities ordered by their creation dates
     :return: a Command proceed the db operations when executed
@@ -98,46 +98,80 @@ def list_%(model_lower)ss_cmd():
     return List%(model)sCommand()
 
 
-_detail_%(model_lower)s_form = %(model)sFormDetail()
+_detail_%(model_underscore)s_form = %(model)sFormDetail()
 
 
-def detail_%(model_lower)s_dct(%(model_lower)s):
+def detail_%(model_underscore)s_dct(%(model_underscore)s):
     """
     Function to localize %(model)s's detail properties.
-    :param %(model_lower)s: model %(model)s
+    :param %(model_underscore)s: model %(model)s
     :return: dictionary with %(model)s's detail properties localized
     """
-    return _detail_%(model_lower)s_form.populate_form(%(model_lower)s)
+    return _detail_%(model_underscore)s_form.populate_form(%(model_underscore)s)
 
 
-_short_%(model_lower)s_form = %(model)sFormShort()
+_short_%(model_underscore)s_form = %(model)sFormShort()
 
 
-def short_%(model_lower)s_dct(%(model_lower)s):
+def short_%(model_underscore)s_dct(%(model_underscore)s):
     """
     Function to localize %(model)s's short properties. Common used to show data in tables.
-    :param %(model_lower)s: model %(model)s
+    :param %(model_underscore)s: model %(model)s
     :return: dictionary with %(model)s's short properties localized
     """
-    return _short_%(model_lower)s_form.populate_form(%(model_lower)s)
+    return _short_%(model_underscore)s_form.populate_form(%(model_underscore)s)
 
 
-def get_%(model_lower)s_cmd(%(model_lower)s_id):
+def get_%(model_underscore)s_cmd(%(model_underscore)s_id):
     """
-    Find %(model_lower)s by her id
-    :param %(model_lower)s_id: the %(model_lower)s id
+    Find %(model_underscore)s by her id
+    :param %(model_underscore)s_id: the %(model_underscore)s id
     :return: Command
     """
-    return NodeSearch(%(model_lower)s_id)
+    return NodeSearch(%(model_underscore)s_id)
 
 
-def delete_%(model_lower)s_cmd(%(model_lower)s_id):
+def delete_%(model_underscore)s_cmd(%(model_underscore)s_id):
     """
     Construct a command to delete a %(model)s
-    :param %(model_lower)s_id: %(model_lower)s's id
+    :param %(model_underscore)s_id: %(model_underscore)s's id
     :return: Command
     """
-    return DeleteNode(%(model_lower)s_id)
+    return DeleteNode(%(model_underscore)s_id)
+'''
+
+HOME_SCRIPT_TEMPLATE = '''# -*- coding: utf-8 -*-
+from __future__ import absolute_import, unicode_literals
+from config.tmpl_middleware import TemplateResponse
+from tekton import router
+from gaecookie.decorator import no_csrf
+from %(app_name)s import facade
+from web.%(web_name)s import form
+
+
+def delete(_handler, %(model_underscore)s_id):
+    facade.delete_%(model_underscore)s_cmd(%(model_underscore)s_id)()
+    _handler.redirect(router.to_path(index))
+
+
+@no_csrf
+def index():
+    cmd = facade.list_%(model_underscore)ss_cmd()
+    %(model_underscore)ss = cmd()
+    form_edit_path = router.to_path(form.edit)
+    delete_path = router.to_path(delete)
+
+    def short_%(model_underscore)s_dict(%(model_underscore)s):
+        %(model_underscore)s_dct = facade.short_%(model_underscore)s_dct(%(model_underscore)s)
+        %(model_underscore)s_dct['edit_path'] = '/'.join([form_edit_path, %(model_underscore)s_dct['id']])
+        %(model_underscore)s_dct['delete_path'] = '/'.join([delete_path, %(model_underscore)s_dct['id']])
+        return %(model_underscore)s_dct
+
+    short_%(model_underscore)ss = [short_%(model_underscore)s_dict(%(model_underscore)s) for %(model_underscore)s in %(model_underscore)ss]
+    context = {'app': '%(model_underscore)s',
+               '%(model_underscore)ss': short_%(model_underscore)ss,
+               '%(model_underscore)s_form': router.to_path(form)}
+    return TemplateResponse(context)
 '''
 
 APPS_DIR = os.path.dirname(__file__)
@@ -157,21 +191,6 @@ def _create_file_if_not_existing(file_path, content=''):
             f.write(content.encode('utf8'))
 
 
-PY_HEADER = '''# -*- coding: utf-8 -*-
-from __future__ import absolute_import, unicode_literals'''
-
-HOME_HTML = '''<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-    <h1>This is the automatic generated page for App "%s"</h1>
-</body>
-</html>'''
-
-
 def _create_package(package_path):
     _create_dir_if_not_existing(package_path)
     _create_file_if_not_existing(os.path.join(package_path, '__init__.py'))
@@ -181,33 +200,6 @@ def _create_app(app_path, model):
     _create_package(app_path)
     _create_file_if_not_existing(os.path.join(app_path, 'model.py'),
                                  MODEL_TEMPLATE % {'model': model})
-
-
-def _create_templates(name, web_path):
-    name += 's'
-    templates_path = os.path.join(web_path, 'templates')
-    _create_dir_if_not_existing(templates_path)
-    templates_path = os.path.join(templates_path, name)
-    _create_dir_if_not_existing(templates_path)
-    home_file = os.path.join(templates_path, 'home.html')
-    _create_file_if_not_existing(home_file, HOME_HTML % name)
-
-
-HOME_HANDLER = '''# -*- coding: utf-8 -*-
-from __future__ import absolute_import, unicode_literals
-from config.tmpl_middleware import TemplateResponse
-
-
-def index():
-    return TemplateResponse()'''
-
-
-def _create_app_handler(web_path, name):
-    name += 's'
-    handler_path = os.path.join(web_path, name)
-    _create_package(handler_path)
-    home_handler_path = os.path.join(handler_path, 'home.py')
-    _create_file_if_not_existing(home_handler_path, content=HOME_HANDLER)
 
 
 def init_app(name, model):
@@ -254,12 +246,16 @@ def _to_app_name(app):
     return app + '_app'
 
 
+def _to_undescore_case(model):
+    model_underscore=model[0].lower() + model[1:]
+    return ''.join(('_' + letter.lower() if letter.isupper() else letter) for letter in model_underscore)
+
+
 def facade_code_for(app, model):
     app_path = _to_app_name(app)
-    model_lower = model[0].lower() + model[1:]
-    model_lower = ''.join(('_' + letter.lower() if letter.isupper() else letter) for letter in model_lower)
+    model_underscore = _to_undescore_case(model)
 
-    dct = {'app': app, 'app_path': app_path, 'model': model, 'model_lower': model_lower}
+    dct = {'app': app, 'app_path': app_path, 'model': model, 'model_underscore': model_underscore}
     return FACADE_TEMPLATE % dct
 
 
@@ -275,8 +271,12 @@ def init_facade(app, model):
     return content
 
 
+def _to_web_name(app):
+    return app + 's'
+
+
 def _to_web_path(app):
-    return os.path.join(WEB_DIR, app + 's')
+    return os.path.join(WEB_DIR, _to_web_name(app))
 
 
 def init_web(app):
@@ -285,8 +285,19 @@ def init_web(app):
 
 
 def code_for_home_script(app, model):
-    web_path = _to_web_path(app)
-    app_name=_to_app_name(app)
+    web_name = _to_web_name(app)
+    app_name = _to_app_name(app)
+    return HOME_SCRIPT_TEMPLATE % {'app_name': app_name,
+                                   'model_underscore': _to_undescore_case(model),
+                                   'web_name':web_name}
+
+def init_home_script(app, model):
+    app_web_path = _to_web_path(app)
+    home_script = os.path.join(app_web_path, 'home.py')
+    content = code_for_home_script(app, model)
+    _create_file_if_not_existing(home_script, content)
+    return content
+
 
 
 if __name__ == '__main__':
@@ -297,4 +308,4 @@ if __name__ == '__main__':
     # print init_commands('course', 'Course')
     # print init_facade('course', 'Course')
     # init_web('course')
-    print code_for_home_script('course','Course')
+    print init_home_script('course', 'Course')
