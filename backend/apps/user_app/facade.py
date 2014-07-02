@@ -35,7 +35,7 @@ _detail_user_form = UserFormDetail()
 
 def detail_user_dct(user):
     """
-    Function to localize User's detail properties
+    Function to localize User's detail properties.
     :param user: model User
     :return: dictionary with User's detail properties localized
     """
@@ -47,7 +47,7 @@ _short_user_form = UserFormShort()
 
 def short_user_dct(user):
     """
-    Function to localize User's detail properties
+    Function to localize User's short properties. Common used to show data in tables.
     :param user: model User
     :return: dictionary with User's short properties localized
     """

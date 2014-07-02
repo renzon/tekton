@@ -7,11 +7,17 @@ from user_app.model import User
 
 
 class UserForm(ModelForm):
+    """
+    Form used do save and update operations
+    """
     _model_class = User
     _include = [User.age, User.name]
 
 
 class UserFormDetail(ModelForm):
+    """
+    Form used to show entity details
+    """
     _model_class = User
     _include = [User.age, User.name, User.creation]
 
@@ -22,6 +28,9 @@ class UserFormDetail(ModelForm):
 
 
 class UserFormShort(UserFormDetail):
+    """
+    Form used to show entity short version, mainly for tables
+    """
     _model_class = User
     _include = [User.age, User.name, User.creation]
 
