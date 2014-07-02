@@ -14,7 +14,12 @@ develop-eggs/
 dist/
 eggs/
 lib/
-backend/src/lib/
+backend/plugins/appengine/lib/
+backend/plugins/appengine/apps/
+backend/venv/bin/
+backend/venv/include/
+backend/venv/lib/
+backend/venv/local/
 lib64/
 parts/
 sdist/
@@ -22,6 +27,7 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+
 
 # Installer logs
 pip-log.txt
