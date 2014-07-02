@@ -7,13 +7,13 @@ from gaecookie.decorator import no_csrf
 from user_app import facade
 from web import users
 
+
 @no_csrf
 def index():
     return TemplateResponse({'save_path': router.to_path(save)})
 
 
 def save(_handler, user_id=None, **user_properties):
-
     if user_id:
         cmd = facade.update_user_cmd(user_id, **user_properties)
     else:
@@ -26,6 +26,7 @@ def save(_handler, user_id=None, **user_properties):
 
         return TemplateResponse(context, 'users/form.html')
     _handler.redirect(router.to_path(users))
+
 
 @no_csrf
 def edit(user_id):
