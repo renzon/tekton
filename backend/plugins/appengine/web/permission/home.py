@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
-from apps.permission_app.model import ADMIN
+from permission_app.model import ADMIN
 from gaecookie.decorator import no_csrf
 from gaepermission import facade
 from config.tmpl_middleware import TemplateResponse
