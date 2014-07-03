@@ -3,17 +3,14 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h1>Informação de Segurança</h1>
+                <h1>{% trans %}Security Information{% endtrans %}</h1>
 
-                <p>O email fornecido pelo {{ provider }} já está em uso em uma conta. Para sua segurança, enviaremos um
-                    email de login para
-                    {{ email }} para podermos permitir o acesso. Assim podemos confirmar que você realmente é o dono
-                    desse email.</p>
+                <p>{% trans %}The email provided by {{ provider }} is already in use. For your security, we are going to
+                    send an email to {{ email }} to ensure it is yours.{% endtrans %}</p>
 
-                <p>Esse procedimento de segurança só será necessário uma vez. Nas próximas vezes em que logar utilizando
-                    essa conta o login ocorrerá normalmente.</p>
+                <p>{% trans %}This security procedure will be necessary only this time.{% endtrans %}</p>
 
-                <p>Não esqueça de verificar sua caixa de spam, pois alguns provedores podem filtrá-lo.</p></div>
+                <p>{% trans %}Check your spam box, once some providers can filter this email.{% endtrans %}</p></div>
         </div>
     </div>
 {% endblock %}

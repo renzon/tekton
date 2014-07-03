@@ -19,6 +19,7 @@
     <title>{% block title %}Tekton Fullstrack{% endblock %}</title>
     <!-- Bootstrap -->
     <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/default.css" rel="stylesheet">
     <style>
         .pad8 {
             margin: 8px 15px;
@@ -48,9 +49,9 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 {% macro select_tab(tab='') %}
-                    <li {{ 'class=active' if tab=='COURSES' }}><a href="/courses">Courses</a></li>
+                    <li {{ 'class=active' if tab=='COURSES' }}><a href="/courses">{% trans %}Courses{% endtrans %}</a></li>
                     {% if _logged_user and 'ADMIN' in _logged_user.groups %}
-                        <li {{ 'class=active' if tab=='ADMIN' }}><a href="/admin">Admin</a></li>
+                        <li {{ 'class=active' if tab=='ADMIN' }}><a href="/admin">{% trans %}Admin{% endtrans %}</a></li>
                     {% endif %}
                 {% endmacro %}
                 {% block tabs %}
@@ -63,13 +64,13 @@
                     <form class="form-inline" action="{{ _logout_path }}" method="post">
                         <div class="input-append" id="logout-div">
                             <span>{{ _logged_user.email }}</span>
-                            <button class="btn btn-danger" type="submit">Sair</button>
+                            <button class="btn btn-danger" type="submit">{% trans %}Logout{% endtrans %}</button>
                             {{ csrf_input() }}
                         </div>
                     </form>
 
                 {% else %}
-                    <a class="btn btn-success" href="{{ _login_path }}"> Login</a>
+                    <a class="btn btn-success" href="{{ _login_path }}">{% trans %}Login{% endtrans %}</a>
 
                 {% endif %}
 
@@ -77,8 +78,11 @@
         </div>
     </div>
 </div>
-
 {% block body %}{% endblock %}
-
+<div class="footer">
+    <div class="container">
+        <p class="text-muted text-right">Tekton Full-Stack: <a target="_blank" href="https://github.com/renzon/tekton-fullstack">Git Hub</a></p>
+    </div>
+</div>
 </body>
 </html>

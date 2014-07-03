@@ -2,13 +2,18 @@
 {% block body %}
     <div class="container">
         <div class="row">
-            <h1>Painel de Administração</h1>
-            <a href="{{ security_table_path }}">Tabela de Segurança</a><br/>
-
-            <h2>Admin Options</h2>
-            <a href="{{ permission_admin_path }}">Permission Admin</a><br/>
-            <a href="{{ facebook_admin_path }}">Facebook App Data</a><br/>
-            <a href="{{ passwordless_admin_path }}">Passwordless App Data</a><br/>
+            <h1>{% trans %}Administration Panel{% endtrans %}</h1>
+            <ul>
+                <li>
+                    <a href="{{ security_table_path }}">{% trans %}Security Paths Table{% endtrans %}</a>
+                </li>
+            </ul>
+            <h2>{% trans %} Configurations{% endtrans %}</h2>
+            <ul>
+                <li><a href="{{ permission_admin_path }}">{% trans %} User Permissions{% endtrans %}</a></li>
+                <li><a href="{{ facebook_admin_path }}">{% trans %}Facebook App Data{% endtrans %}</a></li>
+                <li><a href="{{ passwordless_admin_path }}">{% trans %}Passwordless App Data{% endtrans %}</a></li>
+            </ul>
         </div>
     </div>
 {% endblock %}

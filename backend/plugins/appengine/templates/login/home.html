@@ -10,7 +10,7 @@
     <div class="container">
         <br/>
 
-        <h1 class="text-center">Opções de Login</h1>
+        <h1 class="text-center">{% trans %}Login Options{% endtrans %}</h1>
         <br/>
         <br/>
         <br/>
@@ -22,7 +22,8 @@
 
                     <form action="{{ login_passwordless_path }}" method="post">
                         <div class="input-group">
-                            <input type="email" name="email" placeholder="Digite seu email" class="form-control"/>
+                            <input type="email" name="email" placeholder="{% trans %}Type your email{% endtrans %}"
+                                   class="form-control"/>
       <span class="input-group-btn">
            <button class="btn btn-success" type="submit">Login</button>
       </span>
@@ -35,7 +36,7 @@
                 <div class="well">
                     <h2>Google</h2><br/>
                     <a href="{{ login_google_path }}" class="btn btn-social btn-google-plus"><i
-                            class="fa icon-google-plus"></i>Login com Google</a>
+                            class="fa icon-google-plus"></i>Google</a>
                 </div>
             </div>
             <div class="col-md-4 text-center">
@@ -43,7 +44,7 @@
                     <h2>Facebook</h2><br/>
                     <button class="btn btn-social btn-facebook" onclick="fb_login();">
                         <i class="fa icon-facebook"></i>
-                        Login com Facebbok
+                        Facebbok
                     </button>
                     <form id="fbform" action="{{ login_facebook_path }}" method="post">
                         {{ csrf_input() }}

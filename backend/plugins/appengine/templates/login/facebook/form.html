@@ -3,17 +3,19 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h1>Facebook App Form</h1>
+                <h1>{% trans %}Facebook App Form{% endtrans %}</h1>
 
-                <p>This data is used to proceed Facebook login. More information in <a
+                <p>{% trans %}This data is used to proceed Facebook login. More information in{% endtrans %} <a
                         href="https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow/v2.0"
-                        target="passwordless">Facebook Login Docs</a>.</p>
+                        target="passwordless">{% trans %}Facebook Login Docs{% endtrans %}</a>.</p>
 
                 <form action="{{ save_app_path }}" method="post">
                     {{ csrf_input() }}
-                    <input type="text" name="app_id" placeholder="Type the app's id" value="{{ app.app_id if app }}"/>
-                    <input type="text" name="token" placeholder="Type the app's token" value="{{ app.token if app }}"/>
-                    <button type="submit">Salvar</button>
+                    <input type="text" name="app_id" placeholder="{% trans %}Type the app's id{% endtrans %}"
+                           value="{{ app.app_id if app }}"/>
+                    <input type="text" name="token" placeholder="{% trans %}Type the app's token{% endtrans %}"
+                           value="{{ app.token if app }}"/>
+                    <button type="submit" class="btn btn-success">{% trans %}Save{% endtrans %}</button>
                 </form>
             </div>
         </div>

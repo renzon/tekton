@@ -35,18 +35,20 @@
     </script>
 {% endblock %}
 {% block body %}
-    <div class="container" ng-app="app" ng-controller="AppCtrl">
+    <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h1>User's Table</h1>
-                <permform search="searchUsers" show-button="searchingUsersFlag"></permform>
-                <br />
-                <permtable users="users" next-page="nextPage"
-                           show-table="searchingUsersFlag"
-                           more-results-flag="moreResultsFlag"
-                           search-prefix="searchPrefix"
-                           groups='{{ groups|json }}'></permtable>
+                <h1>{% trans %}Users Table{% endtrans %}</h1>
 
+                <div ng-app="app" ng-controller="AppCtrl">
+                    <permform search="searchUsers" show-button="searchingUsersFlag"></permform>
+                    <br/>
+                    <permtable users="users" next-page="nextPage"
+                               show-table="searchingUsersFlag"
+                               more-results-flag="moreResultsFlag"
+                               search-prefix="searchPrefix"
+                               groups='{{ groups|json }}'></permtable>
+                </div>
             </div>
         </div>
     </div>

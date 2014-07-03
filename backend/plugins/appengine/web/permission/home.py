@@ -9,4 +9,4 @@ from config.tmpl_middleware import TemplateResponse
 def index():
     path_infos = facade.web_path_security_info()
     path_infos = sorted(path_infos, key=lambda i: i.path)
-    return TemplateResponse({'path_infos': path_infos},'permission/security_table.html')
+    return TemplateResponse({'path_infos': path_infos})
