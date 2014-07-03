@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-07-02 23:52-0300\n"
+"POT-Creation-Date: 2014-07-03 12:59-0300\n"
 "PO-Revision-Date: 2014-06-26 00:13-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
@@ -18,7 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 1.3\n"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/plugins/appengine/templates/home.html:18
+#: /home/renzo/PycharmProjects/tekton-fullstack/backend/plugins/appengine/templates/home.html:11
+msgid "A Full-Stack project for Google App Engine"
+msgstr "Um projeto Full-Stack para o Google App Engine"
+
+#: /home/renzo/PycharmProjects/tekton-fullstack/backend/plugins/appengine/templates/home.html:19
 msgid ""
 "Create CRUD code on\n"
 "                        <a href=\"https://cloud.google.com/products/app-"
@@ -27,17 +31,18 @@ msgstr ""
 "Crie código CRUD no  <a href=\"https://cloud.google.com/products/app-"
 "engine/\">App Engine</a>"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/plugins/appengine/templates/home.html:24
+#: /home/renzo/PycharmProjects/tekton-fullstack/backend/plugins/appengine/templates/home.html:25
 msgid ""
 " Check Courses App\n"
 "                            Out"
 msgstr "Veja a App de Cursos"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/plugins/appengine/templates/home.html:31
-msgid "Tekton Full-Stack is open source. "
-msgstr "Tekton Full-Stack - código aberto. "
+#: /home/renzo/PycharmProjects/tekton-fullstack/backend/plugins/appengine/templates/home.html:32
+#, fuzzy
+msgid "Tekton is open source."
+msgstr "Tekton tem código aberto. "
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/plugins/appengine/templates/home.html:36
+#: /home/renzo/PycharmProjects/tekton-fullstack/backend/plugins/appengine/templates/home.html:37
 msgid "Check Git Hub Out"
 msgstr "Veja no GitHub"
 
@@ -305,7 +310,4 @@ msgstr "Data-hora inválida. Deve ser em formato %(format)s"
 #: /home/renzo/PycharmProjects/tekton-fullstack/backend/venv/lib/python2.7/site-packages/gaeforms/base.py:305
 msgid "MM/dd/YYYY HH:mm:ss"
 msgstr "dd/MM/YYYY HH:mm:ss"
-
-#~ msgid "Tekton Full-Stack is open soure. "
-#~ msgstr ""
 
