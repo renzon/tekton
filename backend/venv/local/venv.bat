@@ -1,0 +1,1 @@
+/home/renzo/PycharmProjects/tekton-fullstack/backend/venv/venv.bat
