@@ -2,6 +2,14 @@
 {% macro csrf_input() %}
     <input type="hidden" value="{{ _csrf_code }}" name="_csrf_code"/>
 {% endmacro %}
+{% macro form_input(label,property,value,error_msg) %}
+    <div class="form-group {{ ' has-error' if error_msg }}">
+        <label for="{{ property }}Input"
+               class="control-label">{{ label }} {{ ' - '+error_msg if error_msg }}</label>
+        <input id="{{ property }}Input" type="text" class="form-control" name="{{ property }}"
+               value="{{ value }}"/>
+    </div>
+{% endmacro %}
 <html>
 <head lang="en">
     <meta charset="UTF-8">
@@ -40,7 +48,7 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 {% macro select_tab(tab='') %}
-                    <li {{ 'class=active' if tab=='COURSE' }}><a href="/curso">Cursos</a></li>
+                    <li {{ 'class=active' if tab=='COURSES' }}><a href="/courses">Courses</a></li>
                     {% if _logged_user and 'ADMIN' in _logged_user.groups %}
                         <li {{ 'class=active' if tab=='ADMIN' }}><a href="/admin">Admin</a></li>
                     {% endif %}
