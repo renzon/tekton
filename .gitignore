@@ -18,9 +18,9 @@ backend/plugins/appengine/lib/
 backend/plugins/appengine/locale
 backend/plugins/appengine/apps/
 backend/venv/bin/
-backend/venv/include/
 backend/venv/lib/
-backend/venv/local/
+# backend/venv/include/
+# backend/venv/local/
 lib64/
 parts/
 sdist/
