@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
+
 from jinja2.exceptions import TemplateNotFound
-from config import tmpl
 from tekton import router
 from tekton.gae.middleware.response import ResponseBase
 from tekton.gae.middleware import Middleware
+
+from config import tmpl
 
 
 class TemplateResponse(ResponseBase):
@@ -33,6 +35,27 @@ Looked by convention in /web/templates directory for:
 Create one of the two template files or explicit indicate which one to use on TemplateResponse'''
 
 
+def render_by_convention(fcn, context):
+    template_path = router.to_path(fcn)
+
+    def try_render(suffix):
+        if template_path == '/':
+            return '/home.html', tmpl.render('/home.html', context)
+
+        try:
+            template = template_path + suffix
+            return template, tmpl.render(template, context)
+        except TemplateNotFound:
+            return template, None
+
+    template_1, tmpl_rendered = try_render('.html')
+    if tmpl_rendered is None:
+        template_2, tmpl_rendered = try_render('/home.html')
+        if tmpl_rendered is None:
+            raise TemplateNotFound(_TMPL_NOT_FOUND_MSG % (template_1, template_2))
+    return tmpl_rendered
+
+
 class TemplateWriteMiddleware(Middleware):
     def set_up(self):
         fcn_response = self.dependencies['_fcn_response']
@@ -45,23 +68,7 @@ class TemplateWriteMiddleware(Middleware):
                 context['_csrf_code'] = self.dependencies['_csrf_code']
             template_path = fcn_response.template_path
             if template_path is None:
-                template_path = router.to_path(fcn)
-
-                def try_render(suffix):
-                    if template_path == '/':
-                        return '/home.html', tmpl.render('/home.html', context)
-
-                    try:
-                        template = template_path + suffix
-                        return template, tmpl.render(template, context)
-                    except TemplateNotFound:
-                        return template, None
-
-                template_1, tmpl_rendered = try_render('.html')
-                if tmpl_rendered is None:
-                    template_2, tmpl_rendered = try_render('/home.html')
-                    if tmpl_rendered is None:
-                        raise TemplateNotFound(_TMPL_NOT_FOUND_MSG % (template_1, template_2))
+                tmpl_rendered = render_by_convention(fcn, context)
 
 
             else:
