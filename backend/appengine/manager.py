@@ -3,6 +3,7 @@ from __future__ import absolute_import, unicode_literals
 import importlib
 import sys
 import os
+import shutil
 
 if 'GAE_SDK' in os.environ:
     SDK_PATH = os.environ['GAE_SDK']
@@ -13,17 +14,26 @@ if 'GAE_SDK' in os.environ:
 
     dev_appserver.fix_sys_path()
 else:
-    print "GAE_SDK must be on path and point to App Engine's SDK folder"
+    print "GAE_SDK environment variable must be on path and point to App Engine's SDK folder"
+
+PROJECT_DIR = os.path.dirname(__file__)
+PROJECT_DIR = os.path.abspath(os.path.join(PROJECT_DIR, '..'))
+APPS_DIR = os.path.join(PROJECT_DIR, 'apps')
+sys.path.insert(1, APPS_DIR)
+APPENGINE_DIR = os.path.join(PROJECT_DIR, 'appengine')
+WEB_DIR = os.path.join(APPENGINE_DIR, 'web')
+TEMPLATES_DIR = os.path.join(APPENGINE_DIR, 'templates')
 # Templates
 
 MODEL_TEMPLATE = '''# -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 from google.appengine.ext import ndb
 from gaegraph.model import Node
+from gaeforms.ndb import property
 
 
 class %(model)s(Node):
-    pass
+%(properties)s
 
 '''
 
@@ -328,13 +338,6 @@ FORM_HTML_TEMPLATE = '''{%% extends '%(web_name)s/base.html' %%}
 
 {%% endblock %%}'''
 
-APPS_DIR = os.path.dirname(__file__)
-
-PROJECT_DIR = os.path.join(APPS_DIR, '..')
-PLUGIN_DIR = os.path.join(PROJECT_DIR, 'plugins', 'appengine')
-WEB_DIR = os.path.join(PLUGIN_DIR, 'web')
-TEMPLATES_DIR = os.path.join(PLUGIN_DIR, 'templates')
-
 
 def _create_dir_if_not_existing(package_path):
     if not os.path.exists(package_path):
@@ -352,16 +355,30 @@ def _create_package(package_path):
     _create_file_if_not_existing(os.path.join(package_path, '__init__.py'))
 
 
-def _create_app(app_path, model):
+def _create_app(app_path, model, *properties):
+    properties = '\n'.join(parse_propety(p) for p in properties)
+    properties = properties or '    pass'
     _create_package(app_path)
     _create_file_if_not_existing(os.path.join(app_path, 'model.py'),
-                                 MODEL_TEMPLATE % {'model': model})
+                                 MODEL_TEMPLATE % {'model': model, 'properties': properties})
 
 
-def init_app(name, model):
+def parse_propety(p):
+    name, type_alias = p.split(':')
+    types = {'string': 'ndb.StringProperty(required=True)',
+             'date': 'ndb.DateProperty(required=True)',
+             'datetime': 'ndb.DateTimeProperty(required=True)',
+             'int': 'ndb.IntegerProperty(required=True)',
+             'float': 'ndb.FloatProperty(required=True)',
+             'decimal': 'property.SimpleDecimal(required=True)',
+             'currency': 'property.SimpleCurrency(required=True)', }
+    return '    %s = %s' % (name, types[type_alias])
+
+
+def init_app(name, model, *properties):
     _title('Creating app package')
     app_path = os.path.join(APPS_DIR, name + '_app')
-    _create_app(app_path, model)
+    _create_app(app_path, model, *properties)
 
 
 PROPERTY = '%(model)s.%(property)s'
@@ -398,6 +415,7 @@ def _title(param):
 
 
 def init_commands(app, model):
+    print APPS_DIR
     app_path = os.path.join(APPS_DIR, app + '_app')
     commands_script = os.path.join(app_path, 'commands.py')
     content = commands_code_for(app, model)
@@ -585,7 +603,8 @@ def init_form_html(app, model):
     return content
 
 
-def scaffold(app, model):
+def scaffold(app, model, *properties):
+    init_app(app, model, *properties)
     _title('commands.py')
     print init_commands(app, model)
     _title('facade.py')
@@ -607,16 +626,28 @@ def scaffold(app, model):
     print init_form_html(app, model)
 
 
-FUNC_DICT = {'app': init_app, 'scaffold': scaffold}
+def delete_app(app):
+    flag = raw_input('Are you shure you wont to delete app %s (yes or no)? ' % app)
+    if flag.lower() == 'yes':
+        app_dir = os.path.join(APPS_DIR, app + '_app')
+        shutil.rmtree(app_dir)
+
+        template_dir = os.path.join(TEMPLATES_DIR, app + 's')
+        shutil.rmtree(template_dir)
+        web_dir = os.path.join(WEB_DIR, app + 's')
+        shutil.rmtree(web_dir)
+
+
+FUNC_DICT = {'model': init_app, 'app': scaffold, 'delete': delete_app}
 if __name__ == '__main__':
     if len(sys.argv) == 1:
         print 'Commands available:'
         print '\n    '.join([''] + FUNC_DICT.keys())
-        print 'both must be folowed by <app> <model>'
-    elif len(sys.argv) == 4:
+        print 'both model or app must be folowed by <app> <model>'
+    elif len(sys.argv) >= 3:
         fcn = FUNC_DICT.get(sys.argv[1])
         if fcn:
-            fcn(sys.argv[2], sys.argv[3])
+            fcn(*sys.argv[2:])
         else:
             print 'Invalid command: %s' % sys.argv[1]
     else:
