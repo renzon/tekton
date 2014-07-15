@@ -44,31 +44,33 @@ from gaeforms.ndb.form import ModelForm
 from gaegraph.business_base import UpdateNode
 from %(app_path)s.model import %(model)s
 
-
-class %(model)sForm(ModelForm):
+class %(model)sPublicForm(ModelForm):
     """
-    Form used do save and update operations
+    Form used to show properties on app's home
     """
     _model_class = %(model)s
     _include = [%(form_properties)s]
 
 
-class %(model)sFormDetail(ModelForm):
+class %(model)sForm(ModelForm):
     """
-    Form used to show entity details
+    Form used to save and update operations on app's admin page
+    """
+    _model_class = %(model)s
+    _include = [%(form_properties)s]
+
+
+class %(model)sDetailForm(ModelForm):
+    """
+    Form used to show entity details on app's admin page
     """
     _model_class = %(model)s
     _include = [%(full_properties)s]
 
-    def populate_form(self, model):
-        dct = super(%(model)sFormDetail, self).populate_form(model)
-        dct['id'] = unicode(model.key.id())
-        return dct
 
-
-class %(model)sFormShort(%(model)sFormDetail):
+class %(model)sShortForm(ModelForm):
     """
-    Form used to show entity short version, mainly for tables
+    Form used to show entity short version on app's admin page, mainly for tables
     """
     _model_class = %(model)s
     _include = [%(full_properties)s]
@@ -83,16 +85,16 @@ class Update%(model)sCommand(UpdateNode):
 
 
 class List%(model)sCommand(ModelSearchCommand):
-    def __init__(self, page_size=100, start_cursor=None, offset=0, use_cache=True, cache_begin=True, **kwargs):
-        super(List%(model)sCommand, self).__init__(%(model)s.query_by_creation(), page_size, start_cursor, offset, use_cache,
-                                           cache_begin, **kwargs)
+    def __init__(self):
+        super(List%(model)sCommand, self).__init__(%(model)s.query_by_creation())
 
 '''
 
-FACADE_TEMPLATE = '''# -*- coding: utf-8 -*-
+FACADE_TEMPLATE = r'''# -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 from gaegraph.business_base import NodeSearch, DeleteNode
-from %(app_path)s.commands import Save%(model)sCommand, %(model)sFormDetail, Update%(model)sCommand, %(model)sFormShort, List%(model)sCommand
+from %(app_path)s.commands import List%(model)sCommand, Save%(model)sCommand, Update%(model)sCommand, \
+    %(model)sPublicForm, %(model)sDetailForm, %(model)sShortForm
 
 
 def save_%(model_underscore)s_cmd(**%(model_underscore)s_properties):
@@ -121,28 +123,30 @@ def list_%(model_underscore)ss_cmd():
     return List%(model)sCommand()
 
 
-_detail_%(model_underscore)s_form = %(model)sFormDetail()
-
-
-def detail_%(model_underscore)s_dct(%(model_underscore)s):
+def %(model_underscore)s_detail_form(**kwargs):
     """
-    Function to localize %(model)s's detail properties.
-    :param %(model_underscore)s: model %(model)s
-    :return: dictionary with %(model)s's detail properties localized
+    Function to get %(model)s's detail form.
+    :param kwargs: form properties
+    :return: Form
     """
-    return _detail_%(model_underscore)s_form.populate_form(%(model_underscore)s)
+    return %(model)sDetailForm(**kwargs)
 
 
-_short_%(model_underscore)s_form = %(model)sFormShort()
-
-
-def short_%(model_underscore)s_dct(%(model_underscore)s):
+def %(model_underscore)s_short_form(**kwargs):
     """
-    Function to localize %(model)s's short properties. Common used to show data in tables.
-    :param %(model_underscore)s: model %(model)s
-    :return: dictionary with %(model)s's short properties localized
+    Function to get %(model)s's short form. just a subset of %(model_underscore)s's properties
+    :param kwargs: form properties
+    :return: Form
     """
-    return _short_%(model_underscore)s_form.populate_form(%(model_underscore)s)
+    return %(model)sShortForm(**kwargs)
+
+def %(model_underscore)s_public_form(**kwargs):
+    """
+    Function to get %(model)s'spublic form. just a subset of %(model_underscore)s's properties
+    :param kwargs: form properties
+    :return: Form
+    """
+    return %(model)sPublicForm(**kwargs)
 
 
 def get_%(model_underscore)s_cmd(%(model_underscore)s_id):
@@ -163,14 +167,34 @@ def delete_%(model_underscore)s_cmd(%(model_underscore)s_id):
     return DeleteNode(%(model_underscore)s_id)
 
 '''
+PUBLIC_HOME_SCRIPT_TEMPLATE = '''# -*- coding: utf-8 -*-
+from __future__ import absolute_import, unicode_literals
+from config.tmpl_middleware import TemplateResponse
+from tekton import router
+from gaecookie.decorator import no_csrf
+from gaepermission.decorator import login_not_required
+from %(app_name)s import facade
+from web.%(app)ss import admin
 
+
+@login_not_required
+@no_csrf
+def index():
+    cmd = facade.list_%(model_underscore)ss_cmd()
+    %(model_underscore)ss = cmd()
+    public_form = facade.%(model_underscore)s_public_form()
+    %(model_underscore)s_public_dcts = [public_form.fill_with_model(%(model_underscore)s) for %(model_underscore)s in %(model_underscore)ss]
+    context = {'%(model_underscore)ss': %(model_underscore)s_public_dcts,'admin_path':router.to_path(admin)}
+    return TemplateResponse(context)
+
+'''
 HOME_SCRIPT_TEMPLATE = '''# -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 from config.tmpl_middleware import TemplateResponse
 from tekton import router
 from gaecookie.decorator import no_csrf
 from %(app_name)s import facade
-from web.%(web_name)s import form
+from web.%(web_name)s.admin import form
 
 
 def delete(_handler, %(model_underscore)s_id):
@@ -184,11 +208,12 @@ def index():
     %(model_underscore)ss = cmd()
     form_edit_path = router.to_path(form.edit)
     delete_path = router.to_path(delete)
+    short_form = facade.%(model_underscore)s_short_form()
 
     def short_%(model_underscore)s_dict(%(model_underscore)s):
-        %(model_underscore)s_dct = facade.short_%(model_underscore)s_dct(%(model_underscore)s)
-        %(model_underscore)s_dct['edit_path'] = '/'.join([form_edit_path, %(model_underscore)s_dct['id']])
-        %(model_underscore)s_dct['delete_path'] = '/'.join([delete_path, %(model_underscore)s_dct['id']])
+        %(model_underscore)s_dct = short_form.fill_with_model(%(model_underscore)s)
+        %(model_underscore)s_dct['edit_path'] = router.to_path(form_edit_path, %(model_underscore)s_dct['id'])
+        %(model_underscore)s_dct['delete_path'] = router.to_path(delete_path, %(model_underscore)s_dct['id'])
         return %(model_underscore)s_dct
 
     short_%(model_underscore)ss = [short_%(model_underscore)s_dict(%(model_underscore)s) for %(model_underscore)s in %(model_underscore)ss]
@@ -205,7 +230,7 @@ from gaebusiness.business import CommandExecutionException
 from tekton import router
 from gaecookie.decorator import no_csrf
 from %(app_name)s import facade
-from web import %(web_name)s
+from web.%(web_name)s import admin
 
 
 @no_csrf
@@ -224,15 +249,16 @@ def save(_handler, %(model_underscore)s_id=None, **%(model_underscore)s_properti
         context = {'errors': cmd.errors,
                    '%(model_underscore)s': cmd.form}
 
-        return TemplateResponse(context, '%(web_name)s/form.html')
-    _handler.redirect(router.to_path(%(web_name)s))
+        return TemplateResponse(context, '%(web_name)s/admin/form.html')
+    _handler.redirect(router.to_path(admin))
 
 
 @no_csrf
 def edit(%(model_underscore)s_id):
     %(model_underscore)s = facade.get_%(model_underscore)s_cmd(%(model_underscore)s_id)()
-    context = {'save_path': router.to_path(save, %(model_underscore)s_id), '%(model_underscore)s': facade.detail_%(model_underscore)s_dct(%(model_underscore)s)}
-    return TemplateResponse(context, '%(web_name)s/form.html')
+    detail_form = facade.%(model_underscore)s_detail_form()
+    context = {'save_path': router.to_path(save, %(model_underscore)s_id), '%(model_underscore)s': detail_form.fill_with_model(%(model_underscore)s)}
+    return TemplateResponse(context, '%(web_name)s/admin/form.html')
 
 '''
 REST_SCRIPT_TEMPLATE = '''# -*- coding: utf-8 -*-
@@ -245,7 +271,8 @@ from %(app_name)s import facade
 def index():
     cmd = facade.list_%(model_underscore)ss_cmd()
     %(model_underscore)s_list = cmd()
-    %(model_underscore)s_short = [facade.short_%(model_underscore)s_dct(n) for n in %(model_underscore)s_list]
+    short_form=facade.%(model_underscore)s_short_form()
+    %(model_underscore)s_short = [short_form.fill_with_model(m) for m in %(model_underscore)s_list]
     return JsonResponse(%(model_underscore)s_short)
 
 
@@ -268,9 +295,39 @@ def _save_or_update_json_response(cmd):
         %(model_underscore)s = cmd()
     except CommandExecutionException:
         return JsonResponse({'errors': cmd.errors})
-    return JsonResponse(facade.detail_%(model_underscore)s_dct(%(model_underscore)s))
+    short_form=facade.%(model_underscore)s_short_form()
+    return JsonResponse(short_form.fill_with_model(%(model_underscore)s))
 
 '''
+PUBLIC_HOME_HTML_TEMPLATE = '''{%% extends '%(web_name)s/base.html' %%}
+{%% block body %%}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{%% trans %%}This is a generic home for %(app_name)s {%% endtrans %%}  </h1>
+                {%% if _logged_user and ('ADMIN' in _logged_user.groups) %%}
+                <a href="{{ admin_path }}" class="btn btn-success">{%% trans %%}Admin{%% endtrans %%}</a>
+                {%% endif %%}
+                <hr/>
+                <h2>{%% trans %%}List of %(model)ss{%% endtrans %%}</h2>
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+%(headers)s
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {%% for %(model_underscore)s in %(model_underscore)ss %%}
+                        <tr>
+%(columns)s
+                        </tr>
+                    {%% endfor %%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{%% endblock %%}'''
 
 HOME_HTML_TEMPLATE = '''{%% extends '%(web_name)s/base.html' %%}
 {%% block body %%}
@@ -299,7 +356,7 @@ HOME_HTML_TEMPLATE = '''{%% extends '%(web_name)s/base.html' %%}
                             <td>{{ %(model_underscore)s.creation }}</td>
 %(columns)s
                             <td>
-                                <form action="{{ %(model_underscore)s.delete_path }}" method="post">
+                                <form action="{{ %(model_underscore)s.delete_path }}" method="post" onsubmit="return confirm('{{_('Are you sure to delete? Press cancel to avoid deletion.')}}');">
                                     {{ csrf_input() }}
                                     <button class="btn btn-danger btn-sm"><i
                                             class="glyphicon glyphicon-trash"></i></button>
@@ -460,12 +517,25 @@ def _to_web_path(app):
     return os.path.join(WEB_DIR, _to_web_name(app))
 
 
+def _to_web_admin_path(app):
+    return os.path.join(_to_web_path(app), _to_web_name(app))
+
+
+def _to_web_admin_path(app):
+    return os.path.join(_to_web_path(app), 'admin')
+
+
 def _to_template_path(app):
     return os.path.join(TEMPLATES_DIR, _to_web_name(app))
 
 
 def init_web(app):
     web_path = _to_web_path(app)
+    _create_package(web_path)
+
+
+def init_web_admin(app):
+    web_path = _to_web_admin_path(app)
     _create_package(web_path)
 
 
@@ -477,8 +547,25 @@ def code_for_home_script(app, model):
                                    'web_name': web_name}
 
 
+def code_for_public_home_script(app, model):
+    web_name = _to_web_name(app)
+    app_name = _to_app_name(app)
+    return PUBLIC_HOME_SCRIPT_TEMPLATE % {'app': app,
+                                          'app_name': app_name,
+                                          'model_underscore': _to_undescore_case(model),
+                                          'web_name': web_name}
+
+
 def init_home_script(app, model):
     app_web_path = _to_web_path(app)
+    home_script = os.path.join(app_web_path, 'home.py')
+    content = code_for_public_home_script(app, model)
+    _create_file_if_not_existing(home_script, content)
+    return content
+
+
+def init_admin_home_script(app, model):
+    app_web_path = _to_web_admin_path(app)
     home_script = os.path.join(app_web_path, 'home.py')
     content = code_for_home_script(app, model)
     _create_file_if_not_existing(home_script, content)
@@ -494,7 +581,7 @@ def code_for_form_script(app, model):
 
 
 def init_form_script(app, model):
-    app_web_path = _to_web_path(app)
+    app_web_path = _to_web_admin_path(app)
     form_script = os.path.join(app_web_path, 'form.py')
     content = code_for_form_script(app, model)
     _create_file_if_not_existing(form_script, content)
@@ -529,6 +616,7 @@ def init_html_templates(app):
     _create_dir_if_not_existing(template_path)
     base_dir = os.path.join(template_path, 'base.html')
     _create_file_if_not_existing(base_dir, content)
+    _create_dir_if_not_existing(os.path.join(template_path, 'admin'))
 
 
 def _to_label(label):
@@ -566,6 +654,20 @@ def code_for_home_html(app, model):
     properties = _model_properties(app, model)
     properties = properties.difference(set(['creation']))
     model_undescore = _to_undescore_case(model)
+    return PUBLIC_HOME_HTML_TEMPLATE % {'app_name': app_name,
+                                        'model_underscore': model_undescore,
+                                        'model': model,
+                                        'web_name': web_name,
+                                        'headers': _to_html_table_header(properties),
+                                        'columns': _to_html_table_columns(model_undescore, properties)}
+
+
+def code_for_admin_home_html(app, model):
+    web_name = _to_web_name(app)
+    app_name = _to_app_name(app)
+    properties = _model_properties(app, model)
+    properties = properties.difference(set(['creation']))
+    model_undescore = _to_undescore_case(model)
     return HOME_HTML_TEMPLATE % {'app_name': app_name,
                                  'model_underscore': model_undescore,
                                  'model': model,
@@ -595,9 +697,17 @@ def init_home_html(app, model):
     return content
 
 
+def init_admin_home_html(app, model):
+    app_template_path = _to_template_path(app)
+    home_script = os.path.join(app_template_path, 'admin', 'home.html')
+    content = code_for_admin_home_html(app, model)
+    _create_file_if_not_existing(home_script, content)
+    return content
+
+
 def init_form_html(app, model):
     app_template_path = _to_template_path(app)
-    form_script = os.path.join(app_template_path, 'form.html')
+    form_script = os.path.join(app_template_path, 'admin', 'form.html')
     content = code_for_form_html(app, model)
     _create_file_if_not_existing(form_script, content)
     return content
@@ -614,21 +724,29 @@ def scaffold(app, model, *properties):
     init_web(app)
     _title('web home.py')
     print init_home_script(app, model)
+
+    _title('creating web.admin folder')
+    init_web_admin(app)
+    _title('web.admin home.py')
+    print init_admin_home_script(app, model)
     _title('web form.py')
     print init_form_script(app, model)
     _title('web rest.py')
     print init_rest_script(app, model)
     _title('creating template folder ans base.html')
     init_html_templates(app)
-    _title('templates home.html')
+    _title('templates/home.html')
     print init_home_html(app, model)
-    _title('templates form.html')
+
+    _title('templates/admin/home.html')
+    print init_admin_home_html(app, model)
+    _title('templates/admin/form.html')
     print init_form_html(app, model)
 
 
 def delete_app(app):
-    flag = raw_input('Are you shure you wont to delete app %s (yes or no)? ' % app)
-    if flag.lower() == 'yes':
+    # flag = raw_input('Are you sure you want delete app %s (yes or no)? ' % app)
+    if True:
         app_dir = os.path.join(APPS_DIR, app + '_app')
         shutil.rmtree(app_dir)
 

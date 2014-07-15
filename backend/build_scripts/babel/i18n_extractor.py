@@ -59,7 +59,7 @@ def compile_po_files(compile_target, locale_target):
 
 if __name__ == "__main__":
     compile_target = os.path.join(".", "locale")
-    target = os.path.join(proj_dir, "plugins", 'appengine')
+    target = os.path.join(proj_dir, 'appengine')
     compile_targets = target + ' ' + os.path.join(proj_dir, "venv")
 
     # if len(sys.argv) == 1:
