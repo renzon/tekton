@@ -1,10 +1,10 @@
 tekton==3.1.1
-gaebusiness==4.0
+gaebusiness==4.4
 gaecookie==0.7
-gaeforms==0.3
-gaegraph==2.3
-gaepermission==0.5
+gaeforms==0.4
+gaegraph==3.0.1
+gaepermission==0.8
 pytz==2014.4
 Babel==1.3
+python-slugify==0.0.7
 
-config
