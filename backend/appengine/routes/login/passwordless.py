@@ -5,7 +5,7 @@ from gaepermission import facade
 from gaepermission.decorator import login_not_required, permissions
 from permission_app.model import ADMIN
 from tekton import router
-from config.tmpl_middleware import TemplateResponse
+from config.template_middleware import TemplateResponse
 from tekton.gae.middleware.redirect import RedirectResponse
 import settings
 from routes import admin

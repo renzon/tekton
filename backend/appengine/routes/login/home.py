@@ -5,7 +5,7 @@ from gaecookie.decorator import no_csrf
 from gaepermission import facade
 from gaepermission.decorator import login_not_required
 from tekton import router
-from config.tmpl_middleware import TemplateResponse
+from config.template_middleware import TemplateResponse
 from routes.login import google, facebook
 from routes.login.passwordless import send_email
 

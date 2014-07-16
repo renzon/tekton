@@ -2,7 +2,7 @@
 from __future__ import absolute_import, unicode_literals
 from gaecookie.decorator import no_csrf
 from gaepermission.decorator import login_not_required, permissions
-from config.tmpl_middleware import TemplateResponse
+from config.template_middleware import TemplateResponse
 from permission_app.model import ADMIN
 from tekton import router
 from routes.login import passwordless, facebook

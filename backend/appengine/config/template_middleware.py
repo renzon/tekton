@@ -6,7 +6,7 @@ from tekton import router
 from tekton.gae.middleware.response import ResponseBase
 from tekton.gae.middleware import Middleware
 
-from config import tmpl
+from config import template
 
 
 class TemplateResponse(ResponseBase):
@@ -23,7 +23,7 @@ class TemplateResponse(ResponseBase):
 
 class TemplateMiddleware(Middleware):
     def set_up(self):
-        self.dependencies["_render"] = tmpl.render
+        self.dependencies["_render"] = template.render
 
 
 _TMPL_NOT_FOUND_MSG = '''Template not found
@@ -40,11 +40,11 @@ def render_by_convention(fcn, context):
 
     def try_render(suffix):
         if template_path == '/':
-            return '/home.html', tmpl.render('/home.html', context)
+            return '/home.html', template.render('/home.html', context)
 
         try:
             template = template_path + suffix
-            return template, tmpl.render(template, context)
+            return template, template.render(template, context)
         except TemplateNotFound:
             return template, None
 
@@ -72,6 +72,6 @@ class TemplateWriteMiddleware(Middleware):
 
 
             else:
-                tmpl_rendered = tmpl.render(template_path, context)
+                tmpl_rendered = template.render(template_path, context)
             self.handler.response.write(tmpl_rendered)
             return True  # after response, there is no need to look for more middlewares
