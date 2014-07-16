@@ -27,7 +27,7 @@ class TemplateMiddleware(Middleware):
 
 
 _TMPL_NOT_FOUND_MSG = '''Template not found
-Looked by convention in /web/templates directory for:
+Looked by convention in /routes/templates directory for:
 
 1) %s
 2) %s

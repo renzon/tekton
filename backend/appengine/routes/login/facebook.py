@@ -8,8 +8,8 @@ from permission_app.model import ADMIN
 import settings
 from tekton import router
 from tekton.gae.middleware.redirect import RedirectResponse
-from web import admin
-from web.login import pending
+from routes import admin
+from routes.login import pending
 
 
 @login_not_required

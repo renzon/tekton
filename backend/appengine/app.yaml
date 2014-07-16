@@ -45,6 +45,6 @@ handlers:
   secure: always
 
 - url: /_ah/warmup
-  script: web.warmup.app
+  script: routes.warmup.app
 
 

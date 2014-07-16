@@ -6,8 +6,8 @@ from gaepermission import facade
 from gaepermission.decorator import login_not_required
 from tekton import router
 from config.tmpl_middleware import TemplateResponse
-from web.login import google, facebook
-from web.login.passwordless import send_email
+from routes.login import google, facebook
+from routes.login.passwordless import send_email
 
 
 @login_not_required

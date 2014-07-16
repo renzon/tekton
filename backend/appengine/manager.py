@@ -21,7 +21,7 @@ PROJECT_DIR = os.path.abspath(os.path.join(PROJECT_DIR, '..'))
 APPS_DIR = os.path.join(PROJECT_DIR, 'apps')
 sys.path.insert(1, APPS_DIR)
 APPENGINE_DIR = os.path.join(PROJECT_DIR, 'appengine')
-WEB_DIR = os.path.join(APPENGINE_DIR, 'web')
+WEB_DIR = os.path.join(APPENGINE_DIR, 'routes')
 TEMPLATES_DIR = os.path.join(APPENGINE_DIR, 'templates')
 # Templates
 
@@ -174,7 +174,7 @@ from tekton import router
 from gaecookie.decorator import no_csrf
 from gaepermission.decorator import login_not_required
 from %(app_name)s import facade
-from web.%(app)ss import admin
+from routes.%(app)ss import admin
 
 
 @login_not_required
@@ -194,7 +194,7 @@ from config.tmpl_middleware import TemplateResponse
 from tekton import router
 from gaecookie.decorator import no_csrf
 from %(app_name)s import facade
-from web.%(web_name)s.admin import form
+from routes.%(web_name)s.admin import form
 
 
 def delete(_handler, %(model_underscore)s_id):
@@ -230,7 +230,7 @@ from gaebusiness.business import CommandExecutionException
 from tekton import router
 from gaecookie.decorator import no_csrf
 from %(app_name)s import facade
-from web.%(web_name)s import admin
+from routes.%(web_name)s import admin
 
 
 @no_csrf
@@ -720,18 +720,18 @@ def scaffold(app, model, *properties):
     _title('facade.py')
     print init_facade(app, model)
 
-    _title('creating web folder')
+    _title('creating routes folder')
     init_web(app)
-    _title('web home.py')
+    _title('routes home.py')
     print init_home_script(app, model)
 
-    _title('creating web.admin folder')
+    _title('creating routes.admin folder')
     init_web_admin(app)
-    _title('web.admin home.py')
+    _title('routes.admin home.py')
     print init_admin_home_script(app, model)
-    _title('web form.py')
+    _title('routes form.py')
     print init_form_script(app, model)
-    _title('web rest.py')
+    _title('routes rest.py')
     print init_rest_script(app, model)
     _title('creating template folder ans base.html')
     init_html_templates(app)

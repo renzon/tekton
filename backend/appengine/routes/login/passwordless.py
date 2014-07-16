@@ -8,7 +8,7 @@ from tekton import router
 from config.tmpl_middleware import TemplateResponse
 from tekton.gae.middleware.redirect import RedirectResponse
 import settings
-from web import admin
+from routes import admin
 
 
 @no_csrf
