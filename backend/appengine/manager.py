@@ -169,7 +169,7 @@ def delete_%(model_underscore)s_cmd(%(model_underscore)s_id):
 '''
 PUBLIC_HOME_SCRIPT_TEMPLATE = '''# -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
-from config.tmpl_middleware import TemplateResponse
+from config.template_middleware import TemplateResponse
 from tekton import router
 from gaecookie.decorator import no_csrf
 from gaepermission.decorator import login_not_required
@@ -190,11 +190,11 @@ def index():
 '''
 HOME_SCRIPT_TEMPLATE = '''# -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
-from config.tmpl_middleware import TemplateResponse
+from config.template_middleware import TemplateResponse
 from tekton import router
 from gaecookie.decorator import no_csrf
 from %(app_name)s import facade
-from routes.%(web_name)s.admin import form
+from routes.%(web_name)s.admin import new, edit
 
 
 def delete(_handler, %(model_underscore)s_id):
@@ -206,26 +206,26 @@ def delete(_handler, %(model_underscore)s_id):
 def index():
     cmd = facade.list_%(model_underscore)ss_cmd()
     %(model_underscore)ss = cmd()
-    form_edit_path = router.to_path(form.edit)
+    edit_path = router.to_path(edit)
     delete_path = router.to_path(delete)
     short_form = facade.%(model_underscore)s_short_form()
 
     def short_%(model_underscore)s_dict(%(model_underscore)s):
         %(model_underscore)s_dct = short_form.fill_with_model(%(model_underscore)s)
-        %(model_underscore)s_dct['edit_path'] = router.to_path(form_edit_path, %(model_underscore)s_dct['id'])
+        %(model_underscore)s_dct['edit_path'] = router.to_path(edit_path, %(model_underscore)s_dct['id'])
         %(model_underscore)s_dct['delete_path'] = router.to_path(delete_path, %(model_underscore)s_dct['id'])
         return %(model_underscore)s_dct
 
     short_%(model_underscore)ss = [short_%(model_underscore)s_dict(%(model_underscore)s) for %(model_underscore)s in %(model_underscore)ss]
     context = {'%(model_underscore)ss': short_%(model_underscore)ss,
-               '%(model_underscore)s_form': router.to_path(form)}
+               'new_path': router.to_path(new)}
     return TemplateResponse(context)
 
 '''
 
-FORM_SCRIPT_TEMPLATE = '''# -*- coding: utf-8 -*-
+NEW_SCRIPT_TEMPLATE = '''# -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
-from config.tmpl_middleware import TemplateResponse
+from config.template_middleware import TemplateResponse
 from gaebusiness.business import CommandExecutionException
 from tekton import router
 from gaecookie.decorator import no_csrf
@@ -235,14 +235,11 @@ from routes.%(web_name)s import admin
 
 @no_csrf
 def index():
-    return TemplateResponse({'save_path': router.to_path(save)})
+    return TemplateResponse({'save_path': router.to_path(save)},'%(web_name)s/admin/form.html')
 
 
 def save(_handler, %(model_underscore)s_id=None, **%(model_underscore)s_properties):
-    if %(model_underscore)s_id:
-        cmd = facade.update_%(model_underscore)s_cmd(%(model_underscore)s_id, **%(model_underscore)s_properties)
-    else:
-        cmd = facade.save_%(model_underscore)s_cmd(**%(model_underscore)s_properties)
+    cmd = facade.save_%(model_underscore)s_cmd(**%(model_underscore)s_properties)
     try:
         cmd()
     except CommandExecutionException:
@@ -252,15 +249,40 @@ def save(_handler, %(model_underscore)s_id=None, **%(model_underscore)s_properti
         return TemplateResponse(context, '%(web_name)s/admin/form.html')
     _handler.redirect(router.to_path(admin))
 
+'''
+
+EDIT_SCRIPT_TEMPLATE = '''# -*- coding: utf-8 -*-
+from __future__ import absolute_import, unicode_literals
+from config.template_middleware import TemplateResponse
+from gaebusiness.business import CommandExecutionException
+from tekton import router
+from gaecookie.decorator import no_csrf
+from %(app_name)s import facade
+from routes.%(web_name)s import admin
+
 
 @no_csrf
-def edit(%(model_underscore)s_id):
+def index(%(model_underscore)s_id):
     %(model_underscore)s = facade.get_%(model_underscore)s_cmd(%(model_underscore)s_id)()
     detail_form = facade.%(model_underscore)s_detail_form()
     context = {'save_path': router.to_path(save, %(model_underscore)s_id), '%(model_underscore)s': detail_form.fill_with_model(%(model_underscore)s)}
     return TemplateResponse(context, '%(web_name)s/admin/form.html')
 
+
+def save(_handler, %(model_underscore)s_id, **%(model_underscore)s_properties):
+    cmd = facade.update_%(model_underscore)s_cmd(%(model_underscore)s_id, **%(model_underscore)s_properties)
+    try:
+        cmd()
+    except CommandExecutionException:
+        context = {'errors': cmd.errors,
+                   '%(model_underscore)s': cmd.form}
+
+        return TemplateResponse(context, '%(web_name)s/admin/form.html')
+    _handler.redirect(router.to_path(admin))
+
 '''
+
+
 REST_SCRIPT_TEMPLATE = '''# -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 from gaebusiness.business import CommandExecutionException
@@ -335,7 +357,7 @@ HOME_HTML_TEMPLATE = '''{%% extends '%(web_name)s/base.html' %%}
         <div class="row">
             <div class="col-md-12">
                 <h1>{%% trans %%}This is a generic home for %(app_name)s {%% endtrans %%}  </h1>
-                <a href="{{ %(model_underscore)s_form }}" class="btn btn-success">{%% trans %%}Create New %(model)s{%% endtrans %%}</a>
+                <a href="{{ new_path }}" class="btn btn-success">{%% trans %%}Create New %(model)s{%% endtrans %%}</a>
                 <hr/>
                 <h2>{%% trans %%}List of %(model)ss{%% endtrans %%}</h2>
                 <table class="table table-striped table-hover">
@@ -575,15 +597,29 @@ def init_admin_home_script(app, model):
 def code_for_form_script(app, model):
     web_name = _to_web_name(app)
     app_name = _to_app_name(app)
-    return FORM_SCRIPT_TEMPLATE % {'app_name': app_name,
+    return NEW_SCRIPT_TEMPLATE % {'app_name': app_name,
+                                   'model_underscore': _to_undescore_case(model),
+                                   'web_name': web_name}
+
+def code_for_edit_script(app,model):
+    web_name = _to_web_name(app)
+    app_name = _to_app_name(app)
+    return EDIT_SCRIPT_TEMPLATE % {'app_name': app_name,
                                    'model_underscore': _to_undescore_case(model),
                                    'web_name': web_name}
 
 
-def init_form_script(app, model):
+def init_new_script(app, model):
     app_web_path = _to_web_admin_path(app)
-    form_script = os.path.join(app_web_path, 'form.py')
+    form_script = os.path.join(app_web_path, 'new.py')
     content = code_for_form_script(app, model)
+    _create_file_if_not_existing(form_script, content)
+    return content
+
+def init_edit_script(app, model):
+    app_web_path = _to_web_admin_path(app)
+    form_script = os.path.join(app_web_path, 'edit.py')
+    content = code_for_edit_script(app, model)
     _create_file_if_not_existing(form_script, content)
     return content
 
@@ -729,8 +765,10 @@ def scaffold(app, model, *properties):
     init_web_admin(app)
     _title('routes.admin home.py')
     print init_admin_home_script(app, model)
-    _title('routes form.py')
-    print init_form_script(app, model)
+    _title('routes.admin new.py')
+    print init_new_script(app, model)
+    _title('routes.admin edit.py')
+    print init_edit_script(app, model)
     _title('routes rest.py')
     print init_rest_script(app, model)
     _title('creating template folder ans base.html')

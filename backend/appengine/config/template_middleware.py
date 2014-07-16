@@ -43,10 +43,10 @@ def render_by_convention(fcn, context):
             return '/home.html', template.render('/home.html', context)
 
         try:
-            template = template_path + suffix
-            return template, template.render(template, context)
+            template_file = template_path + suffix
+            return template_file, template.render(template_file, context)
         except TemplateNotFound:
-            return template, None
+            return template_file, None
 
     template_1, tmpl_rendered = try_render('.html')
     if tmpl_rendered is None:

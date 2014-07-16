@@ -5,9 +5,10 @@
 {% macro form_input(label,property,value,error_msg) %}
     <div class="form-group {{ ' has-error' if error_msg }}">
         <label for="{{ property }}Input"
-               class="control-label">{{ label }} {{ ' - '+error_msg if error_msg }}</label>
+               class="control-label">{{ label }} </label>
         <input id="{{ property }}Input" type="text" class="form-control" name="{{ property }}"
                value="{{ value }}"/>
+        {% if error_msg %}<span class="help-block">{{ error_msg }}</span>{% endif %}
     </div>
 {% endmacro %}
 <html>
