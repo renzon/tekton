@@ -282,7 +282,6 @@ def save(_handler, %(model_underscore)s_id, **%(model_underscore)s_properties):
 
 '''
 
-
 REST_SCRIPT_TEMPLATE = '''# -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 from gaebusiness.business import CommandExecutionException
@@ -598,10 +597,11 @@ def code_for_form_script(app, model):
     web_name = _to_web_name(app)
     app_name = _to_app_name(app)
     return NEW_SCRIPT_TEMPLATE % {'app_name': app_name,
-                                   'model_underscore': _to_undescore_case(model),
-                                   'web_name': web_name}
+                                  'model_underscore': _to_undescore_case(model),
+                                  'web_name': web_name}
 
-def code_for_edit_script(app,model):
+
+def code_for_edit_script(app, model):
     web_name = _to_web_name(app)
     app_name = _to_app_name(app)
     return EDIT_SCRIPT_TEMPLATE % {'app_name': app_name,
@@ -615,6 +615,7 @@ def init_new_script(app, model):
     content = code_for_form_script(app, model)
     _create_file_if_not_existing(form_script, content)
     return content
+
 
 def init_edit_script(app, model):
     app_web_path = _to_web_admin_path(app)
@@ -783,8 +784,8 @@ def scaffold(app, model, *properties):
 
 
 def delete_app(app):
-    # flag = raw_input('Are you sure you want delete app %s (yes or no)? ' % app)
-    if True:
+    flag = raw_input('Are you sure you want delete app %s (yes or no)? ' % app)
+    if flag.lower() == 'yes':
         app_dir = os.path.join(APPS_DIR, app + '_app')
         shutil.rmtree(app_dir)
 
