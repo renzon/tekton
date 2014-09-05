@@ -46,7 +46,7 @@ def compile_po_files(compile_target, locale_target):
         file_name = "messages.po" if "messages.po" in files else None
         if file_name:
             po_file = os.path.join(root, file_name)
-            mo_dir = root.replace(r"./locale", locale_target)
+            mo_dir = root.replace(os.path.join('.', 'locale'), locale_target)
             mo_file = os.path.join(mo_dir, "messages.mo")
             if not os.path.exists(mo_dir):
                 os.makedirs(mo_dir)
@@ -60,8 +60,10 @@ def compile_po_files(compile_target, locale_target):
 if __name__ == "__main__":
     compile_target = os.path.join(".", "locale")
     target = os.path.join(proj_dir, 'appengine')
-    compile_targets = target + ' ' + os.path.join(proj_dir, "venv")
-
+    if os.path.sep == r'/':
+        compile_targets = target + ' ' + os.path.join(proj_dir, "venv")
+    else:
+        compile_targets = target
     # if len(sys.argv) == 1:
     babel_cfg = os.path.join(babel_dir, "babel.cfg")
     msgs_pot = os.path.join(compile_target, "messages.pot")

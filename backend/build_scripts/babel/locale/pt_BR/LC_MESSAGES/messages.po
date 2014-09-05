@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-07-15 17:41-0300\n"
+"POT-Creation-Date: 2014-09-03 00:20-0300\n"
 "PO-Revision-Date: 2014-06-26 00:13-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
@@ -18,11 +18,72 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 1.3\n"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/home.html:11
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/lib/gaeforms/base.py:46
+#, python-format
+msgid "Must be one of: %(choices)s"
+msgstr ""
+
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/lib/gaeforms/base.py:51
+msgid "Required field"
+msgstr ""
+
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/lib/gaeforms/base.py:128
+#, python-format
+msgid "Has %(len)s characters and it must have less than %(max_len)s"
+msgstr ""
+
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/lib/gaeforms/base.py:137
+msgid "Invalid email"
+msgstr ""
+
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/lib/gaeforms/base.py:158
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/lib/gaeforms/base.py:189
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/lib/gaeforms/base.py:234
+#, python-format
+msgid "Must be greater than %(lower)s"
+msgstr ""
+
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/lib/gaeforms/base.py:160
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/lib/gaeforms/base.py:191
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/lib/gaeforms/base.py:236
+#, python-format
+msgid "Must be less than %(upper)s"
+msgstr ""
+
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/lib/gaeforms/base.py:163
+msgid "Must be integer"
+msgstr ""
+
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/lib/gaeforms/base.py:194
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/lib/gaeforms/base.py:239
+msgid "Must be a number"
+msgstr ""
+
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/lib/gaeforms/base.py:271
+#, python-format
+msgid "Invalid date. Must be on format %(format)s"
+msgstr ""
+
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/lib/gaeforms/base.py:271
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/lib/gaeforms/base.py:277
+msgid "MM/dd/YYYY"
+msgstr ""
+
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/lib/gaeforms/base.py:311
+#, python-format
+msgid "Invalid datetime. Must be on format %(format)s"
+msgstr ""
+
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/lib/gaeforms/base.py:311
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/lib/gaeforms/base.py:316
+msgid "MM/dd/YYYY HH:mm:ss"
+msgstr ""
+
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/home.html:11
 msgid "A Full-Stack project for Google App Engine"
 msgstr "Um projeto Full-Stack para o Google App Engine"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/home.html:19
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/home.html:19
 msgid ""
 "Create CRUD code on\n"
 "                        <a href=\"https://cloud.google.com/products/app-"
@@ -31,156 +92,82 @@ msgstr ""
 "Crie código CRUD no  <a href=\"https://cloud.google.com/products/app-"
 "engine/\">App Engine</a>"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/home.html:25
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/home.html:25
 msgid ""
 " Check Courses App\n"
 "                            Out"
 msgstr "Veja a App de Cursos"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/home.html:32
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/home.html:32
 #, fuzzy
 msgid "Tekton is open source."
 msgstr "Tekton tem código aberto. "
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/home.html:37
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/home.html:37
 msgid "Check Git Hub Out"
 msgstr "Veja no GitHub"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/admin/home.html:5
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/admin/home.html:5
 msgid "Administration Panel"
 msgstr "Painel de Administração"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/admin/home.html:8
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/admin/home.html:8
 msgid "Security Paths Table"
 msgstr "Tabela de Segurança de Paths"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/admin/home.html:11
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/admin/home.html:11
 msgid " Configurations"
 msgstr " Configurações"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/admin/home.html:13
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/admin/home.html:13
 msgid " User Permissions"
 msgstr " Permissões de Usuários"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/admin/home.html:14
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/admin/home.html:14
 msgid "Facebook App Data"
 msgstr "Dados de App do Facebook"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/admin/home.html:15
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/admin/home.html:15
 msgid "Passwordless App Data"
 msgstr "Dados de App do Passwordless"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/base/400.html:6
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/base/400.html:6
 msgid "Sorry, an error happened and we are investigating"
 msgstr "Desculpe, um erro ocorreu e estamos investigando."
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/base/404.html:6
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/base/404.html:6
 msgid "Sorry, page not found"
 msgstr "Desculpe, página não encontrada"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/base/base.html:52
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/base/base.html:56
 msgid "Courses"
 msgstr "Cursos"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/base/base.html:54
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/home.html:8
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/base/base.html:59
 msgid "Admin"
 msgstr "Admin"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/base/base.html:67
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/base/base.html:73
 msgid "Logout"
 msgstr "Sair"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/base/base.html:73
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/base/base.html:79
 msgid "Login"
 msgstr "Login"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/home.html:6
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/admin/home.html:6
-msgid "This is a generic home for course_app "
-msgstr "Essa é uma página genérica de cursos "
-
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/home.html:11
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/admin/home.html:9
-msgid "List of Courses"
-msgstr "Lista de Cursos"
-
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/home.html:15
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/admin/form.html:15
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/admin/home.html:16
-#, fuzzy
-msgid "D"
-msgstr "Id"
-
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/home.html:16
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/admin/form.html:16
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/admin/home.html:17
-msgid "F"
-msgstr ""
-
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/home.html:17
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/admin/form.html:17
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/admin/home.html:18
-msgid "I"
-msgstr ""
-
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/home.html:18
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/admin/form.html:18
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/admin/home.html:19
-msgid "Price"
-msgstr "Preço"
-
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/home.html:19
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/admin/form.html:19
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/admin/home.html:20
-msgid "Start"
-msgstr ""
-
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/home.html:20
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/admin/form.html:20
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/admin/home.html:21
-msgid "Name"
-msgstr "Nome"
-
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/admin/form.html:11
-msgid "Course Form"
-msgstr "Formulário de Curso"
-
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/admin/form.html:21
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/facebook/form.html:18
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/passwordless/form.html:18
-msgid "Save"
-msgstr "Salvar"
-
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/admin/home.html:7
-msgid "Create New Course"
-msgstr "Criar Novo Curso"
-
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/admin/home.html:14
-msgid "Id"
-msgstr "Id"
-
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/admin/home.html:15
-msgid "Creation"
-msgstr "Criação"
-
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/courses/admin/home.html:38
-msgid "Are you sure to delete? Press cancel to avoid deletion."
-msgstr ""
-
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/home.html:13
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/home.html:13
 msgid "Login Options"
 msgstr "Opções de Login"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/home.html:25
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/home.html:25
 msgid "Type your email"
 msgstr "Digite seu Email"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/pending.html:6
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/pending.html:6
 msgid "Security Information"
 msgstr "Informação de Segurança"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/pending.html:8
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/pending.html:8
 #, python-format
 msgid ""
 "The email provided by %(provider)s is already in use. For your security, "
@@ -190,54 +177,59 @@ msgstr ""
 "O email fornecido pelo %(provider)s já está em uso. Para sua segurança, "
 "enviaremos um email de login para %(email)s para assegurar que ele é seu."
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/pending.html:11
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/pending.html:11
 msgid "This security procedure will be necessary only this time."
 msgstr "Esse procedimento de segurança só será necessário essa vez."
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/pending.html:13
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/passwordless/home.html:11
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/pending.html:13
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/passwordless/home.html:11
 msgid "Check your spam box, once some providers can filter this email."
 msgstr "Cheque sua caixa de spam pois alguns provedores podem filtrar esse email."
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/facebook/form.html:6
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/facebook/form.html:6
 msgid "Facebook App Form"
 msgstr "Formulário de Aplicação do Facebook"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/facebook/form.html:8
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/facebook/form.html:8
 msgid "This data is used to proceed Facebook login. More information in"
 msgstr ""
 "Esses dados são necessaŕios para implementar o login com Facebook. Mais "
 "informações em"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/facebook/form.html:10
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/facebook/form.html:10
 msgid "Facebook Login Docs"
 msgstr "Documentação de Login com Facebook"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/facebook/form.html:14
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/passwordless/form.html:14
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/facebook/form.html:14
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/passwordless/form.html:14
 msgid "Type the app's id"
 msgstr "Digite o id da aplicação"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/facebook/form.html:16
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/passwordless/form.html:16
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/facebook/form.html:16
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/passwordless/form.html:16
 msgid "Type the app's token"
 msgstr "Digite o token da aplicação"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/passwordless/form.html:6
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/facebook/form.html:18
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/passwordless/form.html:18
+msgid "Save"
+msgstr "Salvar"
+
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/passwordless/form.html:6
 msgid "Passworless App Form"
 msgstr "Formulário de Aplicação Passworless"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/passwordless/form.html:8
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/passwordless/form.html:8
 msgid "This data is used to proceed passswordless login. More information in"
 msgstr ""
 "Esses dados são necessaŕios para implementar o login por email. Mais "
 "informações em"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/passwordless/home.html:6
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/passwordless/home.html:6
 msgid "Login Email Instructions"
 msgstr "Instruções de Login por Email"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/passwordless/home.html:8
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/login/passwordless/home.html:8
 msgid ""
 "We will send you an email with the login link using\n"
 "                    <a "
@@ -247,23 +239,23 @@ msgstr ""
 "enviado através do serviço  <a "
 "href=\"https://pswdless.appspot.com/\">Passwordless</a>."
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/permission/admin.html:41
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/permission/admin.html:41
 msgid "Users Table"
 msgstr "Tabela de Usuários"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/permission/home.html:6
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/permission/home.html:6
 msgid "Security Table"
 msgstr "Tabela de Segurança"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/permission/home.html:10
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/permission/home.html:10
 msgid "Path"
 msgstr "Path"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/permission/home.html:11
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/permission/home.html:11
 msgid "Allowed Groups"
 msgstr "Grupos Permitidos"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/permission/home.html:12
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/permission/home.html:12
 msgid ""
 "<a href=\"http://pt.wikipedia.org/wiki/Cross-"
 "site_request_forgery\">CSRF</a> Security"
@@ -271,78 +263,92 @@ msgstr ""
 "Segurança <a href=\"http://pt.wikipedia.org/wiki/Cross-"
 "site_request_forgery\">CSRF</a>"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/permission/home.html:22
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/permission/home.html:22
 msgid "Secure"
 msgstr "Segur"
 
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/permission/home.html:22
+#: C:/Users/renzo/PycharmProjects/tekton-fullstack/backend/appengine/templates/permission/home.html:22
 msgid "Unsecure"
 msgstr "Inseguro"
-
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/venv/lib/python2.7/site-packages/gaeforms/base.py:46
-#, python-format
-msgid "Must be one of: %(choices)s"
-msgstr "Deve ser um dos seguintes: %(choices)s"
-
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/venv/lib/python2.7/site-packages/gaeforms/base.py:51
-msgid "Required field"
-msgstr "Campo obrigatório"
-
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/venv/lib/python2.7/site-packages/gaeforms/base.py:128
-#, fuzzy, python-format
-msgid "Has %(len)s characters and it must have less than %(max_len)s"
-msgstr "Possui %(len)s caracteres e deve ter menos de 500"
-
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/venv/lib/python2.7/site-packages/gaeforms/base.py:137
-msgid "Invalid email"
-msgstr "E-mail inválido"
-
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/venv/lib/python2.7/site-packages/gaeforms/base.py:158
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/venv/lib/python2.7/site-packages/gaeforms/base.py:189
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/venv/lib/python2.7/site-packages/gaeforms/base.py:234
-#, python-format
-msgid "Must be greater than %(lower)s"
-msgstr "Deve ser maior que %(lower)s"
-
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/venv/lib/python2.7/site-packages/gaeforms/base.py:160
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/venv/lib/python2.7/site-packages/gaeforms/base.py:191
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/venv/lib/python2.7/site-packages/gaeforms/base.py:236
-#, python-format
-msgid "Must be less than %(upper)s"
-msgstr "Deve ser menor que %(upper)s"
-
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/venv/lib/python2.7/site-packages/gaeforms/base.py:163
-msgid "Must be integer"
-msgstr "Deve ser um número inteiro"
-
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/venv/lib/python2.7/site-packages/gaeforms/base.py:194
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/venv/lib/python2.7/site-packages/gaeforms/base.py:239
-msgid "Must be a number"
-msgstr "Deve ser um número"
-
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/venv/lib/python2.7/site-packages/gaeforms/base.py:271
-#, python-format
-msgid "Invalid date. Must be on format %(format)s"
-msgstr "Data inválida. Deve ser em formato %(format)s"
-
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/venv/lib/python2.7/site-packages/gaeforms/base.py:271
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/venv/lib/python2.7/site-packages/gaeforms/base.py:277
-msgid "MM/dd/YYYY"
-msgstr "dd/MM/YYYY"
-
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/venv/lib/python2.7/site-packages/gaeforms/base.py:311
-#, python-format
-msgid "Invalid datetime. Must be on format %(format)s"
-msgstr "Data-hora inválida. Deve ser em formato %(format)s"
-
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/venv/lib/python2.7/site-packages/gaeforms/base.py:311
-#: /home/renzo/PycharmProjects/tekton-fullstack/backend/venv/lib/python2.7/site-packages/gaeforms/base.py:316
-msgid "MM/dd/YYYY HH:mm:ss"
-msgstr "dd/MM/YYYY HH:mm:ss"
 
 #~ msgid "Set your permission do ADMIN and play around"
 #~ msgstr ""
 
 #~ msgid "Start Date"
 #~ msgstr "Data de Início"
+
+#~ msgid "This is a generic home for course_app "
+#~ msgstr "Essa é uma página genérica de cursos "
+
+#~ msgid "List of Courses"
+#~ msgstr "Lista de Cursos"
+
+#~ msgid "D"
+#~ msgstr "Id"
+
+#~ msgid "F"
+#~ msgstr ""
+
+#~ msgid "I"
+#~ msgstr ""
+
+#~ msgid "Price"
+#~ msgstr "Preço"
+
+#~ msgid "Start"
+#~ msgstr ""
+
+#~ msgid "Name"
+#~ msgstr "Nome"
+
+#~ msgid "Course Form"
+#~ msgstr "Formulário de Curso"
+
+#~ msgid "Create New Course"
+#~ msgstr "Criar Novo Curso"
+
+#~ msgid "Id"
+#~ msgstr "Id"
+
+#~ msgid "Creation"
+#~ msgstr "Criação"
+
+#~ msgid "Are you sure to delete? Press cancel to avoid deletion."
+#~ msgstr ""
+
+#~ msgid "Must be one of: %(choices)s"
+#~ msgstr "Deve ser um dos seguintes: %(choices)s"
+
+#~ msgid "Required field"
+#~ msgstr "Campo obrigatório"
+
+#~ msgid "Has %(len)s characters and it must have less than %(max_len)s"
+#~ msgstr "Possui %(len)s caracteres e deve ter menos de 500"
+
+#~ msgid "Invalid email"
+#~ msgstr "E-mail inválido"
+
+#~ msgid "Must be greater than %(lower)s"
+#~ msgstr "Deve ser maior que %(lower)s"
+
+#~ msgid "Must be less than %(upper)s"
+#~ msgstr "Deve ser menor que %(upper)s"
+
+#~ msgid "Must be integer"
+#~ msgstr "Deve ser um número inteiro"
+
+#~ msgid "Must be a number"
+#~ msgstr "Deve ser um número"
+
+#~ msgid "Invalid date. Must be on format %(format)s"
+#~ msgstr "Data inválida. Deve ser em formato %(format)s"
+
+#~ msgid "MM/dd/YYYY"
+#~ msgstr "dd/MM/YYYY"
+
+#~ msgid "Invalid datetime. Must be on format %(format)s"
+#~ msgstr "Data-hora inválida. Deve ser em formato %(format)s"
+
+#~ msgid "MM/dd/YYYY HH:mm:ss"
+#~ msgstr "dd/MM/YYYY HH:mm:ss"
 
