@@ -42,7 +42,7 @@ from __future__ import absolute_import, unicode_literals
 from gaebusiness.gaeutil import SaveCommand, ModelSearchCommand
 from gaeforms.ndb.form import ModelForm
 from gaegraph.business_base import UpdateNode
-from %(app_path)s.model import %(model)s
+from %(app_path)s.%(app)s_model import %(model)s
 
 class %(model)sPublicForm(ModelForm):
     """
@@ -93,7 +93,7 @@ class List%(model)sCommand(ModelSearchCommand):
 FACADE_TEMPLATE = r'''# -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 from gaegraph.business_base import NodeSearch, DeleteNode
-from %(app_path)s.commands import List%(model)sCommand, Save%(model)sCommand, Update%(model)sCommand, \
+from %(app_path)s.%(app)s_commands import List%(model)sCommand, Save%(model)sCommand, Update%(model)sCommand, \
     %(model)sPublicForm, %(model)sDetailForm, %(model)sShortForm
 
 
@@ -173,16 +173,16 @@ from config.template_middleware import TemplateResponse
 from tekton import router
 from gaecookie.decorator import no_csrf
 from gaepermission.decorator import login_not_required
-from %(app_name)s import facade
+from %(app_name)s import %(app)s_facade
 from routes.%(app)ss import admin
 
 
 @login_not_required
 @no_csrf
 def index():
-    cmd = facade.list_%(model_underscore)ss_cmd()
+    cmd = %(app)s_facade.list_%(model_underscore)ss_cmd()
     %(model_underscore)ss = cmd()
-    public_form = facade.%(model_underscore)s_public_form()
+    public_form = %(app)s_facade.%(model_underscore)s_public_form()
     %(model_underscore)s_public_dcts = [public_form.fill_with_model(%(model_underscore)s) for %(model_underscore)s in %(model_underscore)ss]
     context = {'%(model_underscore)ss': %(model_underscore)s_public_dcts,'admin_path':router.to_path(admin)}
     return TemplateResponse(context)
@@ -193,22 +193,22 @@ from __future__ import absolute_import, unicode_literals
 from config.template_middleware import TemplateResponse
 from tekton import router
 from gaecookie.decorator import no_csrf
-from %(app_name)s import facade
+from %(app_name)s import %(app)s_facade
 from routes.%(web_name)s.admin import new, edit
 
 
 def delete(_handler, %(model_underscore)s_id):
-    facade.delete_%(model_underscore)s_cmd(%(model_underscore)s_id)()
+    %(app)s_facade.delete_%(model_underscore)s_cmd(%(model_underscore)s_id)()
     _handler.redirect(router.to_path(index))
 
 
 @no_csrf
 def index():
-    cmd = facade.list_%(model_underscore)ss_cmd()
+    cmd = %(app)s_facade.list_%(model_underscore)ss_cmd()
     %(model_underscore)ss = cmd()
     edit_path = router.to_path(edit)
     delete_path = router.to_path(delete)
-    short_form = facade.%(model_underscore)s_short_form()
+    short_form = %(app)s_facade.%(model_underscore)s_short_form()
 
     def short_%(model_underscore)s_dict(%(model_underscore)s):
         %(model_underscore)s_dct = short_form.fill_with_model(%(model_underscore)s)
@@ -229,7 +229,7 @@ from config.template_middleware import TemplateResponse
 from gaebusiness.business import CommandExecutionException
 from tekton import router
 from gaecookie.decorator import no_csrf
-from %(app_name)s import facade
+from %(app_name)s import %(app)s_facade
 from routes.%(web_name)s import admin
 
 
@@ -239,7 +239,7 @@ def index():
 
 
 def save(_handler, %(model_underscore)s_id=None, **%(model_underscore)s_properties):
-    cmd = facade.save_%(model_underscore)s_cmd(**%(model_underscore)s_properties)
+    cmd = %(app)s_facade.save_%(model_underscore)s_cmd(**%(model_underscore)s_properties)
     try:
         cmd()
     except CommandExecutionException:
@@ -257,20 +257,20 @@ from config.template_middleware import TemplateResponse
 from gaebusiness.business import CommandExecutionException
 from tekton import router
 from gaecookie.decorator import no_csrf
-from %(app_name)s import facade
+from %(app_name)s import %(app)s_facade
 from routes.%(web_name)s import admin
 
 
 @no_csrf
 def index(%(model_underscore)s_id):
-    %(model_underscore)s = facade.get_%(model_underscore)s_cmd(%(model_underscore)s_id)()
-    detail_form = facade.%(model_underscore)s_detail_form()
+    %(model_underscore)s = %(app)s_facade.get_%(model_underscore)s_cmd(%(model_underscore)s_id)()
+    detail_form = %(app)s_facade.%(model_underscore)s_detail_form()
     context = {'save_path': router.to_path(save, %(model_underscore)s_id), '%(model_underscore)s': detail_form.fill_with_model(%(model_underscore)s)}
     return TemplateResponse(context, '%(web_name)s/admin/form.html')
 
 
 def save(_handler, %(model_underscore)s_id, **%(model_underscore)s_properties):
-    cmd = facade.update_%(model_underscore)s_cmd(%(model_underscore)s_id, **%(model_underscore)s_properties)
+    cmd = %(app)s_facade.update_%(model_underscore)s_cmd(%(model_underscore)s_id, **%(model_underscore)s_properties)
     try:
         cmd()
     except CommandExecutionException:
@@ -286,11 +286,11 @@ REST_SCRIPT_TEMPLATE = '''# -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 from gaebusiness.business import CommandExecutionException
 from tekton.gae.middleware.json_middleware import JsonResponse
-from %(app_name)s import facade
+from %(app_name)s import %(app)s_facade
 
 
 def index():
-    cmd = facade.list_%(model_underscore)ss_cmd()
+    cmd = %(app)s_facade.list_%(model_underscore)ss_cmd()
     %(model_underscore)s_list = cmd()
     short_form=facade.%(model_underscore)s_short_form()
     %(model_underscore)s_short = [short_form.fill_with_model(m) for m in %(model_underscore)s_list]
@@ -298,7 +298,7 @@ def index():
 
 
 def save(**%(model_underscore)s_properties):
-    cmd = facade.save_%(model_underscore)s_cmd(**%(model_underscore)s_properties)
+    cmd = %(app)s_facade.save_%(model_underscore)s_cmd(**%(model_underscore)s_properties)
     return _save_or_update_json_response(cmd)
 
 
@@ -308,7 +308,7 @@ def update(%(model_underscore)s_id, **%(model_underscore)s_properties):
 
 
 def delete(%(model_underscore)s_id):
-    facade.delete_%(model_underscore)s_cmd(%(model_underscore)s_id)()
+    %(app)s_facade.delete_%(model_underscore)s_cmd(%(model_underscore)s_id)()
 
 
 def _save_or_update_json_response(cmd):
@@ -433,11 +433,11 @@ def _create_package(package_path):
     _create_file_if_not_existing(os.path.join(package_path, '__init__.py'))
 
 
-def _create_app(app_path, model, *properties):
+def _create_app(name, app_path, model, *properties):
     properties = '\n'.join(parse_propety(p) for p in properties)
     properties = properties or '    pass'
     _create_package(app_path)
-    _create_file_if_not_existing(os.path.join(app_path, 'model.py'),
+    _create_file_if_not_existing(os.path.join(app_path, '%s_model.py' % name),
                                  MODEL_TEMPLATE % {'model': model, 'properties': properties})
 
 
@@ -449,14 +449,15 @@ def parse_propety(p):
              'int': 'ndb.IntegerProperty(required=True)',
              'float': 'ndb.FloatProperty(required=True)',
              'decimal': 'property.SimpleDecimal(required=True)',
-             'currency': 'property.SimpleCurrency(required=True)', }
+             'currency': 'property.SimpleCurrency(required=True)',
+             'bool': 'ndb.BooleanProperty(required=True)'}
     return '    %s = %s' % (name, types[type_alias])
 
 
 def init_app(name, model, *properties):
     _title('Creating app package')
     app_path = os.path.join(APPS_DIR, name + '_app')
-    _create_app(app_path, model, *properties)
+    _create_app(name, app_path, model, *properties)
 
 
 PROPERTY = '%(model)s.%(property)s'
@@ -468,7 +469,7 @@ def _build_properties(model, properties):
 
 def _model_properties(app, model):
     app_path = app + '_app'
-    model_module = importlib.import_module(app_path + '.model')
+    model_module = importlib.import_module(app_path + '.%s_model' % app)
     model_class = getattr(model_module, model)
     properties = set(model_class._properties.keys())
     properties = properties.difference(set(['class']))
@@ -495,7 +496,7 @@ def _title(param):
 def init_commands(app, model):
     print APPS_DIR
     app_path = os.path.join(APPS_DIR, app + '_app')
-    commands_script = os.path.join(app_path, 'commands.py')
+    commands_script = os.path.join(app_path, '%s_commands.py' % app)
     content = commands_code_for(app, model)
     _create_file_if_not_existing(commands_script, content)
     return content
@@ -524,7 +525,7 @@ def _to_app_path(app):
 
 def init_facade(app, model):
     app_path = _to_app_path(app)
-    facade_script = os.path.join(app_path, 'facade.py')
+    facade_script = os.path.join(app_path, '%s_facade.py' % app)
     content = facade_code_for(app, model)
     _create_file_if_not_existing(facade_script, content)
     return content
@@ -565,7 +566,8 @@ def code_for_home_script(app, model):
     app_name = _to_app_name(app)
     return HOME_SCRIPT_TEMPLATE % {'app_name': app_name,
                                    'model_underscore': _to_undescore_case(model),
-                                   'web_name': web_name}
+                                   'web_name': web_name,
+                                   'app': app}
 
 
 def code_for_public_home_script(app, model):
@@ -598,7 +600,8 @@ def code_for_form_script(app, model):
     app_name = _to_app_name(app)
     return NEW_SCRIPT_TEMPLATE % {'app_name': app_name,
                                   'model_underscore': _to_undescore_case(model),
-                                  'web_name': web_name}
+                                  'web_name': web_name,
+                                  'app': app}
 
 
 def code_for_edit_script(app, model):
@@ -606,7 +609,8 @@ def code_for_edit_script(app, model):
     app_name = _to_app_name(app)
     return EDIT_SCRIPT_TEMPLATE % {'app_name': app_name,
                                    'model_underscore': _to_undescore_case(model),
-                                   'web_name': web_name}
+                                   'web_name': web_name,
+                                   'app': app}
 
 
 def init_new_script(app, model):
@@ -630,7 +634,8 @@ def code_for_rest_script(app, model):
     app_name = _to_app_name(app)
     return REST_SCRIPT_TEMPLATE % {'app_name': app_name,
                                    'model_underscore': _to_undescore_case(model),
-                                   'web_name': web_name}
+                                   'web_name': web_name,
+                                   'app': app}
 
 
 def init_rest_script(app, model):

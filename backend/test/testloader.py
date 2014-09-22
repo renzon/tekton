@@ -20,7 +20,7 @@ if __name__ == '__main__':
 
     sys.path.append(os.path.join(PROJECT_PATH, 'src'))
 
-    tests = unittest.TestLoader().discover(ROOT_PATH, "*tests.py")
+    tests = unittest.TestLoader().discover(ROOT_PATH, "*.py")
     result = unittest.TextTestRunner().run(tests)
 
     if not result.wasSuccessful():
