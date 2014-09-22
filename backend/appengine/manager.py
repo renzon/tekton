@@ -44,9 +44,11 @@ from gaeforms.ndb.form import ModelForm
 from gaegraph.business_base import UpdateNode
 from %(app_path)s.%(app)s_model import %(model)s
 
-class %(model)sPublicForm(ModelForm):
+
+
+class %(model)sSaveForm(ModelForm):
     """
-    Form used to show properties on app's home
+    Form used to save and update %(model)s
     """
     _model_class = %(model)s
     _include = [%(form_properties)s]
@@ -54,34 +56,19 @@ class %(model)sPublicForm(ModelForm):
 
 class %(model)sForm(ModelForm):
     """
-    Form used to save and update operations on app's admin page
+    Form used to expose %(model)s's properties for list or json
     """
     _model_class = %(model)s
-    _include = [%(form_properties)s]
 
 
-class %(model)sDetailForm(ModelForm):
-    """
-    Form used to show entity details on app's admin page
-    """
-    _model_class = %(model)s
-    _include = [%(full_properties)s]
-
-
-class %(model)sShortForm(ModelForm):
-    """
-    Form used to show entity short version on app's admin page, mainly for tables
-    """
-    _model_class = %(model)s
-    _include = [%(full_properties)s]
 
 
 class Save%(model)sCommand(SaveCommand):
-    _model_form_class = %(model)sForm
+    _model_form_class = %(model)sSaveForm
 
 
 class Update%(model)sCommand(UpdateNode):
-    _model_form_class = %(model)sForm
+    _model_form_class = %(model)sSaveForm
 
 
 class List%(model)sCommand(ModelSearchCommand):
@@ -93,8 +80,7 @@ class List%(model)sCommand(ModelSearchCommand):
 FACADE_TEMPLATE = r'''# -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 from gaegraph.business_base import NodeSearch, DeleteNode
-from %(app_path)s.%(app)s_commands import List%(model)sCommand, Save%(model)sCommand, Update%(model)sCommand, \
-    %(model)sPublicForm, %(model)sDetailForm, %(model)sShortForm
+from %(app_path)s.%(app)s_commands import List%(model)sCommand, Save%(model)sCommand, Update%(model)sCommand, %(model)sForm
 
 
 def save_%(model_underscore)s_cmd(**%(model_underscore)s_properties):
@@ -123,30 +109,13 @@ def list_%(model_underscore)ss_cmd():
     return List%(model)sCommand()
 
 
-def %(model_underscore)s_detail_form(**kwargs):
+def %(model_underscore)s_form(**kwargs):
     """
     Function to get %(model)s's detail form.
     :param kwargs: form properties
     :return: Form
     """
-    return %(model)sDetailForm(**kwargs)
-
-
-def %(model_underscore)s_short_form(**kwargs):
-    """
-    Function to get %(model)s's short form. just a subset of %(model_underscore)s's properties
-    :param kwargs: form properties
-    :return: Form
-    """
-    return %(model)sShortForm(**kwargs)
-
-def %(model_underscore)s_public_form(**kwargs):
-    """
-    Function to get %(model)s'spublic form. just a subset of %(model_underscore)s's properties
-    :param kwargs: form properties
-    :return: Form
-    """
-    return %(model)sPublicForm(**kwargs)
+    return %(model)sForm(**kwargs)
 
 
 def get_%(model_underscore)s_cmd(%(model_underscore)s_id):
@@ -156,6 +125,7 @@ def get_%(model_underscore)s_cmd(%(model_underscore)s_id):
     :return: Command
     """
     return NodeSearch(%(model_underscore)s_id)
+
 
 
 def delete_%(model_underscore)s_cmd(%(model_underscore)s_id):
@@ -177,29 +147,29 @@ from routes.%(web_name)s import new, edit
 from tekton.gae.middleware.redirect import RedirectResponse
 
 
-def delete(%(model_underscore)s_id):
-    %(app)s_facade.delete_%(model_underscore)s_cmd(%(model_underscore)s_id)()
-    return RedirectResponse(router.to_path(index))
-
-
 @no_csrf
 def index():
     cmd = %(app)s_facade.list_%(model_underscore)ss_cmd()
     %(model_underscore)ss = cmd()
     edit_path = router.to_path(edit)
     delete_path = router.to_path(delete)
-    short_form = %(app)s_facade.%(model_underscore)s_short_form()
+    %(model_underscore)s_form = %(app)s_facade.%(model_underscore)s_form()
 
-    def short_%(model_underscore)s_dict(%(model_underscore)s):
-        %(model_underscore)s_dct = short_form.fill_with_model(%(model_underscore)s)
+    def localize_%(model_underscore)s(%(model_underscore)s):
+        %(model_underscore)s_dct = %(model_underscore)s_form.fill_with_model(%(model_underscore)s)
         %(model_underscore)s_dct['edit_path'] = router.to_path(edit_path, %(model_underscore)s_dct['id'])
         %(model_underscore)s_dct['delete_path'] = router.to_path(delete_path, %(model_underscore)s_dct['id'])
         return %(model_underscore)s_dct
 
-    short_%(model_underscore)ss = [short_%(model_underscore)s_dict(%(model_underscore)s) for %(model_underscore)s in %(model_underscore)ss]
-    context = {'%(model_underscore)ss': short_%(model_underscore)ss,
+    localized_%(model_underscore)ss = [localize_%(model_underscore)s(%(model_underscore)s) for %(model_underscore)s in %(model_underscore)ss]
+    context = {'%(model_underscore)ss': localized_%(model_underscore)ss,
                'new_path': router.to_path(new)}
     return TemplateResponse(context, '%(app)ss/%(app)s_home.html')
+
+
+def delete(%(model_underscore)s_id):
+    %(app)s_facade.delete_%(model_underscore)s_cmd(%(model_underscore)s_id)()
+    return RedirectResponse(router.to_path(index))
 
 '''
 
@@ -225,7 +195,7 @@ def save(**%(model_underscore)s_properties):
         cmd()
     except CommandExecutionException:
         context = {'errors': cmd.errors,
-                   '%(model_underscore)s': cmd.form}
+                   '%(model_underscore)s': %(model_underscore)s_properties}
 
         return TemplateResponse(context, '%(web_name)s/%(app)s_form.html')
     return RedirectResponse(router.to_path(%(web_name)s))
@@ -246,8 +216,8 @@ from tekton.gae.middleware.redirect import RedirectResponse
 @no_csrf
 def index(%(model_underscore)s_id):
     %(model_underscore)s = %(app)s_facade.get_%(model_underscore)s_cmd(%(model_underscore)s_id)()
-    detail_form = %(app)s_facade.%(model_underscore)s_detail_form()
-    context = {'save_path': router.to_path(save, %(model_underscore)s_id), '%(model_underscore)s': detail_form.fill_with_model(%(model_underscore)s)}
+    %(model_underscore)s_form = %(app)s_facade.%(model_underscore)s_form()
+    context = {'save_path': router.to_path(save, %(model_underscore)s_id), '%(model_underscore)s': %(model_underscore)s_form.fill_with_model(%(model_underscore)s)}
     return TemplateResponse(context, '%(web_name)s/%(app)s_form.html')
 
 
@@ -256,8 +226,7 @@ def save(%(model_underscore)s_id, **%(model_underscore)s_properties):
     try:
         cmd()
     except CommandExecutionException:
-        context = {'errors': cmd.errors,
-                   '%(model_underscore)s': cmd.form}
+        context = {'errors': cmd.errors, '%(model_underscore)s': %(model_underscore)s_properties}
 
         return TemplateResponse(context, '%(web_name)s/%(app)s_form.html')
     return RedirectResponse(router.to_path(%(web_name)s))
@@ -274,9 +243,9 @@ from %(app_name)s import %(app)s_facade
 def index():
     cmd = %(app)s_facade.list_%(model_underscore)ss_cmd()
     %(model_underscore)s_list = cmd()
-    short_form=%(app)s_facade.%(model_underscore)s_short_form()
-    %(model_underscore)s_short = [short_form.fill_with_model(m) for m in %(model_underscore)s_list]
-    return JsonResponse(%(model_underscore)s_short)
+    %(model_underscore)s_form=%(app)s_facade.%(model_underscore)s_form()
+    %(model_underscore)s_dcts = [%(model_underscore)s_form.fill_with_model(m) for m in %(model_underscore)s_list]
+    return JsonResponse(%(model_underscore)s_dcts)
 
 
 def new(_resp, **%(model_underscore)s_properties):
@@ -299,8 +268,8 @@ def _save_or_update_json_response(cmd, _resp):
     except CommandExecutionException:
         _resp.status_code = 400
         return JsonResponse({'errors': cmd.errors})
-    short_form=%(app)s_facade.%(model_underscore)s_short_form()
-    return JsonResponse(short_form.fill_with_model(%(model_underscore)s))
+    %(model_underscore)s_form=%(app)s_facade.%(model_underscore)s_form()
+    return JsonResponse(%(model_underscore)s_form.fill_with_model(%(model_underscore)s))
 
 '''
 
