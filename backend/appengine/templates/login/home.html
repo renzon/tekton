@@ -1,7 +1,7 @@
 {% extends 'base/base.html' %}
 {% block css %}
     <link rel="stylesheet" href="/static/bootstrap/css/bootstrap-social.css"/>
-    <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/static/font-awesome-4.2.0/css/font-awesome.min.css"/>
 {% endblock %}
 {% block js %}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -36,15 +36,15 @@
                 <div class="well">
                     <h2>Google</h2><br/>
                     <a href="{{ login_google_path }}" class="btn btn-social btn-google-plus"><i
-                            class="fa icon-google-plus"></i>Google</a>
+                            class="fa fa-google-plus"></i>Google</a>
                 </div>
             </div>
             <div class="col-md-4 text-center">
                 <div class="well">
                     <h2>Facebook</h2><br/>
                     <button class="btn btn-social btn-facebook" onclick="fb_login();">
-                        <i class="fa icon-facebook"></i>
-                        Facebbok
+                        <i class="fa fa-facebook"></i>
+                        Facebook
                     </button>
                     <form id="fbform" action="{{ login_facebook_path }}" method="post">
                         {{ csrf_input() }}
