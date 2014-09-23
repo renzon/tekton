@@ -14,10 +14,25 @@ class LocaleMiddleware(Middleware):
             if locale:
                 locale_obj = i18n.get_i18n()
                 locale_obj.set_locale(locale)
-                if locale == 'pt_BR':
-                    locale_obj.set_timezone('America/Sao_Paulo')
+                import settings  # this is here to avoid cyclic dependency
+
+                locale_obj.set_timezone(settings.DEFAULT_TIMEZONE)
+                return True
 
     def set_up(self):
-        self._handle('locale')
+        handled = self._handle('locale')
         # fucking Facebook scrapper sending undesired param
-        self._handle('fb_locale')
+        handled = self._handle('fb_locale') or handled
+        user = self.dependencies['_logged_user']
+        import settings  # this is here to avoid cyclic dependency
+
+        if user:
+            locale_obj = i18n.get_i18n()
+            locale_obj.set_locale(user.locale or settings.DEFAULT_LOCALE)
+            locale_obj.set_timezone(user.timezone or settings.DEFAULT_TIMEZONE)
+        elif not handled:
+            locale_obj = i18n.get_i18n()
+            locale_obj.set_locale(settings.DEFAULT_LOCALE)
+            locale_obj.set_timezone(settings.DEFAULT_TIMEZONE)
+
+
