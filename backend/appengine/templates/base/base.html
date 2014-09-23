@@ -66,15 +66,25 @@
             </ul>
             <div class="nav navbar-nav pull-right pad8">
                 {% if _logged_user %}
-
-                    <form class="form-inline" action="{{ _logout_path }}" method="post">
-                        <div class="input-append" id="logout-div">
-                            <span>{{ _logged_user.email }}</span>
-                            <button class="btn btn-danger" type="submit">{% trans %}Logout{% endtrans %}</button>
-                            {{ csrf_input() }}
-                        </div>
-                    </form>
-
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+                                data-toggle="dropdown">
+                            {{ _logged_user.name }}
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/account">{% trans %}
+                                Account{% endtrans %}</a></li>
+                            <li role="presentation" class="divider"></li>
+                            <li role="presentation">
+                                <form action="{{ _logout_path }}" method="post" class="text-center">
+                                    <button class="btn btn-danger" type="submit">{% trans %}
+                                        Logout{% endtrans %}</button>
+                                    {{ csrf_input() }}
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
                 {% else %}
                     <a class="btn btn-success" href="{{ _login_path }}">{% trans %}Login{% endtrans %}</a>
 
