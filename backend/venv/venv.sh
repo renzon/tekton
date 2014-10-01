@@ -15,7 +15,14 @@ to_console "Activating virtualenv"
 source venv/bin/activate
 
 to_console "Checking up dependencies"
-pip install -r venv/dev_requirements.txt
+if [ ! -z "$1" ]
+    then
+        to_console "Running with proxy "$1
+        pip install -r venv/dev_requirements.txt --proxy=$1
+    else
+        to_console 'Runing with no proxy '$1
+        pip install -r venv/dev_requirements.txt
+fi
 
 cd appengine
 
