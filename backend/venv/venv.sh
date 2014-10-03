@@ -20,7 +20,7 @@ if [ ! -z "$1" ]
         to_console "Running with proxy "$1
         pip install -r venv/dev_requirements.txt --proxy=$1
     else
-        to_console 'Runing with no proxy '$1
+        to_console 'Runing with no proxy'
         pip install -r venv/dev_requirements.txt
 fi
 
