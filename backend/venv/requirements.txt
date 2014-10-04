@@ -1,8 +1,8 @@
 tekton==4.0
-gaebusiness==4.4.3
+gaebusiness==4.5
 gaecookie==0.7
 gaeforms==0.12
-gaegraph==3.4
+gaegraph==3.4.1
 gaepermission==0.9
 pytz==2014.4
 Babel==1.3
