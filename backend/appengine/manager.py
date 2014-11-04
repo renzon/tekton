@@ -253,21 +253,21 @@ def new(_resp, **%(model_underscore)s_properties):
     return _save_or_update_json_response(cmd, _resp)
 
 
-def edit(_resp, %(model_underscore)s_id, **%(model_underscore)s_properties):
-    cmd = %(app)s_facade.update_%(model_underscore)s_cmd(%(model_underscore)s_id, **%(model_underscore)s_properties)
+def edit(_resp, id, **%(model_underscore)s_properties):
+    cmd = %(app)s_facade.update_%(model_underscore)s_cmd(id, **%(model_underscore)s_properties)
     return _save_or_update_json_response(cmd, _resp)
 
 
-def delete(%(model_underscore)s_id):
-    %(app)s_facade.delete_%(model_underscore)s_cmd(%(model_underscore)s_id)()
+def delete(id):
+    %(app)s_facade.delete_%(model_underscore)s_cmd(id)()
 
 
 def _save_or_update_json_response(cmd, _resp):
     try:
         %(model_underscore)s = cmd()
     except CommandExecutionException:
-        _resp.status_code = 400
-        return JsonResponse({'errors': cmd.errors})
+        _resp.status_code = 500
+        return JsonResponse(cmd.errors)
     %(model_underscore)s_form=%(app)s_facade.%(model_underscore)s_form()
     return JsonResponse(%(model_underscore)s_form.fill_with_model(%(model_underscore)s))
 
