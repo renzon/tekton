@@ -1,0 +1,21 @@
+{% extends 'base/base.html' %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="well">
+                    <h1>{% trans %}File Upload Form{% endtrans %}</h1>
+                    <form action="{{ upload_url }}" method="post" role="form" enctype="multipart/form-data">
+                        {{ csrf_input() }}
+                        <div class="form-group ">
+                            <label for="upInput"
+                                   class="control-label">{% trans %}Choose a file{% endtrans %}</label>
+                            <input id="upInput" type="file" name="files[]" multiple="multiple" class="form-control"/>
+                        </div>
+                        <button type="submit" class="btn btn-success">{% trans %}Upload{% endtrans %}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
