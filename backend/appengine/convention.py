@@ -1,4 +1,5 @@
 import sys
+from google.appengine.ext.webapp.blobstore_handlers import BlobstoreDownloadHandler, BlobstoreUploadHandler
 import os
 
 # Put lib on path, once Google App Engine does not allow doing it directly
@@ -14,7 +15,7 @@ i18n.default_config['default_locale'] = settings.DEFAULT_LOCALE
 i18n.default_config['default_timezone'] = settings.DEFAULT_TIMEZONE
 
 
-class BaseHandler(webapp2.RequestHandler):
+class HandlerMixin():
     def get(self):
         self.make_convention()
 
@@ -25,5 +26,18 @@ class BaseHandler(webapp2.RequestHandler):
         middleware.execute(settings.MIDDLEWARE_LIST, self)
 
 
-app = webapp2.WSGIApplication([("/.*", BaseHandler)], debug=False)
+class BaseHandler(HandlerMixin, webapp2.RequestHandler):
+    pass
 
+
+class DownloadHandler(HandlerMixin, BlobstoreDownloadHandler):
+    pass
+
+
+class UploadHandler(HandlerMixin, BlobstoreUploadHandler):
+    pass
+
+
+app = webapp2.WSGIApplication(
+    [("/.*download.*", DownloadHandler), ("/.*upload.*", UploadHandler), ("/.*", BaseHandler)],
+    debug=False)

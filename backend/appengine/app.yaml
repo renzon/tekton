@@ -40,14 +40,6 @@ handlers:
   static_files: static\1
   upload: static.*
 
-- url: /[^_].*upload.*
-  script: upload_convention.app
-  secure: always
-
-- url: /[^_].*download.*
-  script: download_convention.app
-  secure: always
-
 - url: /[^_].*
   script: convention.app
   secure: always
