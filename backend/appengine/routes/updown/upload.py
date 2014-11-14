@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 import logging
-from routes.up import download
+from routes.updown import download
 from tekton import router
 from tekton.gae.middleware.redirect import RedirectResponse
 
