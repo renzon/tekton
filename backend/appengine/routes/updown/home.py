@@ -21,4 +21,4 @@ def index(_handler):
     logging.info(bucket)
     url = blobstore.create_upload_url(success_url, gs_bucket_name=bucket)
     context = {'upload_url': url}
-    return TemplateResponse(context, 'up/home.html')
+    return TemplateResponse(context, 'updown/home.html')
