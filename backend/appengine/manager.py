@@ -446,36 +446,6 @@ def _to_app_path(app):
     return os.path.join(APPS_DIR, app + '_app')
 
 
-def init_facade(app, model):
-    app_path = _to_app_path(app)
-    facade_script = os.path.join(app_path, '%s_facade.py' % app)
-    content = facade_code_for(app, model)
-    _create_file_if_not_existing(facade_script, content)
-    return content
-
-
-def _to_web_name(app):
-    return app + 's'
-
-
-def _to_web_path(app):
-    return os.path.join(WEB_DIR, _to_web_name(app))
-
-
-def _to_template_path(app):
-    return os.path.join(TEMPLATES_DIR, _to_web_name(app))
-
-
-def init_web(app):
-    web_path = _to_web_path(app)
-    _create_package(web_path)
-
-
-def init_web_admin(app):
-    web_path = _to_web_path(app)
-    _create_package(web_path)
-
-
 def generate_generic(app, model, template_path_function, file_name, content_function):
     app_template_path = template_path_function(app)
     template_file = os.path.join(app_template_path, file_name)
@@ -483,14 +453,36 @@ def generate_generic(app, model, template_path_function, file_name, content_func
     _create_file_if_not_existing(template_file, content)
     return content
 
+def generate_app_file(app, model, file_name, content_function):
+    file_name = '%s_%s.py' % (app,file_name)
+    return generate_generic(app, model, _to_app_path, file_name, content_function)
+
+
+def init_facade(app, model):
+    return generate_app_file(app, model, 'facade', facade_code_for)
+
+
+def _to_routes_name(app):
+    return app + 's'
+
+
+def init_routes(app):
+    web_path = _to_routes_path(app)
+    _create_package(web_path)
+
+
+def _to_routes_path(app):
+    return os.path.join(WEB_DIR, _to_routes_name(app))
+
+
 
 def generate_routes(app, model, file_name, content_function):
     file_name = '%s.py' % file_name
-    return generate_generic(app, model, _to_web_path, file_name, content_function)
+    return generate_generic(app, model, _to_routes_path, file_name, content_function)
 
 
 def code_for_home_script(app, model):
-    web_name = _to_web_name(app)
+    web_name = _to_routes_name(app)
     app_name = _to_app_name(app)
     return HOME_SCRIPT_TEMPLATE % {'app_name': app_name,
                                    'model_underscore': _to_undescore_case(model),
@@ -503,7 +495,7 @@ def init_home_script(app, model):
 
 
 def code_for_new_script(app, model):
-    web_name = _to_web_name(app)
+    web_name = _to_routes_name(app)
     app_name = _to_app_name(app)
     return NEW_SCRIPT_TEMPLATE % {'app_name': app_name,
                                   'model_underscore': _to_undescore_case(model),
@@ -516,7 +508,7 @@ def init_new_script(app, model):
 
 
 def code_for_edit_script(app, model):
-    web_name = _to_web_name(app)
+    web_name = _to_routes_name(app)
     app_name = _to_app_name(app)
     return EDIT_SCRIPT_TEMPLATE % {'app_name': app_name,
                                    'model_underscore': _to_undescore_case(model),
@@ -529,7 +521,7 @@ def init_edit_script(app, model):
 
 
 def code_for_rest_script(app, model):
-    web_name = _to_web_name(app)
+    web_name = _to_routes_name(app)
     app_name = _to_app_name(app)
     return REST_SCRIPT_TEMPLATE % {'app_name': app_name,
                                    'model_underscore': _to_undescore_case(model),
@@ -547,9 +539,13 @@ APP_BASE_HTML_TEMPLATE = '''{%% extends 'base/base.html' %%}
 {%% endblock %%}'''
 
 
+def _to_template_path(app):
+    return os.path.join(TEMPLATES_DIR, _to_routes_name(app))
+
+
 def init_html_templates(app):
     template_path = _to_template_path(app)
-    content = APP_BASE_HTML_TEMPLATE % {'app_name_upper': _to_web_name(app).upper()}
+    content = APP_BASE_HTML_TEMPLATE % {'app_name_upper': _to_routes_name(app).upper()}
     _create_dir_if_not_existing(template_path)
     base_dir = os.path.join(template_path, '%s_base.html' % app)
     _create_file_if_not_existing(base_dir, content)
@@ -590,7 +586,7 @@ def generate_template(app, model, file_name, content_function):
 
 
 def code_for_home_html(app, model):
-    web_name = _to_web_name(app)
+    web_name = _to_routes_name(app)
     app_name = _to_app_name(app)
     properties = _model_properties(app, model)
     properties = properties.difference(set(['creation']))
@@ -609,7 +605,7 @@ def init_home_html(app, model):
 
 
 def code_for_form_html(app, model):
-    web_name = _to_web_name(app)
+    web_name = _to_routes_name(app)
     app_name = _to_app_name(app)
     properties = _model_properties(app, model)
     properties = properties.difference(set(['creation']))
@@ -634,7 +630,7 @@ def scaffold(app, model, *properties):
     print init_facade(app, model)
 
     _title('creating routes folder')
-    init_web(app)
+    init_routes(app)
     _title('routes home.py')
     print init_home_script(app, model)
 
