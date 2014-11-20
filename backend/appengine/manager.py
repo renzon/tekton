@@ -16,7 +16,8 @@ if 'GAE_SDK' in os.environ:
 else:
     print "GAE_SDK environment variable must be on path and point to App Engine's SDK folder"
 from gaeforms.ndb.property import SimpleCurrency, SimpleDecimal
-from google.appengine.ext.ndb.model import StringProperty, TextProperty, DateProperty, DateTimeProperty, IntegerProperty, \
+from google.appengine.ext.ndb.model import StringProperty, TextProperty, DateProperty, DateTimeProperty, \
+    IntegerProperty, \
     FloatProperty, BooleanProperty
 
 PROJECT_DIR = os.path.dirname(__file__)
@@ -53,6 +54,12 @@ class SaveTests(GAETestCase):
         saved_%(model_underscore)s = %(model)s.query().get()
         self.assertIsNotNone(saved_%(model_underscore)s)
 %(model_assertions)s
+
+    def test_error(self):
+        template_response = save()
+        errors = template_response.context['errors']
+        self.assertSetEqual(set([%(model_properties)s]), set(errors.keys()))
+        self.assert_can_render(template_response)
 '''
 
 MODEL_TEMPLATE = '''# -*- coding: utf-8 -*-
@@ -668,18 +675,18 @@ def generate_tests(app, model, file_name, content_function):
 
 
 def _to_default_model_value(descriptor, name, index):
-    if isinstance(descriptor, (StringProperty,TextProperty)):
+    if isinstance(descriptor, (StringProperty, TextProperty)):
         return "'%s_string'" % name
     if isinstance(descriptor, DateProperty):
-        return "date(2014, 1, %s)" % (index+1)
+        return "date(2014, 1, %s)" % (index + 1)
     if isinstance(descriptor, DateTimeProperty):
-        return "datetime(2014, 1, 1, 1, %s, 0)" % (index+1)
+        return "datetime(2014, 1, 1, 1, %s, 0)" % (index + 1)
     if isinstance(descriptor, (SimpleCurrency, SimpleDecimal)):
-        return "Decimal('1.%s')" % (index+1 if index>=9 else '0%s'%(index+1))
+        return "Decimal('1.%s')" % (index + 1 if index >= 9 else '0%s' % (index + 1))
     if isinstance(descriptor, IntegerProperty):
-        return "%s" % (index+1)
+        return "%s" % (index + 1)
     if isinstance(descriptor, FloatProperty):
-        return "1.%s" % (index+1)
+        return "1.%s" % (index + 1)
     if isinstance(descriptor, BooleanProperty):
         return "True"
 
@@ -693,26 +700,26 @@ def _to_model_assertions(variable, descriptors_dct):
 
 
 def _to_default_reques_value(descriptor, name, index):
-    if isinstance(descriptor, (StringProperty,TextProperty)):
+    if isinstance(descriptor, (StringProperty, TextProperty)):
         return "'%s_string'" % name
     if isinstance(descriptor, DateProperty):
-        return "'1/%s/2014'" % (index+1)
+        return "'1/%s/2014'" % (index + 1)
     if isinstance(descriptor, DateTimeProperty):
-        return "'1/1/2014 01:%s:0'" % (index+1)
+        return "'1/1/2014 01:%s:0'" % (index + 1)
     if isinstance(descriptor, (SimpleCurrency, SimpleDecimal)):
-        return "'1.%s'" % (index+1 if index>=9 else '0%s'%(index+1))
+        return "'1.%s'" % (index + 1 if index >= 9 else '0%s' % (index + 1))
     if isinstance(descriptor, IntegerProperty):
-        return "'%s'" % (index+1)
+        return "'%s'" % (index + 1)
     if isinstance(descriptor, FloatProperty):
-        return "'1.%s'" % (index+1)
+        return "'1.%s'" % (index + 1)
     if isinstance(descriptor, BooleanProperty):
         return "'True'"
 
 
-
 def _to_request_values(variable, descriptors_dct):
     template = "%(property)s=%(value)s"
-    rendered = [template % {'variable': variable, 'property': p, 'value': _to_default_reques_value(descriptor, p, i)} for
+    rendered = [template % {'variable': variable, 'property': p, 'value': _to_default_reques_value(descriptor, p, i)}
+                for
                 i, (p, descriptor) in
                 enumerate(descriptors_dct.iteritems())]
     return ', '.join(rendered)
@@ -727,9 +734,11 @@ def code_new_tests(app, model):
     descriptors_dct = _model_descriptors(app, model)
     model_underscore = _to_underscore_case(model)
     model_assertions = _to_model_assertions('saved_' + model_underscore, descriptors_dct)
-    request_values=_to_request_values('saved_' + model_underscore, descriptors_dct)
+    model_properties = ', '.join("'%s'" % k for k in descriptors_dct)
+    request_values = _to_request_values('saved_' + model_underscore, descriptors_dct)
     return NEW_TESTS_TEMPLATE % {'app': app, 'model': model, 'model_underscore': model_underscore,
-                                 'model_assertions': model_assertions,'request_values':request_values}
+                                 'model_assertions': model_assertions, 'request_values': request_values,
+                                 'model_properties': model_properties}
 
 
 def init_new_tests(app, model):
