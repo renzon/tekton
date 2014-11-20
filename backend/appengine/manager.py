@@ -19,11 +19,36 @@ else:
 PROJECT_DIR = os.path.dirname(__file__)
 PROJECT_DIR = os.path.abspath(os.path.join(PROJECT_DIR, '..'))
 APPS_DIR = os.path.join(PROJECT_DIR, 'apps')
+TEST_DIR = os.path.join(PROJECT_DIR, 'test')
 sys.path.insert(1, APPS_DIR)
 APPENGINE_DIR = os.path.join(PROJECT_DIR, 'appengine')
 WEB_DIR = os.path.join(APPENGINE_DIR, 'routes')
 TEMPLATES_DIR = os.path.join(APPENGINE_DIR, 'templates')
 # Templates
+
+NEW_TESTS_TEMPLATE = '''# -*- coding: utf-8 -*-
+from __future__ import absolute_import, unicode_literals
+from base import GAETestCase
+from m_app.m_model import M
+from routes.ms.new import index, save
+from tekton.gae.middleware.redirect import RedirectResponse
+
+
+class IndexTests(GAETestCase):
+    def test_success(self):
+        template_response = index()
+        self.assert_can_render(template_response)
+
+
+class SaveTests(GAETestCase):
+    def test_success(self):
+        self.assertIsNone(M.query().get())
+        redirect_response = save(k='k_string')
+        self.assertIsInstance(redirect_response, RedirectResponse)
+        saved_m = M.query().get()
+        self.assertIsNotNone(saved_m)
+        self.assertEqual('k_string', saved_m.k)
+'''
 
 MODEL_TEMPLATE = '''# -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
@@ -357,14 +382,14 @@ def _create_package(package_path):
 
 
 def _create_app(name, app_path, model, *properties):
-    properties = '\n'.join(parse_propety(p) for p in properties)
+    properties = '\n'.join(parse_property(p) for p in properties)
     properties = properties or '    pass'
     _create_package(app_path)
     _create_file_if_not_existing(os.path.join(app_path, '%s_model.py' % name),
                                  MODEL_TEMPLATE % {'model': model, 'properties': properties})
 
 
-def parse_propety(p):
+def parse_property(p):
     name, type_alias = p.split(':')
     types = {'string': 'ndb.StringProperty(required=True)',
              'date': 'ndb.DateProperty(required=True)',
@@ -416,15 +441,6 @@ def _title(param):
     print ('- ' * n) + param + (' -' * n)
 
 
-def init_commands(app, model):
-    print APPS_DIR
-    app_path = os.path.join(APPS_DIR, app + '_app')
-    commands_script = os.path.join(app_path, '%s_commands.py' % app)
-    content = commands_code_for(app, model)
-    _create_file_if_not_existing(commands_script, content)
-    return content
-
-
 def _to_app_name(app):
     return app + '_app'
 
@@ -434,18 +450,6 @@ def _to_undescore_case(model):
     return ''.join(('_' + letter.lower() if letter.isupper() else letter) for letter in model_underscore)
 
 
-def facade_code_for(app, model):
-    app_path = _to_app_name(app)
-    model_underscore = _to_undescore_case(model)
-
-    dct = {'app': app, 'app_path': app_path, 'model': model, 'model_underscore': model_underscore}
-    return FACADE_TEMPLATE % dct
-
-
-def _to_app_path(app):
-    return os.path.join(APPS_DIR, app + '_app')
-
-
 def generate_generic(app, model, template_path_function, file_name, content_function):
     app_template_path = template_path_function(app)
     template_file = os.path.join(app_template_path, file_name)
@@ -453,9 +457,26 @@ def generate_generic(app, model, template_path_function, file_name, content_func
     _create_file_if_not_existing(template_file, content)
     return content
 
+
+def _to_app_path(app):
+    return os.path.join(APPS_DIR, app + '_app')
+
+
 def generate_app_file(app, model, file_name, content_function):
-    file_name = '%s_%s.py' % (app,file_name)
+    file_name = '%s_%s.py' % (app, file_name)
     return generate_generic(app, model, _to_app_path, file_name, content_function)
+
+
+def init_commands(app, model):
+    return generate_app_file(app, model, 'commands', commands_code_for)
+
+
+def facade_code_for(app, model):
+    app_path = _to_app_name(app)
+    model_underscore = _to_undescore_case(model)
+
+    dct = {'app': app, 'app_path': app_path, 'model': model, 'model_underscore': model_underscore}
+    return FACADE_TEMPLATE % dct
 
 
 def init_facade(app, model):
@@ -473,7 +494,6 @@ def init_routes(app):
 
 def _to_routes_path(app):
     return os.path.join(WEB_DIR, _to_routes_name(app))
-
 
 
 def generate_routes(app, model, file_name, content_function):
@@ -622,6 +642,12 @@ def init_form_html(app, model):
     return generate_template(app, model, 'form', code_for_form_html)
 
 
+def init_test(name, model, *properties):
+    _title('Creating test package')
+    test_path = os.path.join(TEST_DIR, name + '_tests')
+    _create_package(test_path)
+
+
 def scaffold(app, model, *properties):
     init_app(app, model, *properties)
     _title('commands.py')
@@ -648,6 +674,9 @@ def scaffold(app, model, *properties):
     _title('templates/form.html')
     print init_form_html(app, model)
 
+    _title('creating test package')
+    print init_test(app, model)
+
 
 def delete_app(app):
     flag = raw_input('Are you sure you want delete app %s (yes or no)? ' % app)
@@ -657,8 +686,12 @@ def delete_app(app):
 
         template_dir = os.path.join(TEMPLATES_DIR, app + 's')
         shutil.rmtree(template_dir)
+
         web_dir = os.path.join(WEB_DIR, app + 's')
         shutil.rmtree(web_dir)
+
+        test_dir = os.path.join(TEST_DIR, app + '_tests')
+        shutil.rmtree(test_dir)
 
 
 FUNC_DICT = {'model': init_app, 'app': scaffold, 'delete': delete_app}

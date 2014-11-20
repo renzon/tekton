@@ -4,6 +4,8 @@ import unittest
 from google.appengine.ext import testbed
 import webapp2
 from webapp2_extras import i18n
+from config.template import render
+
 import settings
 
 
@@ -36,5 +38,14 @@ class GAETestCase(unittest.TestCase):
 
     def tearDown(self):
         self.testbed.deactivate()
+
+    def assert_can_render(self, template_response):
+        """
+        Asserts that a template can be renderes. It raises an Exception otherwise
+        :param template_response:
+        :return:
+        """
+        render(template_response.template_path,template_response.context)
+
 
 
