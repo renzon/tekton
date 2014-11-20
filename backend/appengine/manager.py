@@ -587,6 +587,19 @@ def _to_html_form_inputs(model_undescore, properties):
     return '\n'.join(rendered)
 
 
+def generate_generic(app, model, template_path_function, file_name, content_function):
+    app_template_path = template_path_function(app)
+    template_file = os.path.join(app_template_path, file_name)
+    content = content_function(app, model)
+    _create_file_if_not_existing(template_file, content)
+    return content
+
+
+def generate_template(app, model, file_name, content_function):
+    file_name = '%s_%s.html' % (app, file_name)
+    return generate_generic(app, model, _to_template_path, file_name, content_function)
+
+
 def code_for_home_html(app, model):
     web_name = _to_web_name(app)
     app_name = _to_app_name(app)
@@ -602,6 +615,10 @@ def code_for_home_html(app, model):
                                  'app': app}
 
 
+def init_home_html(app, model):
+    return generate_template(app, model, 'home', code_for_home_html)
+
+
 def code_for_form_html(app, model):
     web_name = _to_web_name(app)
     app_name = _to_app_name(app)
@@ -614,22 +631,6 @@ def code_for_form_html(app, model):
                                  'web_name': web_name,
                                  'inputs': _to_html_form_inputs(model_undescore, properties),
                                  'app': app}
-
-
-def init_home_html(app, model):
-    app_template_path = _to_template_path(app)
-    home_script = os.path.join(app_template_path, '%s_home.html' % app)
-    content = code_for_home_html(app, model)
-    _create_file_if_not_existing(home_script, content)
-    return content
-
-
-def generate_template(app, model, file_name, content_function):
-    app_template_path = _to_template_path(app)
-    template_file = os.path.join(app_template_path, '%s_%s.html' % (app, file_name))
-    content = content_function(app, model)
-    _create_file_if_not_existing(template_file, content)
-    return content
 
 
 def init_form_html(app, model):
