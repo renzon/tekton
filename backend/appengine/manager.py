@@ -493,32 +493,6 @@ def init_home_script(app, model):
     return content
 
 
-def code_for_form_script(app, model):
-    web_name = _to_web_name(app)
-    app_name = _to_app_name(app)
-    return NEW_SCRIPT_TEMPLATE % {'app_name': app_name,
-                                  'model_underscore': _to_undescore_case(model),
-                                  'web_name': web_name,
-                                  'app': app}
-
-
-def code_for_edit_script(app, model):
-    web_name = _to_web_name(app)
-    app_name = _to_app_name(app)
-    return EDIT_SCRIPT_TEMPLATE % {'app_name': app_name,
-                                   'model_underscore': _to_undescore_case(model),
-                                   'web_name': web_name,
-                                   'app': app}
-
-
-def init_new_script(app, model):
-    app_web_path = _to_web_path(app)
-    form_script = os.path.join(app_web_path, 'new.py')
-    content = code_for_form_script(app, model)
-    _create_file_if_not_existing(form_script, content)
-    return content
-
-
 def generate_generic(app, model, template_path_function, file_name, content_function):
     app_template_path = template_path_function(app)
     template_file = os.path.join(app_template_path, file_name)
@@ -530,6 +504,28 @@ def generate_generic(app, model, template_path_function, file_name, content_func
 def generate_routes(app, model, file_name, content_function):
     file_name = '%s.py' % file_name
     return generate_generic(app, model, _to_web_path, file_name, content_function)
+
+
+def code_for_new_script(app, model):
+    web_name = _to_web_name(app)
+    app_name = _to_app_name(app)
+    return NEW_SCRIPT_TEMPLATE % {'app_name': app_name,
+                                  'model_underscore': _to_undescore_case(model),
+                                  'web_name': web_name,
+                                  'app': app}
+
+
+def init_new_script(app, model):
+    return generate_routes(app, model, 'new', code_for_new_script)
+
+
+def code_for_edit_script(app, model):
+    web_name = _to_web_name(app)
+    app_name = _to_app_name(app)
+    return EDIT_SCRIPT_TEMPLATE % {'app_name': app_name,
+                                   'model_underscore': _to_undescore_case(model),
+                                   'web_name': web_name,
+                                   'app': app}
 
 
 def init_edit_script(app, model):
