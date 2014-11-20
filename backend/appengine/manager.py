@@ -243,7 +243,7 @@ from %(app_name)s import %(app)s_facade
 def index():
     cmd = %(app)s_facade.list_%(model_underscore)ss_cmd()
     %(model_underscore)s_list = cmd()
-    %(model_underscore)s_form=%(app)s_facade.%(model_underscore)s_form()
+    %(model_underscore)s_form = %(app)s_facade.%(model_underscore)s_form()
     %(model_underscore)s_dcts = [%(model_underscore)s_form.fill_with_model(m) for m in %(model_underscore)s_list]
     return JsonResponse(%(model_underscore)s_dcts)
 
@@ -268,7 +268,7 @@ def _save_or_update_json_response(cmd, _resp):
     except CommandExecutionException:
         _resp.status_code = 500
         return JsonResponse(cmd.errors)
-    %(model_underscore)s_form=%(app)s_facade.%(model_underscore)s_form()
+    %(model_underscore)s_form = %(app)s_facade.%(model_underscore)s_form()
     return JsonResponse(%(model_underscore)s_form.fill_with_model(%(model_underscore)s))
 
 '''
@@ -519,12 +519,21 @@ def init_new_script(app, model):
     return content
 
 
-def init_edit_script(app, model):
-    app_web_path = _to_web_path(app)
-    form_script = os.path.join(app_web_path, 'edit.py')
-    content = code_for_edit_script(app, model)
-    _create_file_if_not_existing(form_script, content)
+def generate_generic(app, model, template_path_function, file_name, content_function):
+    app_template_path = template_path_function(app)
+    template_file = os.path.join(app_template_path, file_name)
+    content = content_function(app, model)
+    _create_file_if_not_existing(template_file, content)
     return content
+
+
+def generate_routes(app, model, file_name, content_function):
+    file_name = '%s.py' % file_name
+    return generate_generic(app, model, _to_web_path, file_name, content_function)
+
+
+def init_edit_script(app, model):
+    return generate_routes(app, model, 'edit', code_for_edit_script)
 
 
 def code_for_rest_script(app, model):
@@ -537,11 +546,7 @@ def code_for_rest_script(app, model):
 
 
 def init_rest_script(app, model):
-    app_web_path = _to_web_path(app)
-    rest_script = os.path.join(app_web_path, 'rest.py')
-    content = code_for_rest_script(app, model)
-    _create_file_if_not_existing(rest_script, content)
-    return content
+    return generate_routes(app, model, 'rest', code_for_rest_script)
 
 
 APP_BASE_HTML_TEMPLATE = '''{%% extends 'base/base.html' %%}
@@ -585,14 +590,6 @@ def _to_html_form_inputs(model_undescore, properties):
     rendered = [template % {'model_underscore': model_undescore, 'property': p, 'label': _to_label(p)} for p in
                 properties]
     return '\n'.join(rendered)
-
-
-def generate_generic(app, model, template_path_function, file_name, content_function):
-    app_template_path = template_path_function(app)
-    template_file = os.path.join(app_template_path, file_name)
-    content = content_function(app, model)
-    _create_file_if_not_existing(template_file, content)
-    return content
 
 
 def generate_template(app, model, file_name, content_function):
