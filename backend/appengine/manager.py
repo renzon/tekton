@@ -476,23 +476,6 @@ def init_web_admin(app):
     _create_package(web_path)
 
 
-def code_for_home_script(app, model):
-    web_name = _to_web_name(app)
-    app_name = _to_app_name(app)
-    return HOME_SCRIPT_TEMPLATE % {'app_name': app_name,
-                                   'model_underscore': _to_undescore_case(model),
-                                   'web_name': web_name,
-                                   'app': app}
-
-
-def init_home_script(app, model):
-    app_web_path = _to_web_path(app)
-    home_script = os.path.join(app_web_path, 'home.py')
-    content = code_for_home_script(app, model)
-    _create_file_if_not_existing(home_script, content)
-    return content
-
-
 def generate_generic(app, model, template_path_function, file_name, content_function):
     app_template_path = template_path_function(app)
     template_file = os.path.join(app_template_path, file_name)
@@ -504,6 +487,19 @@ def generate_generic(app, model, template_path_function, file_name, content_func
 def generate_routes(app, model, file_name, content_function):
     file_name = '%s.py' % file_name
     return generate_generic(app, model, _to_web_path, file_name, content_function)
+
+
+def code_for_home_script(app, model):
+    web_name = _to_web_name(app)
+    app_name = _to_app_name(app)
+    return HOME_SCRIPT_TEMPLATE % {'app_name': app_name,
+                                   'model_underscore': _to_undescore_case(model),
+                                   'web_name': web_name,
+                                   'app': app}
+
+
+def init_home_script(app, model):
+    return generate_routes(app, model, 'home', code_for_home_script)
 
 
 def code_for_new_script(app, model):
