@@ -7,7 +7,7 @@ from webapp2_extras import i18n
 import settings
 
 
-#workaround for i18n. without this test will not run
+# workaround for i18n. without this test will not run
 
 app = webapp2.WSGIApplication(
     [webapp2.Route('/', None, name='upload_handler')])

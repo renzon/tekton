@@ -624,12 +624,16 @@ def init_home_html(app, model):
     return content
 
 
-def init_form_html(app, model):
+def generate_template(app, model, file_name, content_function):
     app_template_path = _to_template_path(app)
-    form_script = os.path.join(app_template_path, '%s_form.html' % app)
-    content = code_for_form_html(app, model)
-    _create_file_if_not_existing(form_script, content)
+    template_file = os.path.join(app_template_path, '%s_%s.html' % (app, file_name))
+    content = content_function(app, model)
+    _create_file_if_not_existing(template_file, content)
     return content
+
+
+def init_form_html(app, model):
+    return generate_template(app, model, 'form', code_for_form_html)
 
 
 def scaffold(app, model, *properties):
