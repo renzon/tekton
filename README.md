@@ -5,6 +5,10 @@ A full stack project for Google App Engine based on modules Tekton-micro, Gaegra
 
 This application is running on <https://tekton-fullstack.appspot.com>
 
+[Book App Engne and Python](https://leanpub.com/appengine)
+[Vìdeos about the project in pt_BR](https://www.youtube.com/playlist?list=PLA05yVJtRWYRGIeBxag8uT-3ftcMVT5oF)
+
+
 # Contributors:
 
 * [Denis Costa](https://github.com/deniscostadsc)
