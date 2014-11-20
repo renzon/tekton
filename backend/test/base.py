@@ -6,8 +6,6 @@ import webapp2
 from webapp2_extras import i18n
 from config.template import render
 
-import settings
-
 
 # workaround for i18n. without this test will not run
 
@@ -20,7 +18,7 @@ request.app = app
 app.set_globals(app=app, request=request)
 
 i18n.default_config['default_locale'] = 'en_US'
-i18n.default_config['default_timezone'] = settings.DEFAULT_TIMEZONE
+i18n.default_config['default_timezone'] = 'UTC'
 
 # End of workaround
 
@@ -45,7 +43,7 @@ class GAETestCase(unittest.TestCase):
         :param template_response:
         :return:
         """
-        render(template_response.template_path,template_response.context)
+        render(template_response.template_path, template_response.context)
 
 
 
