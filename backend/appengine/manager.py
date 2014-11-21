@@ -30,6 +30,46 @@ WEB_DIR = os.path.join(APPENGINE_DIR, 'routes')
 TEMPLATES_DIR = os.path.join(APPENGINE_DIR, 'templates')
 # Templates
 
+EDIT_TESTS_TEMPLATE = '''# -*- coding: utf-8 -*-
+from __future__ import absolute_import, unicode_literals
+from base import GAETestCase
+from datetime import datetime, date
+from decimal import Decimal
+from %(app)s_app.%(app)s_model import %(model)s
+from routes.%(app)ss.edit import index, save
+from mommygae import mommy
+from tekton.gae.middleware.redirect import RedirectResponse
+
+
+class IndexTests(GAETestCase):
+    def test_success(self):
+        %(model_underscore)s = mommy.save_one(%(model)s)
+        template_response = index(%(model_underscore)s.key.id())
+        self.assert_can_render(template_response)
+
+
+class EditTests(GAETestCase):
+    def test_success(self):
+        %(model_underscore)s = mommy.save_one(%(model)s)
+        old_propeties = %(model_underscore)s.to_dict()
+        redirect_response = save(%(model_underscore)s.key.id(), c='1.01', b='True', d='1.03', f='1.4', i='5', k='k_string',
+                                 time='1/1/2014 01:7:0',
+                                 date='1/8/2014')
+        self.assertIsInstance(redirect_response, RedirectResponse)
+        edited_%(model_underscore)s = %(model_underscore)s.key.get()
+%(model_assertions)s
+        self.assertNotEqual(old_propeties, edited_%(model_underscore)s.to_dict())
+
+    def test_error(self):
+        %(model_underscore)s = mommy.save_one(%(model)s)
+        old_properties = %(model_underscore)s.to_dict()
+        template_response = save(%(model_underscore)s.key.id())
+        errors = template_response.context['errors']
+        self.assertSetEqual(set([%(model_properties)s]), set(errors.keys()))
+        self.assertEqual(old_properties, %(model_underscore)s.key.get().to_dict())
+        self.assert_can_render(template_response)
+'''
+
 NEW_TESTS_TEMPLATE = '''# -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 from base import GAETestCase
@@ -741,8 +781,23 @@ def code_new_tests(app, model):
                                  'model_properties': model_properties}
 
 
+def code_edit_tests(app, model):
+    descriptors_dct = _model_descriptors(app, model)
+    model_underscore = _to_underscore_case(model)
+    model_assertions = _to_model_assertions('edited_' + model_underscore, descriptors_dct)
+    model_properties = ', '.join("'%s'" % k for k in descriptors_dct)
+    request_values = _to_request_values('edited_' + model_underscore, descriptors_dct)
+    return EDIT_TESTS_TEMPLATE % {'app': app, 'model': model, 'model_underscore': model_underscore,
+                                  'model_assertions': model_assertions, 'request_values': request_values,
+                                  'model_properties': model_properties}
+
+
 def init_new_tests(app, model):
     return generate_tests(app, model, 'new', code_new_tests)
+
+
+def init_edit_tests(app, model):
+    return generate_tests(app, model, 'edit', code_edit_tests)
 
 
 def scaffold(app, model, *properties):
@@ -774,6 +829,8 @@ def scaffold(app, model, *properties):
     init_test(app, model)
     _title('creating new tests')
     print init_new_tests(app, model)
+    _title('creating edit tests')
+    print init_edit_tests(app, model)
 
 
 def delete_app(app):
