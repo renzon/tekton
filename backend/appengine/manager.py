@@ -30,6 +30,31 @@ WEB_DIR = os.path.join(APPENGINE_DIR, 'routes')
 TEMPLATES_DIR = os.path.join(APPENGINE_DIR, 'templates')
 # Templates
 
+HOME_TESTS_TEMPLATE='''# -*- coding: utf-8 -*-
+from __future__ import absolute_import, unicode_literals
+from base import GAETestCase
+from %(app)s_app.%(app)s_model import %(model)s
+from routes.%(app)ss.home import index, delete
+from mommygae import mommy
+from tekton.gae.middleware.redirect import RedirectResponse
+
+
+class IndexTests(GAETestCase):
+    def test_success(self):
+        mommy.save_one(%(model)s)
+        template_response = index()
+        self.assert_can_render(template_response)
+
+
+class DeleteTests(GAETestCase):
+    def test_success(self):
+        %(model_underscore)s = mommy.save_one(%(model)s)
+        redirect_response = delete(%(model_underscore)s.key.id())
+        self.assertIsInstance(redirect_response, RedirectResponse)
+        self.assertIsNone(%(model_underscore)s.key.get())
+
+'''
+
 EDIT_TESTS_TEMPLATE = '''# -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 from base import GAETestCase
@@ -792,12 +817,22 @@ def code_edit_tests(app, model):
                                   'model_properties': model_properties}
 
 
+def code_home_tests(app, model):
+    model_underscore = _to_underscore_case(model)
+    return HOME_TESTS_TEMPLATE % {'app': app, 'model': model, 'model_underscore': model_underscore}
+
+
+
 def init_new_tests(app, model):
     return generate_tests(app, model, 'new', code_new_tests)
 
 
 def init_edit_tests(app, model):
     return generate_tests(app, model, 'edit', code_edit_tests)
+
+
+def init_home_tests(app, model):
+    return generate_tests(app, model, 'home', code_home_tests)
 
 
 def scaffold(app, model, *properties):
@@ -831,6 +866,8 @@ def scaffold(app, model, *properties):
     print init_new_tests(app, model)
     _title('creating edit tests')
     print init_edit_tests(app, model)
+    _title('creating home tests')
+    print init_home_tests(app, model)
 
 
 def delete_app(app):
