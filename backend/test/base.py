@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
+import json
 import unittest
 from google.appengine.ext import testbed
 import webapp2
@@ -39,11 +40,19 @@ class GAETestCase(unittest.TestCase):
 
     def assert_can_render(self, template_response):
         """
-        Asserts that a template can be renderes. It raises an Exception otherwise
-        :param template_response:
+        Asserts that a template can be rendered. It raises an Exception otherwise
+        :param template_response: a TemplateResponse instance
         :return:
         """
         render(template_response.template_path, template_response.context)
+
+    def assert_can_serialize_as_json(self, json_response):
+        """
+        Asserts that a json_response contains json serializable data. It raises an Exception otherwise
+        :param template_response: a JsonResponse or JsonUnsecureResponse instance
+        :return:
+        """
+        json.dumps(json_response.context)
 
 
 

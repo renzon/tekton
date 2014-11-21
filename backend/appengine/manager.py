@@ -30,7 +30,80 @@ WEB_DIR = os.path.join(APPENGINE_DIR, 'routes')
 TEMPLATES_DIR = os.path.join(APPENGINE_DIR, 'templates')
 # Templates
 
-HOME_TESTS_TEMPLATE='''# -*- coding: utf-8 -*-
+REST_TESTS_TEMPLATE = '''# -*- coding: utf-8 -*-
+from __future__ import absolute_import, unicode_literals
+from datetime import datetime, date
+from decimal import Decimal
+from base import GAETestCase
+from %(app)s_app.%(app)s_model import %(model)s
+from routes.%(app)ss import rest
+from mock import Mock
+from mommygae import mommy
+
+
+class IndexTests(GAETestCase):
+    def test_success(self):
+        mommy.save_one(%(model)s)
+        mommy.save_one(%(model)s)
+        json_response = rest.index()
+        context = json_response.context
+        self.assertEqual(2, len(context))
+        %(model_underscore)s_dct = context[0]
+        self.assertSetEqual(set(['id', 'creation', %(model_properties)s]), set(%(model_underscore)s_dct.iterkeys()))
+        self.assert_can_serialize_as_json(json_response)
+
+
+class NewTests(GAETestCase):
+    def test_success(self):
+        self.assertIsNone(%(model)s.query().get())
+        json_response = rest.new(None, c='1.01', b='True', d='1.03', f='1.4', i='5', k='k_string',
+                                 time='1/1/2014 01:7:0', date='1/8/2014')
+        db_%(model_underscore)s = %(model)s.query().get()
+        self.assertIsNotNone(db_%(model_underscore)s)
+%(model_assertions)s
+        self.assert_can_serialize_as_json(json_response)
+
+    def test_error(self):
+        resp = Mock()
+        json_response = rest.new(resp)
+        errors = json_response.context
+        self.assertEqual(500, resp.status_code)
+        self.assertSetEqual(set([%(model_properties)s]), set(errors.keys()))
+        self.assert_can_serialize_as_json(json_response)
+
+
+class EditTests(GAETestCase):
+    def test_success(self):
+        %(model_underscore)s = mommy.save_one(%(model)s)
+        old_properties = %(model_underscore)s.to_dict()
+        json_response = rest.edit(None, %(model_underscore)s.key.id(), c='1.01', b='True', d='1.03', f='1.4', i='5', k='k_string',
+                                  time='1/1/2014 01:7:0',
+                                  date='1/8/2014')
+        db_%(model_underscore)s = %(model_underscore)s.key.get()
+%(model_assertions)s
+        self.assertNotEqual(old_properties, db_%(model_underscore)s.to_dict())
+        self.assert_can_serialize_as_json(json_response)
+
+    def test_error(self):
+        %(model_underscore)s = mommy.save_one(%(model)s)
+        old_properties = %(model_underscore)s.to_dict()
+        resp = Mock()
+        json_response = rest.edit(resp, %(model_underscore)s.key.id())
+        errors = json_response.context
+        self.assertEqual(500, resp.status_code)
+        self.assertSetEqual(set([%(model_properties)s]), set(errors.keys()))
+        self.assertEqual(old_properties, %(model_underscore)s.key.get().to_dict())
+        self.assert_can_serialize_as_json(json_response)
+
+
+class DeleteTests(GAETestCase):
+    def test_success(self):
+        %(model_underscore)s = mommy.save_one(%(model)s)
+        rest.delete(%(model_underscore)s.key.id())
+        self.assertIsNone(%(model_underscore)s.key.get())
+'''
+
+HOME_TESTS_TEMPLATE = '''# -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 from base import GAETestCase
 from %(app)s_app.%(app)s_model import %(model)s
@@ -76,14 +149,14 @@ class IndexTests(GAETestCase):
 class EditTests(GAETestCase):
     def test_success(self):
         %(model_underscore)s = mommy.save_one(%(model)s)
-        old_propeties = %(model_underscore)s.to_dict()
+        old_properties = %(model_underscore)s.to_dict()
         redirect_response = save(%(model_underscore)s.key.id(), c='1.01', b='True', d='1.03', f='1.4', i='5', k='k_string',
                                  time='1/1/2014 01:7:0',
                                  date='1/8/2014')
         self.assertIsInstance(redirect_response, RedirectResponse)
         edited_%(model_underscore)s = %(model_underscore)s.key.get()
 %(model_assertions)s
-        self.assertNotEqual(old_propeties, edited_%(model_underscore)s.to_dict())
+        self.assertNotEqual(old_properties, edited_%(model_underscore)s.to_dict())
 
     def test_error(self):
         %(model_underscore)s = mommy.save_one(%(model)s)
@@ -822,6 +895,17 @@ def code_home_tests(app, model):
     return HOME_TESTS_TEMPLATE % {'app': app, 'model': model, 'model_underscore': model_underscore}
 
 
+def code_rest_tests(app, model):
+    descriptors_dct = _model_descriptors(app, model)
+    model_underscore = _to_underscore_case(model)
+    model_assertions = _to_model_assertions('db_' + model_underscore, descriptors_dct)
+    model_properties = ', '.join("'%s'" % k for k in descriptors_dct)
+    request_values = _to_request_values('db_' + model_underscore, descriptors_dct)
+    return REST_TESTS_TEMPLATE % {'app': app, 'model': model, 'model_underscore': model_underscore,
+                                  'model_assertions': model_assertions, 'db_values': request_values,
+                                  'model_properties': model_properties}
+
+
 
 def init_new_tests(app, model):
     return generate_tests(app, model, 'new', code_new_tests)
@@ -833,6 +917,10 @@ def init_edit_tests(app, model):
 
 def init_home_tests(app, model):
     return generate_tests(app, model, 'home', code_home_tests)
+
+
+def init_rest_tests(app, model):
+    return generate_tests(app, model, 'rest', code_rest_tests)
 
 
 def scaffold(app, model, *properties):
@@ -868,6 +956,8 @@ def scaffold(app, model, *properties):
     print init_edit_tests(app, model)
     _title('creating home tests')
     print init_home_tests(app, model)
+    _title('creating rest tests')
+    print init_rest_tests(app, model)
 
 
 def delete_app(app):
