@@ -56,8 +56,7 @@ class IndexTests(GAETestCase):
 class NewTests(GAETestCase):
     def test_success(self):
         self.assertIsNone(%(model)s.query().get())
-        json_response = rest.new(None, c='1.01', b='True', d='1.03', f='1.4', i='5', k='k_string',
-                                 time='1/1/2014 01:7:0', date='1/8/2014')
+        json_response = rest.new(None, %(request_values)s)
         db_%(model_underscore)s = %(model)s.query().get()
         self.assertIsNotNone(db_%(model_underscore)s)
 %(model_assertions)s
@@ -76,9 +75,7 @@ class EditTests(GAETestCase):
     def test_success(self):
         %(model_underscore)s = mommy.save_one(%(model)s)
         old_properties = %(model_underscore)s.to_dict()
-        json_response = rest.edit(None, %(model_underscore)s.key.id(), c='1.01', b='True', d='1.03', f='1.4', i='5', k='k_string',
-                                  time='1/1/2014 01:7:0',
-                                  date='1/8/2014')
+        json_response = rest.edit(None, %(model_underscore)s.key.id(), %(request_values)s)
         db_%(model_underscore)s = %(model_underscore)s.key.get()
 %(model_assertions)s
         self.assertNotEqual(old_properties, db_%(model_underscore)s.to_dict())
@@ -150,9 +147,7 @@ class EditTests(GAETestCase):
     def test_success(self):
         %(model_underscore)s = mommy.save_one(%(model)s)
         old_properties = %(model_underscore)s.to_dict()
-        redirect_response = save(%(model_underscore)s.key.id(), c='1.01', b='True', d='1.03', f='1.4', i='5', k='k_string',
-                                 time='1/1/2014 01:7:0',
-                                 date='1/8/2014')
+        redirect_response = save(%(model_underscore)s.key.id(), %(request_values)s)
         self.assertIsInstance(redirect_response, RedirectResponse)
         edited_%(model_underscore)s = %(model_underscore)s.key.get()
 %(model_assertions)s
@@ -900,9 +895,9 @@ def code_rest_tests(app, model):
     model_underscore = _to_underscore_case(model)
     model_assertions = _to_model_assertions('db_' + model_underscore, descriptors_dct)
     model_properties = ', '.join("'%s'" % k for k in descriptors_dct)
-    request_values = _to_request_values('db_' + model_underscore, descriptors_dct)
+    request_values = _to_request_values('request_' + model_underscore, descriptors_dct)
     return REST_TESTS_TEMPLATE % {'app': app, 'model': model, 'model_underscore': model_underscore,
-                                  'model_assertions': model_assertions, 'db_values': request_values,
+                                  'model_assertions': model_assertions, 'request_values': request_values,
                                   'model_properties': model_properties}
 
 
