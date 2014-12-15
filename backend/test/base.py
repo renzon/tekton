@@ -2,6 +2,7 @@
 from __future__ import absolute_import, unicode_literals
 import json
 import unittest
+from google.appengine.api import files
 from google.appengine.ext import testbed
 import webapp2
 from webapp2_extras import i18n
@@ -53,6 +54,22 @@ class GAETestCase(unittest.TestCase):
         :return:
         """
         json.dumps(json_response.context)
+
+
+class BlobstoreTestCase(GAETestCase):
+    def setUp(self):
+        GAETestCase.setUp(self)
+        self.testbed.init_blobstore_stub()
+        self.testbed.init_files_stub()
+
+
+    def save_blob(self, blobdata='blobdata'):
+        file_name = files.blobstore.create(mime_type='application/octet-stream')
+        with files.open(file_name, 'a') as f:
+            f.write(blobdata)
+        files.finalize(file_name)
+        blob_key = files.blobstore.get_blob_key(file_name)
+        return blob_key
 
 
 
