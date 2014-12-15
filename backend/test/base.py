@@ -62,7 +62,6 @@ class BlobstoreTestCase(GAETestCase):
         self.testbed.init_blobstore_stub()
         self.testbed.init_files_stub()
 
-
     def save_blob(self, blobdata='blobdata'):
         file_name = files.blobstore.create(mime_type='application/octet-stream')
         with files.open(file_name, 'a') as f:
@@ -70,6 +69,3 @@ class BlobstoreTestCase(GAETestCase):
         files.finalize(file_name)
         blob_key = files.blobstore.get_blob_key(file_name)
         return blob_key
-
-
-
