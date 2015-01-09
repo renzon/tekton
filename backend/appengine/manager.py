@@ -37,6 +37,7 @@ from decimal import Decimal
 from base import GAETestCase
 from %(app)s_app.%(app)s_model import %(model)s
 from routes.%(app)ss import rest
+from gaegraph.model import Node
 from mock import Mock
 from mommygae import mommy
 
@@ -96,8 +97,17 @@ class EditTests(GAETestCase):
 class DeleteTests(GAETestCase):
     def test_success(self):
         %(model_underscore)s = mommy.save_one(%(model)s)
-        rest.delete(%(model_underscore)s.key.id())
+        rest.delete(None, %(model_underscore)s.key.id())
         self.assertIsNone(%(model_underscore)s.key.get())
+
+    def test_non_%(model_underscore)s_deletion(self):
+        non_%(model_underscore)s = mommy.save_one(Node)
+        response = Mock()
+        json_response = rest.delete(response, non_%(model_underscore)s.key.id())
+        self.assertIsNotNone(non_%(model_underscore)s.key.get())
+        self.assertEqual(500, response.status_code)
+        self.assert_can_serialize_as_json(json_response)
+
 '''
 
 HOME_TESTS_TEMPLATE = '''# -*- coding: utf-8 -*-
@@ -105,6 +115,8 @@ from __future__ import absolute_import, unicode_literals
 from base import GAETestCase
 from %(app)s_app.%(app)s_model import %(model)s
 from routes.%(app)ss.home import index, delete
+from gaebusiness.business import CommandExecutionException
+from gaegraph.model import Node
 from mommygae import mommy
 from tekton.gae.middleware.redirect import RedirectResponse
 
@@ -122,6 +134,11 @@ class DeleteTests(GAETestCase):
         redirect_response = delete(%(model_underscore)s.key.id())
         self.assertIsInstance(redirect_response, RedirectResponse)
         self.assertIsNone(%(model_underscore)s.key.get())
+
+    def test_non_%(model_underscore)s_deletion(self):
+        non_%(model_underscore)s = mommy.save_one(Node)
+        self.assertRaises(CommandExecutionException, delete, non_%(model_underscore)s.key.id())
+        self.assertIsNotNone(non_%(model_underscore)s.key.get())
 
 '''
 
@@ -211,7 +228,7 @@ COMMANDS_TEMPLATE = '''# -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 from gaebusiness.gaeutil import SaveCommand, ModelSearchCommand
 from gaeforms.ndb.form import ModelForm
-from gaegraph.business_base import UpdateNode
+from gaegraph.business_base import UpdateNode, NodeSearch, DeleteNode
 from %(app_path)s.%(app)s_model import %(model)s
 
 
@@ -231,6 +248,12 @@ class %(model)sForm(ModelForm):
     _model_class = %(model)s
 
 
+class Get%(model)sCommand(NodeSearch):
+    _model_class = %(model)s
+
+
+class Delete%(model)sCommand(DeleteNode):
+    _model_class = %(model)s
 
 
 class Save%(model)sCommand(SaveCommand):
@@ -250,7 +273,8 @@ class List%(model)sCommand(ModelSearchCommand):
 FACADE_TEMPLATE = r'''# -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 from gaegraph.business_base import NodeSearch, DeleteNode
-from %(app_path)s.%(app)s_commands import List%(model)sCommand, Save%(model)sCommand, Update%(model)sCommand, %(model)sForm
+from %(app_path)s.%(app)s_commands import List%(model)sCommand, Save%(model)sCommand, Update%(model)sCommand, %(model)sForm,\
+    Get%(model)sCommand, Delete%(model)sCommand
 
 
 def save_%(model_underscore)s_cmd(**%(model_underscore)s_properties):
@@ -294,7 +318,7 @@ def get_%(model_underscore)s_cmd(%(model_underscore)s_id):
     :param %(model_underscore)s_id: the %(model_underscore)s id
     :return: Command
     """
-    return NodeSearch(%(model_underscore)s_id)
+    return Get%(model)sCommand(%(model_underscore)s_id)
 
 
 
@@ -304,7 +328,7 @@ def delete_%(model_underscore)s_cmd(%(model_underscore)s_id):
     :param %(model_underscore)s_id: %(model_underscore)s's id
     :return: Command
     """
-    return DeleteNode(%(model_underscore)s_id)
+    return Delete%(model)sCommand(%(model_underscore)s_id)
 
 '''
 HOME_SCRIPT_TEMPLATE = '''# -*- coding: utf-8 -*-
@@ -428,8 +452,13 @@ def edit(_resp, id, **%(model_underscore)s_properties):
     return _save_or_update_json_response(cmd, _resp)
 
 
-def delete(id):
-    %(app)s_facade.delete_%(model_underscore)s_cmd(id)()
+def delete(_resp, id):
+    cmd = %(app)s_facade.delete_%(model_underscore)s_cmd(id)
+    try:
+        cmd()
+    except CommandExecutionException:
+        _resp.status_code = 500
+        return JsonResponse(cmd.errors)
 
 
 def _save_or_update_json_response(cmd, _resp):
