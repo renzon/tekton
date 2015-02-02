@@ -9,7 +9,7 @@ function to_console {
 cd $(dirname $0) && cd ..
 
 to_console "creating virtual env on venv folder"
-virtualenv -p /usr/bin/python2.7 venv
+virtualenv venv
 
 to_console "Activating virtualenv"
 source venv/bin/activate
