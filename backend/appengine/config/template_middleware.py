@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
+from google.appengine.api.namespace_manager import get_namespace
 
 from jinja2.exceptions import TemplateNotFound
 from tekton import router
@@ -23,7 +24,7 @@ class TemplateResponse(ResponseBase):
 
 class TemplateMiddleware(Middleware):
     def set_up(self):
-        self.dependencies["_render"] = template.render
+        self.dependencies["_render"] = render_by_namespace
 
 
 _TMPL_NOT_FOUND_MSG = '''Template not found
@@ -35,16 +36,27 @@ Looked by convention in /routes/templates directory for:
 Create one of the two template files or explicit indicate which one to use on TemplateResponse'''
 
 
+def render_by_namespace(template_path, context={}):
+    ns = get_namespace()
+    if not ns:
+        return template.render(template_path, context)
+
+    try:
+        return template.render('/'.join([ns, template_path]), context)
+    except TemplateNotFound:
+        return template.render(template_path, context)
+
+
 def render_by_convention(fcn, context):
     template_path = router.to_path(fcn)
 
     def try_render(suffix):
         if template_path == '/':
-            return '/home.html', template.render('/home.html', context)
+            return '/home.html', render_by_namespace('/home.html', context)
 
         try:
             template_file = template_path + suffix
-            return template_file, template.render(template_file, context)
+            return template_file, render_by_namespace(template_file, context)
         except TemplateNotFound:
             return template_file, None
 
@@ -72,6 +84,6 @@ class TemplateWriteMiddleware(Middleware):
 
 
             else:
-                tmpl_rendered = template.render(template_path, context)
+                tmpl_rendered = render_by_namespace(template_path, context)
             self.handler.response.write(tmpl_rendered)
             return True  # after response, there is no need to look for more middlewares

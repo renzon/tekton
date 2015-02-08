@@ -2,6 +2,7 @@
 from __future__ import absolute_import, unicode_literals
 from gaecookie.middleware import CSRFMiddleware, CSRFInputToDependency
 from locale_app.middleware import LocaleMiddleware
+from multitenancy import MultitenacyMiddleware, set_subdomain, set_domain
 from tekton.gae.middleware.json_middleware import JsonResponseMiddleware
 from config.template_middleware import TemplateMiddleware, TemplateWriteMiddleware
 from tekton.gae.middleware.email_errors import EmailMiddleware
@@ -18,7 +19,12 @@ DEFAULT_TIMEZONE = 'US/Eastern'
 LOCALES = ['en_US', 'pt_BR']
 TEMPLATE_404_ERROR = 'base/404.html'
 TEMPLATE_400_ERROR = 'base/400.html'
-MIDDLEWARE_LIST = [LoggedUserMiddleware,
+
+set_subdomain('localhost', 'multitenant')
+set_domain('multitenant-dot-tekton-fullstack.appspot.com', 'multitenant')
+
+MIDDLEWARE_LIST = [MultitenacyMiddleware,
+                   LoggedUserMiddleware,
                    TemplateMiddleware,
                    EmailMiddleware,
                    Webapp2Dependencies,

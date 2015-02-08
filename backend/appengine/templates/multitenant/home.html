@@ -1,0 +1,47 @@
+{% extends 'base/base.html' %}
+{% block css %}
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap-social.css"/>
+    <link rel="stylesheet" href="/static/font-awesome-4.2.0/css/font-awesome.min.css"/>
+{% endblock %}
+{% block body %}
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Tekton</h1>
+                <p>{% trans %}A Full-Stack project for Google App Engine{% endtrans %}</p>
+                <p>But this is the multinant version ;)</p>
+            </div>
+        </div>
+        <br/>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="well">
+                    <h2>{% trans %}Create CRUD code on
+                        <a href="https://cloud.google.com/products/app-engine/">App Engine</a>{% endtrans %}
+                    </h2>
+                    <br/>
+
+                    <p>
+                        <a href="/courses" class="btn btn-primary"></i>{% trans %} Check Courses App
+                            Out{% endtrans %} &raquo;</a>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="well">
+                    <h2>{% trans %}Tekton is open source.{% endtrans %}</h2>
+                    <br/>
+
+                    <p>
+                        <a href="https://github.com/renzon/tekton-fullstack" class="btn btn-social btn-github"><i
+                                class="fa fa-github"></i>{% trans %}Check Git Hub Out{% endtrans %} &raquo;</a>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6 col-md-offset-3">
+                <iframe width="560" height="315" src="//www.youtube.com/embed/videoseries?list=PLA05yVJtRWYRGIeBxag8uT-3ftcMVT5oF" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+{% endblock %}
