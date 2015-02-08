@@ -30,6 +30,7 @@ class GetNamespaceTests(TestCase):
         multitenancy.set_subdomain('www', 'other_namespace')
         self.assertEqual('other_namespace', get_namespace('www'))
         self.assertEqual('some_namespace', get_namespace('www.foo.bar'))
+        self.assertEqual('other_namespace', get_namespace('www.anotherdomain'))
 
     def test_domain_with_port(self):
         multitenancy.set_domain('www.foo.bar', 'some_namespace')
