@@ -20,8 +20,6 @@ LOCALES = ['en_US', 'pt_BR']
 TEMPLATE_404_ERROR = 'base/404.html'
 TEMPLATE_400_ERROR = 'base/400.html'
 
-set_subdomain('localhost', 'multitenant')
-set_domain('multitenant-dot-tekton-fullstack.appspot.com', 'multitenant')
 
 MIDDLEWARE_LIST = [MultitenacyMiddleware,
                    LoggedUserMiddleware,
