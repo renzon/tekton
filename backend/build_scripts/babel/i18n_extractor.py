@@ -22,7 +22,8 @@ logging.info("babel dir: %s" % babel_dir)
 proj_dir = os.path.join(babel_dir, "..", '..')
 proj_dir = os.path.normpath(proj_dir)
 logging.info("project dir: %s" % proj_dir)
-sys.path.append(os.path.join(proj_dir, 'src'))
+sys.path.append(os.path.join(proj_dir, 'appengine'))
+sys.path.append(os.path.join(proj_dir, 'apps'))
 if 'GAE_SDK' in os.environ:
     SDK_PATH = os.environ['GAE_SDK']
 
