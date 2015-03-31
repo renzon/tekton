@@ -3,7 +3,7 @@ call :to_console "Setting up virtualenv on venv"
 cd %~dp0 || goto :error
 
 call :to_console "creating virtual env on venv folder"
-virtualenv . || goto :error 
+virtualenv . --python=C:\Python27\python.exe|| goto :error 
 
 call :to_console "Activating virtualenv"
 call Scripts\activate || goto :error 
