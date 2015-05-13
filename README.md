@@ -15,3 +15,4 @@ This application is running on <https://tekton-fullstack.appspot.com>
 * [Lucas Campos](https://github.com/willianribeiro)
 * [Tony Lâmpada](https://github.com/tonylampada)
 * [Willian Ribeiro](https://github.com/willianribeiro)
+* [Guido Percú](https://github.com/GuidoBR)
