@@ -8,3 +8,8 @@
     border-top: solid #DDDDDD 1px;
     background-color: #f5f5f5;
 }
+.pad8 {
+    margin: 8px 15px;
+    color: #777
+}
+
