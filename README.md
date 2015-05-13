@@ -15,7 +15,7 @@ This application is running on <https://tekton-fullstack.appspot.com>
 ```  ./venv.sh (venv.bat if you use Windows) ```
 * Execute server on backend/appengine folder
 ```  dev_appserver.py . ```
-* See it works on ```http://localhost:8080```
+* See if it works on ```http://localhost:8080```
 
 # Contributors:
 
