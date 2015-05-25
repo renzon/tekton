@@ -12,9 +12,11 @@ This application is running on <https://tekton-fullstack.appspot.com>
 * Install [Google App Engine SDK](https://cloud.google.com/appengine/downloads)
 * Download the tekton source code
 * Run venv.sh to create virtual env
-```  ./venv.sh (venv.bat if you use Windows) ```
+```  cd backend/venv && ./venv.sh (venv.bat if you use Windows) ```
+* Virtualenv
+``` source ./bin/activate ```
 * Execute server on backend/appengine folder
-```  dev_appserver.py . ```
+```  cd ../appengine && dev_appserver.py . ```
 * See if it works on ```http://localhost:8080```
 
 # Contributors:
