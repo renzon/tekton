@@ -1,7 +1,8 @@
 Tekton
 ================
 
-A full stack project for Google App Engine based on modules Tekton-micro, Gaegraph, Gaeforms and Gaepermission, Jinja2 and Babel
+A full stack project for Google App Engine based on modules [Tekton-micro](https://github.com/renzon/tekton-micro), 
+[Gaegraph](https://github.com/renzon/gaegraph), [Gaeforms](https://github.com/renzon/gaeforms) and [Gaepermission](https://github.com/renzon/gaepermission), Jinja2 and Babel
 
 This application is running on <https://tekton-fullstack.appspot.com>
 
