@@ -22,7 +22,7 @@ This application is running on <https://tekton-fullstack.appspot.com>
 # Contributors:
 
 * [Denis Costa](https://github.com/deniscostadsc)
-* [Lucas Campos](https://github.com/willianribeiro)
+* [Lucas Campos](https://github.com/lucasgcampos)
 * [Tony Lâmpada](https://github.com/tonylampada)
 * [Willian Ribeiro](https://github.com/willianribeiro)
 * [Guido Percú](https://github.com/GuidoBR)
