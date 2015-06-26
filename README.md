@@ -18,6 +18,30 @@ This application is running on <https://tekton-fullstack.appspot.com>
 * Execute server on backend/appengine folder
 ```  cd ../appengine && dev_appserver.py . ```
 * See if it works on ```http://localhost:8080```
+ 
+# python manager.py
+
+manager.py is Tekton’s command-line utility for code generation. 
+
+## Commands available
+
+- model
+- app
+- delete
+
+### app
+
+It's possible to determine the app creation, specifying the name and the central entity from the module. Example:
+
+``` python manager.py app course Course title:string price:currency begin:date ```
+
+- int: integer number.
+- float: floating-point number.
+- decimal: floating-point number with 2 decimal precision.
+- currency: money with 2 decimal precision.
+- string: string of characters
+- date: day, month and year.
+- datetime: day, month, year, hour, minutes and seconds.
 
 # Contributors:
 
