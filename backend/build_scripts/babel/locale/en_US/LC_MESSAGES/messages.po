@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-04-27 18:08-0300\n"
+"POT-Creation-Date: 2015-06-29 18:50-0300\n"
 "PO-Revision-Date: 2014-06-26 00:14-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: en_US <LL@li.org>\n"
@@ -80,25 +80,25 @@ msgstr ""
 msgid "Sorry, page not found"
 msgstr ""
 
-#: ../../appengine/templates/base/base.html:56
+#: ../../appengine/templates/base/base.html:51
 msgid "Courses"
 msgstr ""
 
-#: ../../appengine/templates/base/base.html:59
+#: ../../appengine/templates/base/base.html:54
 msgid "Admin"
 msgstr ""
 
-#: ../../appengine/templates/base/base.html:76
+#: ../../appengine/templates/base/base.html:71
 msgid "Account"
 msgstr ""
 
-#: ../../appengine/templates/base/base.html:80
+#: ../../appengine/templates/base/base.html:75
 msgid ""
 "\n"
 "                                        Logout"
 msgstr ""
 
-#: ../../appengine/templates/base/base.html:88
+#: ../../appengine/templates/base/base.html:83
 msgid "Login"
 msgstr ""
 
@@ -238,6 +238,98 @@ msgstr ""
 
 #: ../../appengine/templates/updown/ok.html:7
 msgid "File Upload Finished"
+msgstr ""
+
+#: ../../venv/lib/python2.7/site-packages/gaeforms/base.py:48
+#, python-format
+msgid "Must be one of: %(choices)s"
+msgstr ""
+
+#: ../../venv/lib/python2.7/site-packages/gaeforms/base.py:53
+msgid "Required field"
+msgstr ""
+
+#: ../../venv/lib/python2.7/site-packages/gaeforms/base.py:134
+#, python-format
+msgid "Has %(len)s characters and it must have exactly %(exactly_len)s"
+msgstr ""
+
+#: ../../venv/lib/python2.7/site-packages/gaeforms/base.py:137
+#, python-format
+msgid "Has %(len)s characters and it must have %(max_len)s or less"
+msgstr ""
+
+#: ../../venv/lib/python2.7/site-packages/gaeforms/base.py:140
+#, python-format
+msgid "Has %(len)s characters and it must have %(min_len)s or more"
+msgstr ""
+
+#: ../../venv/lib/python2.7/site-packages/gaeforms/base.py:149
+msgid "Invalid email"
+msgstr ""
+
+#: ../../venv/lib/python2.7/site-packages/gaeforms/base.py:173
+msgid "Key's kind should be defined"
+msgstr ""
+
+#: ../../venv/lib/python2.7/site-packages/gaeforms/base.py:178
+msgid "Invalid key"
+msgstr ""
+
+#: ../../venv/lib/python2.7/site-packages/gaeforms/base.py:225
+#: ../../venv/lib/python2.7/site-packages/gaeforms/base.py:285
+#: ../../venv/lib/python2.7/site-packages/gaeforms/base.py:332
+#, python-format
+msgid "Must be greater than %(lower)s"
+msgstr ""
+
+#: ../../venv/lib/python2.7/site-packages/gaeforms/base.py:227
+#: ../../venv/lib/python2.7/site-packages/gaeforms/base.py:287
+#: ../../venv/lib/python2.7/site-packages/gaeforms/base.py:334
+#, python-format
+msgid "Must be less than %(upper)s"
+msgstr ""
+
+#: ../../venv/lib/python2.7/site-packages/gaeforms/base.py:230
+msgid "Must be integer"
+msgstr ""
+
+#: ../../venv/lib/python2.7/site-packages/gaeforms/base.py:253
+#: ../../venv/lib/python2.7/site-packages/gaeforms/ndb/field.py:10
+msgid "Must be true or false"
+msgstr ""
+
+#: ../../venv/lib/python2.7/site-packages/gaeforms/base.py:290
+#: ../../venv/lib/python2.7/site-packages/gaeforms/base.py:337
+msgid "Must be a number"
+msgstr ""
+
+#: ../../venv/lib/python2.7/site-packages/gaeforms/base.py:371
+#, python-format
+msgid "Invalid date. Must be on format %(format)s"
+msgstr ""
+
+#: ../../venv/lib/python2.7/site-packages/gaeforms/base.py:371
+#: ../../venv/lib/python2.7/site-packages/gaeforms/base.py:377
+msgid "MM/dd/YYYY"
+msgstr ""
+
+#: ../../venv/lib/python2.7/site-packages/gaeforms/base.py:411
+#, python-format
+msgid "Invalid datetime. Must be on format %(format)s"
+msgstr ""
+
+#: ../../venv/lib/python2.7/site-packages/gaeforms/base.py:411
+#: ../../venv/lib/python2.7/site-packages/gaeforms/base.py:416
+msgid "MM/dd/YYYY HH:mm:ss"
+msgstr ""
+
+#: ../../venv/lib/python2.7/site-packages/gaeforms/base.py:482
+msgid "CEP must have exactly 8 characters"
+msgstr ""
+
+#: ../../venv/lib/python2.7/site-packages/gaeforms/base.py:486
+msgid "CEP must contain only numbers"
 msgstr ""
 
 #~ msgid "Tekton Full-Stack is open soure. "
