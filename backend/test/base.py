@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
+import os
 import json
 import unittest
 from google.appengine.ext import testbed
@@ -22,12 +23,13 @@ app.set_globals(app=app, request=request)
 i18n.default_config['default_locale'] = 'en_US'
 i18n.default_config['default_timezone'] = 'UTC'
 
-# End of workaround
+_APP_ID = "foobar"
+
 
 class GAETestCase(unittest.TestCase):
     def setUp(self):
         self.testbed = testbed.Testbed()
-        self.testbed.setup_env(app_id="_")
+        self.testbed.setup_env(app_id=_APP_ID)
         self.testbed.activate()
         self.testbed.init_datastore_v3_stub()
         self.testbed.init_user_stub()
@@ -35,6 +37,11 @@ class GAETestCase(unittest.TestCase):
         self.testbed.init_memcache_stub()
         self.testbed.init_mail_stub()
         self.testbed.init_taskqueue_stub()
+
+    def set_current_user(self, user_email='foo@gmail.com', user_id='1', user_is_admin=False):
+        self.testbed.setup_env(True, USER_EMAIL=user_email, USER_ID=user_id,
+                               USER_IS_ADMIN='1' if user_is_admin else '0')
+        self.testbed.init_user_stub()
 
     def tearDown(self):
         self.testbed.deactivate()

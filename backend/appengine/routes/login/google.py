@@ -21,5 +21,5 @@ def index(_resp, ret_path='/'):
             pending_path = router.to_path(pending.index, cmd.pending_link.key.id())
             facade.send_passwordless_login_link(user.email(),
                                                 settings.APP_URL + pending_path).execute()
-            TemplateResponse({'provider': 'Google', 'email': user.email()}, 'login/pending.html')
+            return TemplateResponse({'provider': 'Google', 'email': user.email()}, 'login/pending.html')
     return RedirectResponse(ret_path)
