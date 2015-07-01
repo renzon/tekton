@@ -15,4 +15,5 @@ def index():
     return TemplateResponse({'security_table_path': router.to_path(permission_home.index),
                              'permission_admin_path': router.to_path(admin),
                              'passwordless_admin_path': router.to_path(passwordless.form),
-                             'facebook_admin_path': router.to_path(facebook.form)})
+                             'facebook_admin_path': router.to_path(facebook.form)},
+                            'admin/home.html')
