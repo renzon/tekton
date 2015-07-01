@@ -18,4 +18,4 @@ def index(ret_path='/'):
            'login_passwordless_path': router.to_path(send_email, ret_path=ret_path),
            'login_facebook_path': router.to_path(facebook.index, ret_path=ret_path),
            'faceapp': facade.get_facebook_app_data().execute().result}
-    return TemplateResponse(dct)
+    return TemplateResponse(dct, 'login/home.html')
