@@ -2,8 +2,8 @@
 from __future__ import absolute_import, unicode_literals
 import json
 import unittest
-from google.appengine.api import files
 from google.appengine.ext import testbed
+from google.appengine.api import files
 import webapp2
 from webapp2_extras import i18n
 from config.template import render
