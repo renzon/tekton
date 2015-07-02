@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
+from config.template_middleware import TemplateResponse
 import os
 import json
 import unittest
@@ -52,6 +53,7 @@ class GAETestCase(unittest.TestCase):
         :param template_response: a TemplateResponse instance
         :return:
         """
+        self.assertIsInstance(template_response,TemplateResponse)
         render(template_response.template_path, template_response.context)
 
     def assert_can_serialize_as_json(self, json_response):
