@@ -32,3 +32,9 @@ class IndexTests(GAETestCase):
         login_facebook_mock.assert_called_once_with(token, resp_mock)
         self.assertEqual(email, send_login_mock.call_args[0][0])
         self.assert_can_render(response)
+
+
+class FormTests(GAETestCase):
+    def test_success(self):
+        response = facebook.form()
+        self.assert_can_render(response)
