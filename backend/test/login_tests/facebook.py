@@ -38,3 +38,11 @@ class FormTests(GAETestCase):
     def test_success(self):
         response = facebook.form()
         self.assert_can_render(response)
+
+
+class SaveTests(GAETestCase):
+    def test_success(self):
+        app_id = 'app_id'
+        token = 'token'
+        response=facebook.save(app_id, token)
+        self.assertIsInstance(response,RedirectResponse)
