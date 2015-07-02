@@ -24,6 +24,7 @@ def index(_resp, token, ret_path='/'):
         return TemplateResponse({'provider': 'Facebook', 'email': user_email}, 'login/pending.html')
     return RedirectResponse(ret_path)
 
+
 @permissions(ADMIN)
 @no_csrf
 def form():
@@ -31,7 +32,8 @@ def form():
     dct = {'save_app_path': router.to_path(save), 'app': app}
     return TemplateResponse(dct)
 
+
 @permissions(ADMIN)
-def save( app_id, token):
+def save(app_id, token):
     facade.save_or_update_facebook_app_data(app_id, token).execute()
     return RedirectResponse(admin)

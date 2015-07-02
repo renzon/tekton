@@ -4,7 +4,6 @@ from base import GAETestCase
 from gaepermission import facade
 from mock import Mock, patch
 from routes.login import google
-import settings
 from tekton.gae.middleware.redirect import RedirectResponse
 
 
