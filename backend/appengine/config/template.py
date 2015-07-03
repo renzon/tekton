@@ -24,7 +24,8 @@ def _json_escaped(value):
 _jinja_environment.filters['json'] = _json_escaped
 
 
-def render(template_name, values={}):
+def render(template_name, values=None):
+    values = values or {}
     template = _jinja_environment.get_template(template_name)
     return template.render(values)
 

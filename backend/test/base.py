@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
+import testloader
+testloader.path_setup()
 from config.template_middleware import TemplateResponse
-import os
 import json
 import unittest
 from google.appengine.ext import testbed

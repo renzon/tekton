@@ -14,7 +14,7 @@ from routes import admin
 @no_csrf
 @login_not_required
 def index():
-    return TemplateResponse()
+    return TemplateResponse(template_path='login/passwordless/home.html')
 
 
 @login_not_required
@@ -26,9 +26,10 @@ def send_email(email, ret_path='/'):
 
 @no_csrf
 @login_not_required
-def check( _resp, ticket, ret_path='/'):
+def check(_resp, ticket, ret_path='/'):
     facade.login_passwordless(ticket, _resp).execute()
     return RedirectResponse(ret_path)
+
 
 @permissions(ADMIN)
 @no_csrf
@@ -36,6 +37,7 @@ def form():
     app = facade.get_passwordless_app_data().execute().result
     dct = {'save_app_path': router.to_path(save), 'app': app}
     return TemplateResponse(dct)
+
 
 @permissions(ADMIN)
 def save(app_id, token):
