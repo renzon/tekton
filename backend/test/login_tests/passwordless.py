@@ -22,14 +22,16 @@ class SendEmailTests(GAETestCase):
         passwordless.send_email(email)
         send_link_mock.assert_called_once_with(email,
                                                settings.APP_URL + to_path(check, ret_path='/'))
+
+
 class CheckEmailTests(GAETestCase):
     @patch('routes.login.passwordless.facade.login_passwordless')
     def test_success(self, login_mock):
-        http_resp=Mock()
+        http_resp = Mock()
         ticket = 'ticket'
-        cmd_mock=Mock()
-        login_mock.return_value=cmd_mock
-        response=passwordless.check(http_resp, ticket)
-        self.assertIsInstance(response,RedirectResponse)
+        cmd_mock = Mock()
+        login_mock.return_value = cmd_mock
+        response = passwordless.check(http_resp, ticket)
+        self.assertIsInstance(response, RedirectResponse)
         login_mock.assert_called_once_with(ticket, http_resp)
         cmd_mock.execute.assert_called_once_with()
