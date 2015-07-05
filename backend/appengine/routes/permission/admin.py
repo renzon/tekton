@@ -14,7 +14,7 @@ from tekton.gae.middleware.json_middleware import JsonResponse
 def index():
     dct = {'list_users_path': router.to_path(list_users),
            'groups': ALL_PERMISSIONS_LIST}
-    return TemplateResponse(dct)
+    return TemplateResponse(dct, 'permission/admin.html')
 
 
 @permissions(ADMIN)
