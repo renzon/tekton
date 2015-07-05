@@ -12,4 +12,4 @@ from gaepermission.decorator import permissions
 def index():
     path_infos = facade.web_path_security_info()
     path_infos = sorted(path_infos, key=lambda i: i.path)
-    return TemplateResponse({'path_infos': path_infos})
+    return TemplateResponse({'path_infos': path_infos}, 'permission/home.html')
