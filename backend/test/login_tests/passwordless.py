@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 from base import GAETestCase
+from gaepermission import facade
 from mock import patch, Mock
 from routes.login import passwordless
 from routes.login.passwordless import check
@@ -19,6 +20,17 @@ class FormTests(GAETestCase):
     def test_render(self):
         response = passwordless.form()
         self.assert_can_render(response)
+
+
+class SaveAppDataTests(GAETestCase):
+    def test_success(self):
+        token = 'token'
+        app_id = 'app_id'
+        response = passwordless.save(app_id, token)
+        self.assertIsInstance(response, RedirectResponse)
+        app = facade.get_passwordless_app_data()()
+        self.assertEqual(app_id, app.app_id)
+        self.assertEqual(token, app.token)
 
 
 class SendEmailTests(GAETestCase):
