@@ -36,7 +36,7 @@ def check(_resp, ticket, ret_path='/'):
 def form():
     app = facade.get_passwordless_app_data().execute().result
     dct = {'save_app_path': router.to_path(save), 'app': app}
-    return TemplateResponse(dct)
+    return TemplateResponse(dct, 'login/passwordless/form.html')
 
 
 @permissions(ADMIN)

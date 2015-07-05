@@ -15,6 +15,12 @@ class IndexTests(GAETestCase):
         self.assert_can_render(response)
 
 
+class FormTests(GAETestCase):
+    def test_render(self):
+        response = passwordless.form()
+        self.assert_can_render(response)
+
+
 class SendEmailTests(GAETestCase):
     @patch('routes.login.passwordless.facade.send_passwordless_login_link')
     def test_success(self, send_link_mock):
