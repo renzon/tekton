@@ -20,6 +20,31 @@ This application is running on <https://tekton-fullstack.appspot.com>
 ```  cd ../appengine && dev_appserver.py . ```
 * See if it works on ```http://localhost:8080```
 
+# Quickstart
+
+This is how you create a Hello World using Tekton.
+
+```python
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import, unicode_literals
+from config.template_middleware import TemplateResponse
+from gaecookie.decorator import no_csrf
+from gaepermission.decorator import login_not_required
+
+
+@login_not_required
+@no_csrf
+def index():
+  _resp.write('Hello world')
+```
+Just save it as *hello.py* inside *backend/appengine/routes* and run your server on *appengine* directory.
+
+```
+dev_appserver.py .
+```
+
+Now head over to http://localhost:8080/hello/, and you should see your *Hello world!* greeting.
+
 # Contributors:
 
 * [Denis Costa](https://github.com/deniscostadsc)
