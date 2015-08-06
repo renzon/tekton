@@ -1,6 +1,6 @@
 import json
 import jinja2
-from jinja2._markupsafe import Markup
+from jinja2 import Markup
 from webapp2_extras import i18n
 import os
 
