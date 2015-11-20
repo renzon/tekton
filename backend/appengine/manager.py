@@ -634,7 +634,7 @@ def generate_generic(app, model, template_path_function, file_name, content_func
     template_file = os.path.join(app_template_path, file_name)
     content = content_function(app, model)
     _create_file_if_not_existing(template_file, content)
-    return content
+    return template_file
 
 
 def _to_app_path(app):
@@ -949,38 +949,23 @@ def init_rest_tests(app, model):
 
 def scaffold(app, model, *properties):
     init_app(app, model, *properties)
-    _title('commands.py')
     print init_commands(app, model)
-    _title('facade.py')
     print init_facade(app, model)
 
-    _title('creating routes folder')
+    _title('Creating appengine directory')
     init_routes(app)
-    _title('routes home.py')
     print init_home_script(app, model)
-
-    _title('routes.new.py')
     print init_new_script(app, model)
-    _title('routes.edit.py')
     print init_edit_script(app, model)
-    _title('routes rest.py')
     print init_rest_script(app, model)
-    _title('creating template folder ans base.html')
     init_html_templates(app)
-    _title('templates/home.html')
     print init_home_html(app, model)
-
-    _title('templates/form.html')
     print init_form_html(app, model)
 
     init_test(app, model)
-    _title('creating new tests')
     print init_new_tests(app, model)
-    _title('creating edit tests')
     print init_edit_tests(app, model)
-    _title('creating home tests')
     print init_home_tests(app, model)
-    _title('creating rest tests')
     print init_rest_tests(app, model)
 
 
