@@ -17,10 +17,11 @@ lib/
 backend/plugins/appengine/lib/
 backend/plugins/appengine/locale
 backend/plugins/appengine/apps/
-backend/venv/bin/
-backend/venv/lib/
-backend/venv/include/
-backend/venv/local/
+backend/venv/*
+!backend/venv/requirements.txt
+!backend/venv/dev_requirements.txt
+!backend/venv/venv.bat
+!backend/venv/venv.sh
 lib64/
 parts/
 sdist/
